@@ -53,7 +53,6 @@ export type CursorType =
   | "functionName"
   | "tableFieldAfterGroup";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type ICursorInfo<T = {}> = {
   token: IToken;
   type: CursorType;

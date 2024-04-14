@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { CopyOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message } from "antd";
 import type { editor as MonacoEditor } from "monaco-editor";
+import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { format as formatSQL } from "sql-formatter";
@@ -9,7 +9,6 @@ import { format as formatSQL } from "sql-formatter";
 import Clipboard from "@/components/Clipboard";
 import { SqlEditor } from "@/components/SqlEditor";
 import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
 
 /**
  * SQL在线编辑器页面
@@ -52,7 +51,7 @@ export default function SqlEditorPage() {
           },
         ]}
       />
-      <div className="flex flex-col px-6 space-y-6">
+      <div className="flex flex-col space-y-6 px-6">
         <div>
           <div className="flex justify-between pb-4">
             <h2 className="text-lg font-medium leading-[32px]">SQL</h2>

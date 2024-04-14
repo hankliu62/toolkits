@@ -145,7 +145,6 @@ const SqlEditor: ForwardRefRenderFunction<
     return () => {
       if (editor.current) editor.current!.dispose();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

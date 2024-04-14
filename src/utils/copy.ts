@@ -42,7 +42,6 @@ export function copyTextToClipboard(
 
   // Get the focus back on the previously focused element, if any
   if (previouslyFocusedElement) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     previouslyFocusedElement.focus();
   }

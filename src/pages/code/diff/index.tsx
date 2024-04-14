@@ -1,7 +1,8 @@
-import DiffCode from "@/components/DiffCode";
-import { getRoutePrefix } from "@/utils/route";
 import { Breadcrumb } from "antd";
 import Link from "next/link";
+
+import DiffCode from "@/components/DiffCode";
+import { getRoutePrefix } from "@/utils/route";
 
 // 对比老字符串
 const prevData = `kind: Deployment

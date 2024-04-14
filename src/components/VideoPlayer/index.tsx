@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import classNames from "classnames";
 // import odd from "odd.player.js";
 import {

@@ -46,12 +46,12 @@ export default function Header({ className }: IHeaderProps) {
   return (
     <header
       className={classNames(
-        "group relative h-[520px] flex justify-center items-center",
+        "group relative flex h-[520px] items-center justify-center",
         { [className]: className }
       )}
     >
       {/* 背景 */}
-      <div className="z-0 absolute inset-0 blur-[0]">
+      <div className="absolute inset-0 z-0 blur-[0]">
         <img
           className="h-full w-full object-cover"
           src={`${getRoutePrefix()}/images/index/bg.jpeg`}
@@ -61,9 +61,9 @@ export default function Header({ className }: IHeaderProps) {
       </div>
 
       {/* 标题 */}
-      <div className="z-10 relative px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
-        <h1 className="toolkits-title select-none animate__animated animate__bounceInDown tracking-tight group/title hover:cursor-pointer">
-          <span className="block font-[about-title] text-center text-4xl font-bold sm:text-5xl lg:text-6xl text-white cursor-pointer hover:animate-[title-blur-change_2s_ease-out_forwards]">
+      <div className="relative z-10 px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
+        <h1 className="toolkits-title animate__animated animate__bounceInDown group/title select-none tracking-tight hover:cursor-pointer">
+          <span className="block cursor-pointer text-center font-[about-title] text-4xl font-bold text-white hover:animate-[title-blur-change_2s_ease-out_forwards] sm:text-5xl lg:text-6xl">
             H.L Toolkits - 小工具集合
           </span>
 
@@ -86,29 +86,29 @@ export default function Header({ className }: IHeaderProps) {
       </div>
 
       {/* 烟花 */}
-      <div className="z-[5] absolute w-full h-full top-0 left-0 hidden group-hover:block">
+      <div className="absolute left-0 top-0 z-[5] hidden h-full w-full group-hover:block">
         <div
-          className="fireworks absolute h-[150px] w-[150px] left-[15%] top-[5%]"
+          className="fireworks absolute left-[15%] top-[5%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
           }}
         />
         <div
-          className="fireworks absolute h-[150px] w-[150px] left-[30%] top-[13%]"
+          className="fireworks absolute left-[30%] top-[13%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
             animationDelay: "-0.4s",
           }}
         />
         <div
-          className="fireworks absolute h-[150px] w-[150px] left-[5%] top-[23%]"
+          className="fireworks absolute left-[5%] top-[23%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
             animationDelay: "-1.7s",
           }}
         />
         <div
-          className="fireworks absolute h-[150px] w-[150px] left-[45%] top-[8%]"
+          className="fireworks absolute left-[45%] top-[8%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
             animationDelay: "-3.1s",

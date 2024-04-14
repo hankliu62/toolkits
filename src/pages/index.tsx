@@ -1,4 +1,5 @@
 import { BankOutlined } from "@ant-design/icons";
+import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
 import {
   AdjustmentsHorizontalIcon,
   CircleStackIcon,
@@ -11,14 +12,13 @@ import {
   QrCodeIcon,
   VariableIcon,
 } from "@heroicons/react/24/outline";
+import { Divider, message, Tooltip } from "antd";
 import AOS from "aos";
 import { InferGetStaticPropsType } from "next";
 import React, { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import { getRoutePrefix } from "@/utils/route";
-import { Divider, Tooltip, message } from "antd";
-import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 enum EIToolkitStatus {
   NORMAL = "normal",
@@ -181,16 +181,16 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="w-full text-white/75 relative">
+    <div className="relative w-full text-white/75">
       <div className="relative z-20 mx-auto w-full max-w-[1920px]">
-        <div className="flex flex-wrap flex-col">
+        <div className="flex flex-col flex-wrap">
           {/* 编程开发 */}
           {navigation.map((item) => (
             <div
-              className="py-20 px-[24px] md:px-[48px]"
+              className="px-[24px] py-20 md:px-[48px]"
               style={{ backgroundColor: item.bgColor }}
             >
-              <h2 className="text-3xl font-medium text-[#333] text-center mb-6">
+              <h2 className="mb-6 text-center text-3xl font-medium text-[#333]">
                 {item.name}
               </h2>
               <div
@@ -203,7 +203,7 @@ export default function Index() {
                 data-aos-once="true"
                 className="info-card group relative flex min-h-[240px] w-full flex-col content-between justify-between gap-[24px] overflow-hidden rounded-[4px] p-[24px] ease-in"
               >
-                <div className="relative grid grid-cols-2 gap-4 px-2 py-3 sm:gap-6 sm:p-4 sm:grid-cols-4">
+                <div className="relative grid grid-cols-2 gap-4 px-2 py-3 sm:grid-cols-4 sm:gap-6 sm:p-4">
                   {item.children.map((subItem) => {
                     const link =
                       `${getRoutePrefix()}/${item.type}${subItem.href}`.replace(
@@ -216,12 +216,12 @@ export default function Index() {
                       <a
                         key={link}
                         href={link}
-                        className="flex flex-col items-stretch rounded-lg p-5 hover:bg-gray-50 shadow bg-white"
+                        className="flex flex-col items-stretch rounded-lg bg-white p-5 shadow hover:bg-gray-50"
                       >
                         <div className="flex items-start">
                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
                             <subItem.icon
-                              className="h-6 w-6 text-xl justify-center"
+                              className="h-6 w-6 justify-center text-xl"
                               aria-hidden="true"
                             />
                           </div>
@@ -252,7 +252,7 @@ export default function Index() {
                           </div>
                         </div>
                         <Divider className="!my-3" />
-                        <div className="overflow-hidden h-[60px]">
+                        <div className="h-[60px] overflow-hidden">
                           <p className="line-clamp-3 text-sm text-gray-800">
                             <Tooltip
                               placement="topLeft"
@@ -263,7 +263,7 @@ export default function Index() {
                           </p>
                         </div>
 
-                        <div className="mt-2 select-none flex items-center justify-between w-full">
+                        <div className="mt-2 flex w-full select-none items-center justify-between">
                           <p className="text-xs text-gray-400">{link}</p>
 
                           <CopyToClipboard
@@ -274,7 +274,7 @@ export default function Index() {
                               className="group/copy flex cursor-pointer"
                               onClick={(e) => e.preventDefault()}
                             >
-                              <span className="bg-gradient-to-r from-[rgb(31_41_55_/_80%)] to-[rgb(31_41_55_/_90%)] bg-[length:0_1px] bg-[left_100%] bg-no-repeat leading-[18px] transition-all group-hover/copy:bg-[length:100%_1px] text-xs text-gray-800">
+                              <span className="bg-gradient-to-r from-[rgb(31_41_55_/_80%)] to-[rgb(31_41_55_/_90%)] bg-[length:0_1px] bg-[left_100%] bg-no-repeat text-xs leading-[18px] text-gray-800 transition-all group-hover/copy:bg-[length:100%_1px]">
                                 复制链接
                               </span>
                             </div>

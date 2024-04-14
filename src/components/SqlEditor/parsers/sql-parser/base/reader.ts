@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import get from "lodash/get";
 import has from "lodash/has";
 import isArray from "lodash/isArray";
@@ -240,7 +239,6 @@ async function getFieldsByFromClause(
               `name.${tableName}.value`
             );
             if (eachTableName) {
-              // eslint-disable-next-line no-plusplus
               existKeyCount++;
               groupPickerName = eachTableName;
             }
@@ -279,7 +277,7 @@ async function getFieldsByFromClause(
         );
 
         // If select *, return all fields
-        // eslint-disable-next-line unicorn/prefer-ternary
+
         if (
           ssFromStatement.result.length === 1 &&
           ssFromStatement.result[0].name.value === "*"

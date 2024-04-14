@@ -5,6 +5,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { Alert, Breadcrumb, Button, Image, Input, message, Upload } from "antd";
+import Link from "next/link";
 import QRCode from "qrcode";
 import QrCodeParser from "qrcode-parser";
 import { useCallback, useState } from "react";
@@ -14,7 +15,6 @@ import { v4 as uuidv4 } from "uuid";
 import Clipboard from "@/components/Clipboard";
 import { CodeEditor } from "@/components/CodeEditor";
 import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
 
 const { Dragger } = Upload;
 
@@ -92,7 +92,7 @@ export default function QRCodePage() {
 
           message.success(`${info.file.name} 文件上传成功。`);
         };
-        // eslint-disable-next-line unicorn/prefer-add-event-listener
+
         reader.onerror = (error) => {
           setParsedError(error?.target?.error?.message);
           console.error(error);
@@ -148,7 +148,7 @@ export default function QRCodePage() {
         ]}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

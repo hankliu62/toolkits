@@ -3225,7 +3225,7 @@ export type TLocationNameIDNoMap = Record<TLocation["name"], TLocation["id"]>;
 
 // 省市区信息 - 省市区信息身份证开头Map
 const locationNameMap: TLocationNameIDNoMap = {};
-// eslint-disable-next-line unicorn/no-array-reduce
+
 locations.reduce(
   (record: [TLocationIDNoMap, TLocationNameIDNoMap], item) => (
     (record[0][item.id] = item), (record[1][item.name] = item.id), record

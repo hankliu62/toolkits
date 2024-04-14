@@ -1,13 +1,12 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { PlaySquareOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Input, message } from "antd";
+import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 
 import VideoPlayer, {
   IVideoPlayerImperativeHandles,
 } from "@/components/VideoPlayer";
 import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
 
 const TextArea = Input.TextArea;
 
@@ -47,7 +46,7 @@ export default function VideoPlayerPage() {
           },
         ]}
       />
-      <div className="flex flex-col px-6 space-y-6">
+      <div className="flex flex-col space-y-6 px-6">
         <div>
           <label className="text-base font-normal">视频数据源: </label>
           <div className="mt-2">

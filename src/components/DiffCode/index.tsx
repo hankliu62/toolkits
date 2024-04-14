@@ -97,7 +97,7 @@ function DiffCode({
     }
     if (isUseUi) {
       // 使用diff2html-ui
-      // eslint-disable-next-line unicorn/prefer-query-selector
+
       const targetElement = document.getElementById(id);
       const configuration: Diff2HtmlUIConfig = {
         ...config,

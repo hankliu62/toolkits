@@ -1,16 +1,15 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message, Select } from "antd";
 import type { editor as MonacoEditor } from "monaco-editor";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import PrettierWorker from "worker-loader!../../../workers/prettier.worker.ts";
 
 import { CodeEditor } from "@/components/CodeEditor";
 import { LanguageDemo, Languages } from "@/constants/editor";
 import { TEditorLanguage } from "@/types/editor";
-import { createWorkerQueue } from "@/utils/workers";
 import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
+import { createWorkerQueue } from "@/utils/workers";
 
 const LanguagesOptions = Languages.map((item) => ({
   label: item,
@@ -81,7 +80,7 @@ export default function MonacoEditorPage() {
         ]}
       />
 
-      <div className="flex flex-col px-6 space-y-6">
+      <div className="flex flex-col space-y-6 px-6">
         <div>
           <label className="text-base font-normal">语言: </label>
           <div className="mt-2">

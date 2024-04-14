@@ -32,7 +32,7 @@ export default function SelectBank({
   const backMap = useMemo<TBackInfoMap>(() => {
     // 银行简称 - 银行信息Map
     const backInfoMap: TBackInfoMap = {};
-    // eslint-disable-next-line unicorn/no-array-reduce
+
     bankList.reduce(
       (record: TBackInfoMap, item) => ((record[item.bankCode] = item), record),
       backInfoMap

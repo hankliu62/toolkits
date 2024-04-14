@@ -1,13 +1,13 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message } from "antd";
 import YAML from "js-yaml";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
 import { CodeEditor } from "@/components/CodeEditor";
 import { LanguageDemo } from "@/constants/editor";
-import Link from "next/link";
 import { getRoutePrefix } from "@/utils/route";
 
 /**
@@ -187,7 +187,7 @@ export default function Yaml2JsonPage() {
         ]}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

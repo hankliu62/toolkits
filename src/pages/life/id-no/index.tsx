@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { HourglassOutlined } from "@ant-design/icons";
 import {
   Alert,
@@ -14,6 +13,7 @@ import {
 } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import SplitPane from "react-split-pane";
 
@@ -24,9 +24,8 @@ import {
   TLocation,
 } from "@/components/Location/location";
 import { ESex } from "@/enums/common";
-import { IParseIDNoInfo, parseIDNoInfo, randomIDNo } from "@/utils/tools";
 import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
+import { IParseIDNoInfo, parseIDNoInfo, randomIDNo } from "@/utils/tools";
 
 /**
  * 在线身份证生成和解析工具
@@ -128,7 +127,7 @@ export default function IDNoPage() {
         ]}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

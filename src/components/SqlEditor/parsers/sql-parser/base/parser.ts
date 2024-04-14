@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { chain, many, matchTokenType, optional } from "../../syntax-parser";
 import { reserveKeys } from "./reserve-keys";
 

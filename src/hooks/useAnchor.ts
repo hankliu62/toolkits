@@ -13,7 +13,6 @@ export default function useAnchor(
     //   ...node.children.map((child) => child.id),
     // ])
     return menus.map(({ id }) => {
-      // eslint-disable-next-line unicorn/prefer-query-selector
       const el = document.getElementById(id);
       if (!el) return;
 

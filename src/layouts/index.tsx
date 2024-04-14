@@ -1,6 +1,7 @@
-import useTopWindow from "@/hooks/useTopWindow";
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
+
+import useTopWindow from "@/hooks/useTopWindow";
 
 const Footer = dynamic(() => import("@/components/Footer"), {
   ssr: false,

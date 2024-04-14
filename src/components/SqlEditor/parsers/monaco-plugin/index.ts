@@ -1,8 +1,3 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-case-declarations */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-param-reassign */
 import defaults from "lodash/defaults";
 import groupBy from "lodash/groupBy";
 import MyWorker from "worker-loader!./parser.worker.ts";
@@ -25,7 +20,6 @@ export function monacoSqlAutocomplete(
 ) {
   opts = defaults(opts || {}, new DefaultOpts(monaco));
 
-  // eslint-disable-next-line unicorn/prefer-includes
   if (supportedMonacoEditorVersion.indexOf(opts.monacoEditorVersion) === -1) {
     throw new Error(
       `monaco-editor version ${
@@ -118,7 +112,6 @@ export function monacoSqlAutocomplete(
 
   monaco.languages.registerCompletionItemProvider(opts.language, {
     triggerCharacters:
-      // eslint-disable-next-line unicorn/prefer-spread
       " $.:{}=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
     provideCompletionItems: async () => {
       const currentEditVersion = editVersion;
@@ -307,7 +300,6 @@ const asyncParser = async (
   let resolve: any = null;
   let reject: any = null;
 
-  // eslint-disable-next-line promise/param-names
   const promise = new Promise((promiseResolve, promiseReject) => {
     resolve = promiseResolve;
     reject = promiseReject;
@@ -315,7 +307,6 @@ const asyncParser = async (
 
   worker.postMessage({ text, index, parserType });
 
-  // eslint-disable-next-line unicorn/prefer-add-event-listener
   worker.onmessage = (event) => {
     if (currentParserIndex === parserIndex) {
       resolve(event.data);

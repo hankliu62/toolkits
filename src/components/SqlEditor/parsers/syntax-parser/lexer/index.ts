@@ -12,7 +12,6 @@ interface ILexerConfig {
 }
 
 class Tokenizer {
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(public lexerConfig: ILexerConfig[]) {
     //
   }
@@ -31,7 +30,6 @@ class Tokenizer {
         throw new Error(`Lexer: Unexpected string "${input}".`);
       }
 
-      // eslint-disable-next-line prefer-destructuring
       token = result.token;
 
       if (!token.value) {
@@ -44,7 +42,7 @@ class Tokenizer {
       lastPosition += token.value.length;
 
       // Advance the string
-      // eslint-disable-next-line no-param-reassign
+
       input = input.slice(token.value.length);
 
       if (!result.config.ignore) {

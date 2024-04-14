@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-string-slice */
 import dayjs from "dayjs";
 
 import { locationIDNoMap } from "@/components/Location/location";
@@ -158,7 +157,7 @@ export function parseIDNoInfo(IDNo: string) {
 
     // 验证校验位
     let sum = 0; // 声明加权求和变量
-    // eslint-disable-next-line unicorn/prefer-spread
+
     const _IDNo: any[] = IDNo.split("");
 
     if ((_IDNo[17] as string).toLowerCase() === "x") {
@@ -228,7 +227,6 @@ export function randomIDNo(
     }
   }
 
-  // eslint-disable-next-line unicorn/prefer-spread
   const idNoCodes = (addressNo + day + s).split("");
   let total = 0;
   for (let index = 0, len = idNoCodes.length; index < len; index++) {

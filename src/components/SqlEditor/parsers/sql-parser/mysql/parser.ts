@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import { chain, many, optional, plus } from "../../syntax-parser";
 import { createFourOperations } from "../base/four-operations";
 import {
@@ -74,7 +73,6 @@ const selectStatement = () => {
     };
 
     if (ast[5]) {
-      // eslint-disable-next-line prefer-destructuring
       result.union = ast[5];
     }
 

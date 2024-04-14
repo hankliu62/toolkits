@@ -1,10 +1,10 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { getRoutePrefix } from "@/utils/route";
 import { HourglassOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button } from "antd";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useState } from "react";
+
+import { getRoutePrefix } from "@/utils/route";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -81,7 +81,7 @@ export default function MarkdownPage() {
         ]}
       />
 
-      <div className="flex flex-col px-6 space-y-6">
+      <div className="flex flex-col space-y-6 px-6">
         <div>
           <div className="flex justify-between pb-4">
             <label className="text-base font-normal">案例展示: </label>

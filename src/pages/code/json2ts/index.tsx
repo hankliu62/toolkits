@@ -1,12 +1,12 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Input, message } from "antd";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
 import { CodeEditor } from "@/components/CodeEditor";
 import JsonToTs from "@/utils/json2ts";
-import Link from "next/link";
 import { getRoutePrefix } from "@/utils/route";
 
 const Demo = {
@@ -215,7 +215,7 @@ export default function Json2TsPage() {
         ]}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

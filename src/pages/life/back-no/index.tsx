@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { HourglassOutlined } from "@ant-design/icons";
 import {
   Alert,
@@ -13,15 +12,15 @@ import {
   Radio,
   Select,
 } from "antd";
+import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import { BankCardTypeName, EBankCardType } from "@/constants/bank";
+import { getRoutePrefix } from "@/utils/route";
 import { IBankNoInfo, parseBankNoInfo, randomBankNo } from "@/utils/tools";
 
 import SelectBank, { TBackInfo } from "./Components/SelectBank";
-import { getRoutePrefix } from "@/utils/route";
-import Link from "next/link";
 
 /**
  * 在线银行卡号生成和解析工具
@@ -119,7 +118,7 @@ export default function BackNoPage() {
         ]}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

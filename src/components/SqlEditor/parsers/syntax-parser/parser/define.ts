@@ -89,7 +89,6 @@ export class VisiterStore {
 
   public stop = false;
 
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(
     public scanner: Scanner,
     public parser: Parser
@@ -133,7 +132,6 @@ export class ChainNode {
 
   public solveAst: ISolveAst = null;
 
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(public parentIndex: number) {
     //
   }
@@ -144,7 +142,6 @@ export class TreeNode {
 
   public childs: Node[] = [];
 
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(public parentIndex: number) {
     //
   }
@@ -153,7 +150,6 @@ export class TreeNode {
 export class FunctionNode {
   public parentNode: ParentNode;
 
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(
     public chainFunction: ChainFunction,
     public parentIndex: number,
@@ -175,7 +171,6 @@ export class FunctionNode {
 export class MatchNode {
   public parentNode: ParentNode;
 
-  // eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-parameter-properties
   constructor(
     private matchFunction: IMatchFn,
     public matching: IMatching,

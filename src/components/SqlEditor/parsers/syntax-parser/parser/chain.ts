@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import defaults from "lodash/defaults";
 import uniq from "lodash/uniq";
 import uniqBy from "lodash/uniqBy";
@@ -189,14 +188,12 @@ function scannerAddCursorToken(
   return { scanner, finalCursorIndex };
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const createParser = <AST = {}>(
   root: ChainFunction,
   lexer: Lexer,
   options?: CreateParserOptions
 ) => {
   return (text: string, cursorIndex: number = null): IParseResult => {
-    // eslint-disable-next-line no-param-reassign
     options = defaults(options || {}, new CreateParserOptions());
 
     const startTime = new Date();
@@ -208,7 +205,7 @@ export const createParser = <AST = {}>(
       cursorIndex,
       options
     );
-    // eslint-disable-next-line no-param-reassign
+
     cursorIndex = finalCursorIndex;
     const parser = getParser(root);
 
@@ -238,14 +235,12 @@ export const createParser = <AST = {}>(
           callVisiterCount += 1;
 
           if (callVisiterCount > MAX_VISITER_CALL) {
-            // eslint-disable-next-line no-param-reassign
             store.stop = true;
           }
         },
         onVisiterNextNode: (node, store) => {
           callParentCount += 1;
           if (callParentCount > MAX_VISITER_CALL) {
-            // eslint-disable-next-line no-param-reassign
             store.stop = true;
           }
         },
@@ -294,14 +289,12 @@ export const createParser = <AST = {}>(
           callVisiterCount += 1;
 
           if (callVisiterCount > MAX_VISITER_CALL) {
-            // eslint-disable-next-line no-param-reassign
             store.stop = true;
           }
         },
         onVisiterNextNode: (node, store) => {
           callParentCount += 1;
           if (callParentCount > MAX_VISITER_CALL) {
-            // eslint-disable-next-line no-param-reassign
             store.stop = true;
           }
         },
@@ -337,7 +330,7 @@ export const createParser = <AST = {}>(
     cursorPrevNodes = uniq(cursorPrevNodes);
 
     // Get next matchings
-    // eslint-disable-next-line unicorn/no-array-reduce
+
     let nextMatchNodes = cursorPrevNodes.reduce((all, cursorPrevNode) => {
       return [...all, ...findNextMatchNodes(cursorPrevNode, parser)];
     }, [] as MatchNode[]);
@@ -493,11 +486,9 @@ const visit = tailCallOptimize(
       const replacedNode = node.run();
       replacedNode.functionName = functionName;
 
-      // eslint-disable-next-line no-param-reassign
       node.parentNode.childs[node.parentIndex] = replacedNode;
       visit({ node: replacedNode, store, visiterOption, childIndex: 0 });
     } else {
-      // eslint-disable-next-line unicorn/prefer-type-error
       throw new Error(`Unexpected node type: ${node}`);
     }
   }
@@ -569,7 +560,6 @@ const visitNextNodeFromParent = tailCallOptimize(
 
     if (node.parentNode instanceof ChainNode) {
       if (visiterOption.generateAst) {
-        // eslint-disable-next-line no-param-reassign
         node.parentNode.astResults[node.parentIndex] = astValue;
       }
 
@@ -584,7 +574,6 @@ const visitNextNodeFromParent = tailCallOptimize(
     } else if (node.parentNode instanceof TreeNode) {
       visitNextNodeFromParent(node.parentNode, store, visiterOption, astValue);
     } else {
-      // eslint-disable-next-line unicorn/prefer-type-error
       throw new Error(`Unexpected parent node type: ${node.parentNode}`);
     }
   }
@@ -753,7 +742,6 @@ function getFirstOrFunctionSet(
       return getFirstOrFunctionSet(node.childs[0], creatorFunction, parser);
     }
   } else if (node instanceof TreeNode) {
-    // eslint-disable-next-line unicorn/no-array-reduce
     return node.childs.reduce((all, next) => {
       return [...all, ...getFirstOrFunctionSet(next, creatorFunction, parser)];
     }, []);
@@ -768,7 +756,6 @@ function getFirstOrFunctionSet(
 
     return [node.chainFunction];
   } else {
-    // eslint-disable-next-line unicorn/prefer-type-error
     throw new Error(`Unexpected node: ${node}`);
   }
 }
@@ -781,11 +768,10 @@ function solveFirstSet(creatorFunction: ChainFunction, parser: Parser) {
   const firstMatchNodes = parser.firstOrFunctionSet.get(creatorFunction);
 
   // Try if relate functionName has done first set.
-  // eslint-disable-next-line unicorn/no-array-reduce
+
   const newFirstMatchNodes = firstMatchNodes.reduce((all, firstMatchNode) => {
     if (typeof firstMatchNode === "string") {
       if (parser.firstSet.has(firstMatchNode)) {
-        // eslint-disable-next-line no-param-reassign
         all = [...all, ...parser.firstSet.get(firstMatchNode)];
       } else {
         all.push(firstMatchNode);
@@ -810,7 +796,7 @@ function solveFirstSet(creatorFunction: ChainFunction, parser: Parser) {
     // If this functionName has related functionNames, solve them
     if (parser.relatedSet.has(creatorFunction)) {
       const relatedFunctionNames = parser.relatedSet.get(creatorFunction);
-      // eslint-disable-next-line unicorn/no-array-for-each
+
       relatedFunctionNames.forEach((relatedFunctionName) => {
         return solveFirstSet;
       });

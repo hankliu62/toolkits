@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-parameter-properties */
-/* eslint-disable no-useless-constructor */
 import get from "lodash/get";
 import upperCase from "lodash/upperCase";
 

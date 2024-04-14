@@ -10,7 +10,6 @@ import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 // 页面滚动元素动画
 import "aos/dist/aos.css";
-
 import "dayjs/locale/zh-cn";
 
 import { ConfigProvider, Watermark } from "antd";

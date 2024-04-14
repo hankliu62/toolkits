@@ -20,7 +20,6 @@ export function tailCallOptimize<T>(f: T): T {
   let active = false;
   const accumulated: any[] = [];
   return function accumulator(this: any) {
-    // eslint-disable-next-line prefer-rest-params
     accumulated.push(arguments);
     if (!active) {
       active = true;
@@ -38,9 +37,8 @@ export function getPathByCursorIndexFromAst(
   cursorIndex: number,
   path = ""
 ) {
-  // eslint-disable-next-line no-param-reassign
   let fullpath = "";
-  // eslint-disable-next-line guard-for-in
+
   for (const key in obj) {
     if (
       obj[key] &&

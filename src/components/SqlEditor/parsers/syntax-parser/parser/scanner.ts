@@ -72,7 +72,6 @@ export class Scanner {
     let prevToken: IToken = null;
     let prevTokenIndex: number = null;
 
-    // eslint-disable-next-line unicorn/no-array-for-each
     this.tokens.forEach((token, index) => {
       if (token.position[1] < characterIndex - 1) {
         prevToken = token;

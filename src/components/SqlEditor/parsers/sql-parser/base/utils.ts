@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-spread */
-/* eslint-disable unicorn/no-array-reduce */
 export function isOkay(obj: any) {
   // eslint-disable-next-line eqeqeq
   return obj != null;

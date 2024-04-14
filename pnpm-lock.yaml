@@ -74,6 +74,9 @@ dependencies:
   json_typegen_wasm:
     specifier: ^0.7.0
     version: 0.7.0
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   monaco-editor:
     specifier: ^0.47.0
     version: 0.47.0
@@ -5188,7 +5191,6 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-update@6.0.0:
     resolution: {integrity: sha512-niTvB4gqvtof056rRIrTZvjNYE4rCUzO6X/X+kYjd7WFxXeJ0NwEFnRxX6ehkvv3jTwrXnNdtAak5XYZuIyPFw==}
