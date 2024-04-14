@@ -1,0 +1,47 @@
+name: github pages
+on:
+  push:
+    branches: [master]
+# 执行的一项或多项任务
+jobs:
+  build-and-deploy:
+    # 运行在虚拟机环境ubuntu-latest
+    # https://docs.github.com/zh/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: ubuntu-latest
+    steps:
+      - name: 获取源码 🛎️
+        uses: actions/checkout@v3
+      - name: Node环境版本 🗜️
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v3
+        name: 安装pnpm 🚖
+        with:
+          version: 8
+          run_install: false
+      - name: pnpm缓存 🔒
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        name: 缓存依赖 📚
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: 安装依赖 📦
+        run: pnpm install
+      - name: 执行Lint ⚡
+        run: pnpm run lint
+      - name: 打包 🏗️
+        env:
+          TIANAPI_KEY: ${{ secrets.TIANAPI_KEY }}
+        run: pnpm run build && touch ./out/.nojekyll # run: touch ./out/.nojekyll是因为由于 Jekyll 处理,GitHub 默认不提供_next文件夹,.nojekyll文件阻止了这种情况,
+      - name: 部署 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # 部署后提交到那个分支
+          folder: out # 这里填打包好的目录名称
+          clean: true
