@@ -1,13 +1,16 @@
 import prettier from "prettier";
-import parserAngular from "prettier/parser-angular";
-import parserBabel from "prettier/parser-babel";
-import parserFlow from "prettier/parser-flow";
-import parserGraphql from "prettier/parser-graphql";
-import parserHtml from "prettier/parser-html";
-import parserMarkdown from "prettier/parser-markdown";
-import parserPostcss from "prettier/parser-postcss";
-import parserTypescript from "prettier/parser-typescript";
-import parserYaml from "prettier/parser-yaml";
+import parserAngular from "prettier/plugins/angular";
+import parserBabel from "prettier/plugins/babel";
+import parserFlow from "prettier/plugins/flow";
+import parserGraphql from "prettier/plugins/graphql";
+import parserHtml from "prettier/plugins/html";
+import parserMarkdown from "prettier/plugins/markdown";
+import parserPostcss from "prettier/plugins/postcss";
+import parserTypescript from "prettier/plugins/typescript";
+import parserYaml from "prettier/plugins/yaml";
+import parserShell from "prettier-plugin-sh";
+import * as parserRust from "prettier-plugin-rust";
+import parserJava from "prettier-plugin-java";
 import { format as formatSQL } from "sql-formatter";
 
 let current;
@@ -67,6 +70,27 @@ ctx.addEventListener("message", async (event) => {
       // SQL格式化工具
       respond({
         pretty: formatSQL(event.data.text),
+      });
+    } else if (event.data.language === "rust") {
+      // rust格式化工具
+      respond({
+        pretty: prettier.format(event.data.text, {
+          plugins: [parserRust],
+        }),
+      });
+    } else if (event.data.language === "shell") {
+      // shell格式化工具
+      respond({
+        pretty: prettier.format(event.data.text, {
+          plugins: [parserShell],
+        }),
+      });
+    } else if (event.data.language === "java") {
+      // java格式化工具
+      respond({
+        pretty: prettier.format(event.data.text, {
+          plugins: [parserJava],
+        }),
       });
     }
   } catch (error) {
