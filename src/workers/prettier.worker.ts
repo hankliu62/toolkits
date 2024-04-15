@@ -8,9 +8,9 @@ import parserMarkdown from "prettier/plugins/markdown";
 import parserPostcss from "prettier/plugins/postcss";
 import parserTypescript from "prettier/plugins/typescript";
 import parserYaml from "prettier/plugins/yaml";
-import parserShell from "prettier-plugin-sh";
-import * as parserRust from "prettier-plugin-rust";
 import parserJava from "prettier-plugin-java";
+import * as parserRust from "prettier-plugin-rust";
+import parserShell from "prettier-plugin-sh";
 import { format as formatSQL } from "sql-formatter";
 
 let current;

@@ -14,7 +14,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { Divider, message, Tooltip } from "antd";
 import AOS from "aos";
-import { InferGetStaticPropsType } from "next";
 import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 

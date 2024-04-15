@@ -10,7 +10,7 @@
     "stylelint": "stylelint src/**/*.{css,less,scss}",
     "lint": "pnpm run eslint && pnpm run stylelint",
     "export": "next export",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint src --fix",
     "prettier": "prettier --write src",
     "prepare": "husky install"
   },
