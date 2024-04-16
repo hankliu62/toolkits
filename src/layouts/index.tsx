@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 import useTopWindow from "@/hooks/useTopWindow";
 
-const Footer = dynamic(() => import("@/components/Footer"), {
+const Footer = dynamic(() => import("@hankliu/rc-footer"), {
   ssr: false,
 });
 
