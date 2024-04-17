@@ -290,52 +290,59 @@ time, mark, audio, video {
 }
 `;
 
-const LanguageDemoScss = `// http://meyerweb.com/eric/tools/css/reset/
-//  v2.0 | 20110126
-//  License: none (public domain)
+const LanguageDemoScss = `// variables
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$border-radius: 5px;
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+// mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-// HTML5 display-role reset for older browsers
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
+
+// main styles
 body {
-  line-height: 1;
+  font-family: Arial, sans-serif;
 }
-ol, ul {
-  list-style: none;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
-blockquote, q {
-  quotes: none;
+
+.header {
+  background-color: $primary-color;
+  color: white;
+  padding: 10px;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
+
+.footer {
+  background-color: $secondary-color;
+  color: white;
+  padding: 10px;
 }
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+
+.button {
+  background-color: $primary-color;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.card {
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 `;
 
