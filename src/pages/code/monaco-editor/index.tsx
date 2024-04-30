@@ -1,15 +1,21 @@
 import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message, Select } from "antd";
-import type { editor as MonacoEditor } from "monaco-editor";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import PrettierWorker from "worker-loader!../../../workers/prettier.worker.ts";
+import { useCallback, useRef, useState } from "react";
 
-import { CodeEditor } from "@/components/CodeEditor";
-import { LanguageDemo, Languages } from "@/constants/editor";
-import { TEditorLanguage } from "@/types/editor";
+import type {
+  monaco as Monaco,
+  TMonacoEditorLanguage,
+} from "@hankliu/rc-monaco-editor";
+import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/editor";
+
 import { getRoutePrefix } from "@/utils/route";
-import { createWorkerQueue } from "@/utils/workers";
+import dynamic from "next/dynamic";
+import { LanguageDemo } from "@/constants/editor";
+
+const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
+  ssr: false,
+});
 
 const LanguagesOptions = Languages.map((item) => ({
   label: item,
@@ -23,16 +29,8 @@ const LanguagesOptions = Languages.map((item) => ({
  */
 export default function MonacoEditorPage() {
   const [value, setValue] = useState<string>();
-  const [language, setLanguage] = useState<TEditorLanguage>("html");
-  const editor = useRef<MonacoEditor.IStandaloneCodeEditor>();
-
-  const prettierWorker = useRef<any>();
-
-  useEffect(() => {
-    if (!prettierWorker.current) {
-      prettierWorker.current = createWorkerQueue(PrettierWorker);
-    }
-  }, []);
+  const [language, setLanguage] = useState<TMonacoEditorLanguage>("html");
+  const editor = useRef<Monaco.editor.IStandaloneCodeEditor>();
 
   /**
    * 格式化代码
@@ -122,7 +120,8 @@ export default function MonacoEditorPage() {
           </div>
 
           <div>
-            <CodeEditor
+            <MonacoEditor
+              height={600}
               value={value}
               language={language}
               onChange={(val) => {

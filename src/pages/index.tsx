@@ -203,7 +203,7 @@ export default function Index() {
                 className="info-card group relative flex min-h-[240px] w-full flex-col content-between justify-between gap-[24px] overflow-hidden rounded-[4px] p-[24px] ease-in"
               >
                 <div className="relative grid grid-cols-2 gap-4 px-2 py-3 sm:grid-cols-4 sm:gap-6 sm:p-4">
-                  {item.children.map((subItem) => {
+                  {item.children.map((subItem, index) => {
                     const link =
                       `${getRoutePrefix()}/${item.type}${subItem.href}`.replace(
                         /\/\//g,
@@ -213,7 +213,7 @@ export default function Index() {
                     // 判断是否为内部链接
                     return (
                       <a
-                        key={link}
+                        key={link + index}
                         href={link}
                         className="flex flex-col items-stretch rounded-lg bg-white p-5 shadow hover:bg-gray-50"
                       >

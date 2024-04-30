@@ -127,7 +127,6 @@ export default function IDNoPage() {
         ]}
       />
 
-      {}
       {/* @ts-ignore */}
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">

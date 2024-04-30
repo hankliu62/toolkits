@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
-import { CodeEditor } from "@/components/CodeEditor";
+import MonacoEditor from "@hankliu/rc-monaco-editor";
 import JsonToTs from "@/utils/json2ts";
 import { getRoutePrefix } from "@/utils/route";
 
@@ -253,7 +253,7 @@ export default function Json2TsPage() {
               </Clipboard>
             </div>
           </div>
-          <CodeEditor
+          <MonacoEditor
             value={source}
             language="json"
             onChange={(val) => {
@@ -284,7 +284,7 @@ export default function Json2TsPage() {
               </Clipboard>
             </div>
           </div>
-          <CodeEditor
+          <MonacoEditor
             value={target}
             language="typescript"
             onChange={(val) => {

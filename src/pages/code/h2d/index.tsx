@@ -10,8 +10,7 @@ import Turndown from "turndown";
 import * as turndownGFM from "turndown-plugin-gfm";
 
 import Clipboard from "@/components/Clipboard";
-import { CodeEditor } from "@/components/CodeEditor";
-import { LanguageDemo } from "@/constants/editor";
+import MonacoEditor, { LanguageDemo } from "@hankliu/rc-monaco-editor";
 import { getRoutePrefix } from "@/utils/route";
 
 // 转化方式
@@ -132,7 +131,7 @@ export default function HTML2Markdown() {
               </Clipboard>
             </div>
           </div>
-          <CodeEditor
+          <MonacoEditor
             value={html}
             language="html"
             onChange={(val) => {
@@ -176,7 +175,7 @@ export default function HTML2Markdown() {
               </Clipboard>
             </div>
           </div>
-          <CodeEditor
+          <MonacoEditor
             value={markdown}
             language="markdown"
             onChange={(val) => {

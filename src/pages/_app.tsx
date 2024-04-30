@@ -12,6 +12,8 @@ import "@uiw/react-markdown-preview/markdown.css";
 import "aos/dist/aos.css";
 // footer组件
 import "@hankliu/rc-footer/assets/index.css";
+// exception组件
+import "@hankliu/rc-exception/assets/index.css";
 import "dayjs/locale/zh-cn";
 
 import { ConfigProvider, Watermark } from "antd";

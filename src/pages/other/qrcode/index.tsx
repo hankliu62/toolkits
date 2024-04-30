@@ -13,7 +13,7 @@ import SplitPane from "react-split-pane";
 import { v4 as uuidv4 } from "uuid";
 
 import Clipboard from "@/components/Clipboard";
-import { CodeEditor } from "@/components/CodeEditor";
+import MonacoEditor from "@hankliu/rc-monaco-editor";
 import { getRoutePrefix } from "@/utils/route";
 
 const { Dragger } = Upload;
@@ -165,7 +165,7 @@ export default function QRCodePage() {
               </Button>
             </div>
           </div>
-          <CodeEditor
+          <MonacoEditor
             className="h-60 min-h-0"
             value={content}
             language="plaintext"

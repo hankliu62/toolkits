@@ -6,8 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
-import { CodeEditor } from "@/components/CodeEditor";
-import { LanguageDemo } from "@/constants/editor";
+import MonacoEditor, { LanguageDemo } from "@hankliu/rc-monaco-editor";
 import { getRoutePrefix } from "@/utils/route";
 
 /**
@@ -145,7 +144,7 @@ export default function Yaml2JsonPage() {
 
   const renderYamlEditor = () => {
     return (
-      <CodeEditor
+      <MonacoEditor
         value={yaml}
         language="yaml"
         onChange={
@@ -160,7 +159,7 @@ export default function Yaml2JsonPage() {
 
   const renderJsonEditor = () => {
     return (
-      <CodeEditor
+      <MonacoEditor
         value={json}
         language="json"
         onChange={
