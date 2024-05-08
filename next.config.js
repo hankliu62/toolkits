@@ -106,9 +106,6 @@ const Languages = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    esmExternals: 'loose',
-  },
   output: "export", // 导出静态文件out
   reactStrictMode: false,
   images: {
@@ -124,29 +121,28 @@ const nextConfig = {
     "highlight.js",
     "diff2html",
     "monaco-editor",
-    "@hankliu/rc-monaco-editor",
   ],
   webpack: (config, { isServer }) => {
-    // config.module.rules
-    //   .filter((rule) => rule.oneOf)
-    //   .forEach((rule) => {
-    //     rule.oneOf.forEach((r) => {
-    //       if (
-    //         r.issuer &&
-    //         r.issuer.and &&
-    //         r.issuer.and.length === 1 &&
-    //         r.issuer.and[0].source &&
-    //         r.issuer.and[0].source.replace(/\\/g, "") ===
-    //           path.resolve(process.cwd(), "src/pages/_app")
-    //       ) {
-    //         r.issuer.or = [
-    //           ...r.issuer.and,
-    //           /[/\\]node_modules[/\\]monaco-editor[/\\]/,
-    //         ];
-    //         delete r.issuer.and;
-    //       }
-    //     });
-    //   });
+    config.module.rules
+      .filter((rule) => rule.oneOf)
+      .forEach((rule) => {
+        rule.oneOf.forEach((r) => {
+          if (
+            r.issuer &&
+            r.issuer.and &&
+            r.issuer.and.length === 1 &&
+            r.issuer.and[0].source &&
+            r.issuer.and[0].source.replace(/\\/g, "") ===
+              path.resolve(process.cwd(), "src/pages/_app")
+          ) {
+            r.issuer.or = [
+              ...r.issuer.and,
+              /[/\\]node_modules[/\\]monaco-editor[/\\]/,
+            ];
+            delete r.issuer.and;
+          }
+        });
+      });
     if (!isServer) {
       config.plugins.push(
         new MonacoWebpackPlugin({

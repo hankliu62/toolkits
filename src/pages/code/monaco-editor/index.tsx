@@ -1,22 +1,22 @@
 import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
-import type {
-  monaco as Monaco,
-  TMonacoEditorLanguage,
-} from "@hankliu/rc-monaco-editor";
-import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/index";
+// import type {
+//   monaco as Monaco,
+//   TMonacoEditorLanguage,
+// } from "@hankliu/rc-monaco-editor";
+// import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/index";
 import { Breadcrumb, Button, message, Select } from "antd";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worker";
 
-import { LanguageDemo } from "@/constants/editor";
+import MonacoEditor from "@/components/CodeEditor";
+import { LanguageDemo, Languages } from "@/constants/editor";
 import { getRoutePrefix } from "@/utils/route";
 import { createWorkerQueue } from "@/utils/workers";
 
-const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
-  ssr: false,
-});
+// const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
+//   ssr: false,
+// });
 
 const LanguagesOptions = Languages.map((item) => ({
   label: item,
@@ -30,8 +30,8 @@ const LanguagesOptions = Languages.map((item) => ({
  */
 export default function MonacoEditorPage() {
   const [value, setValue] = useState<string>();
-  const [language, setLanguage] = useState<TMonacoEditorLanguage>("html");
-  const editor = useRef<Monaco.editor.IStandaloneCodeEditor>();
+  const [language, setLanguage] = useState<keyof typeof LanguageDemo>("html");
+  const editor = useRef<any>();
   const prettierWorker = useRef<any>();
 
   useEffect(() => {

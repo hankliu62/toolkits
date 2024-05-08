@@ -10,3 +10,5 @@ const EditorDesktop = dynamic(() => import("./EditorDesktop"), {
 });
 
 export const CodeEditor = isMobile() ? EditorMobile : EditorDesktop;
+
+export default CodeEditor;

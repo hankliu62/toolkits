@@ -7,6 +7,7 @@ import React, {
   ForwardRefRenderFunction,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from "react";
 
@@ -29,12 +30,18 @@ function setupKeybindings(editor) {
 
 export type Monaco = typeof monaco;
 
-export interface ICodeEditorImperativeHandles {
+export interface ICodeEditorMethods {
   getEditor: () => monaco.editor.IStandaloneCodeEditor | null;
   monaco: Monaco;
 }
 
+function processSize(size: number | string) {
+  return !/^\d+$/.test(size as string) ? size : `${size}px`;
+}
+
 interface ICodeEditorProps {
+  width?: string | number;
+  height?: string | number;
   value?: string;
   defaultValue?: string; // 初始值
   className?: string;
@@ -54,10 +61,12 @@ interface ICodeEditorProps {
  * @returns
  */
 const SqlEditor: ForwardRefRenderFunction<
-  ICodeEditorImperativeHandles,
+  ICodeEditorMethods,
   ICodeEditorProps
 > = (
   {
+    width = "100%",
+    height = "100%",
     value = "",
     defaultValue = "",
     className,
@@ -73,6 +82,17 @@ const SqlEditor: ForwardRefRenderFunction<
 ) => {
   const editorContainer = useRef<HTMLDivElement | null>(null);
   const editor = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
+
+  const fixedWidth = processSize(width);
+  const fixedHeight = processSize(height);
+
+  const style = useMemo(
+    () => ({
+      width: fixedWidth,
+      height: fixedHeight,
+    }),
+    [fixedWidth, fixedHeight]
+  );
 
   function getEditor(): MonacoEditor.IStandaloneCodeEditor | null {
     return editor.current;
@@ -212,6 +232,7 @@ const SqlEditor: ForwardRefRenderFunction<
       className={classNames("relative min-h-[600px] flex-auto", {
         [className]: className,
       })}
+      style={style}
     />
   );
 };

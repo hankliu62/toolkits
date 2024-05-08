@@ -1,10 +1,8 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
-import { LanguageDemo } from "@hankliu/rc-monaco-editor/lib/constants/index";
 import { Breadcrumb, Button, message, Select } from "antd";
 import h2m from "h2m";
 import htmlToMd from "html-to-md";
 import html2markdown from "html2markdown";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
@@ -12,11 +10,9 @@ import Turndown from "turndown";
 import * as turndownGFM from "turndown-plugin-gfm";
 
 import Clipboard from "@/components/Clipboard";
+import MonacoEditor from "@/components/CodeEditor";
+import { LanguageDemo } from "@/constants/editor";
 import { getRoutePrefix } from "@/utils/route";
-
-const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
-  ssr: false,
-});
 
 // 转化方式
 enum EConvertWay {

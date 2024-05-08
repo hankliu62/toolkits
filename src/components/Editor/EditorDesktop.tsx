@@ -1,3 +1,4 @@
+import type { EditorLanguage } from "monaco-editor/esm/metadata";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { CommandsRegistry } from "monaco-editor/esm/vs/platform/commands/common/commands";
 import React, { useEffect, useRef } from "react";
@@ -27,7 +28,7 @@ const languageToMode = {
 };
 
 export interface IEditorProps {
-  language: keyof typeof languageToMode;
+  language: EditorLanguage;
   defaultValue?: string;
   value?: string;
   onChange: (value: string) => void;

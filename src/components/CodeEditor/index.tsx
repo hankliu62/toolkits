@@ -5,3 +5,5 @@ const EditorDesktop = dynamic(() => import("./editor"), {
 });
 
 export const CodeEditor = EditorDesktop;
+
+export default CodeEditor;

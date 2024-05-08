@@ -7,7 +7,7 @@ import { basicSetup } from "codemirror";
 import * as React from "react";
 
 interface ICodeMirror {
-  language?: "json" | "javascript";
+  language?: any;
   value?: string;
   onChange: (content: string) => void;
 }

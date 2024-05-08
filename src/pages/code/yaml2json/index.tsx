@@ -1,18 +1,14 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
-import { LanguageDemo } from "@hankliu/rc-monaco-editor/lib/constants/index";
 import { Breadcrumb, Button, message } from "antd";
 import YAML from "js-yaml";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
+import MonacoEditor from "@/components/CodeEditor";
+import { LanguageDemo } from "@/constants/editor";
 import { getRoutePrefix } from "@/utils/route";
-
-const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
-  ssr: false,
-});
 
 /**
  * 将yaml转化成json的在线工具网站
