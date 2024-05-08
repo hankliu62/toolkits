@@ -6,12 +6,12 @@ const removeImports = require("next-remove-imports")({
 });
 const path = require("node:path");
 
-const withTM = require("next-transpile-modules")([
-  // `monaco-editor` isn't published to npm correctly: it includes both CSS
-  // imports and non-Node friendly syntax, so it needs to be compiled.
-  "highlight.js",
-  "diff2html",
-]);
+// const withTM = require("next-transpile-modules")([
+//   // `monaco-editor` isn't published to npm correctly: it includes both CSS
+//   // imports and non-Node friendly syntax, so it needs to be compiled.
+//   "highlight.js",
+//   "diff2html",
+// ]);
 
 const Languages = [
   "plaintext",
@@ -111,28 +111,38 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ["@ant-design/icons"],
+  transpilePackages: [
+    "@ant-design/icons",
+    "antd",
+    "rc-util",
+    "rc-pagination",
+    "rc-picker",
+    "@ant-design/icons-svg",
+    "highlight.js",
+    "diff2html",
+    "monaco-editor",
+  ],
   webpack: (config, { isServer }) => {
-    config.module.rules
-      .filter((rule) => rule.oneOf)
-      .forEach((rule) => {
-        rule.oneOf.forEach((r) => {
-          if (
-            r.issuer &&
-            r.issuer.and &&
-            r.issuer.and.length === 1 &&
-            r.issuer.and[0].source &&
-            r.issuer.and[0].source.replace(/\\/g, "") ===
-              path.resolve(process.cwd(), "src/pages/_app")
-          ) {
-            r.issuer.or = [
-              ...r.issuer.and,
-              /[/\\]node_modules[/\\]monaco-editor[/\\]/,
-            ];
-            delete r.issuer.and;
-          }
-        });
-      });
+    // config.module.rules
+    //   .filter((rule) => rule.oneOf)
+    //   .forEach((rule) => {
+    //     rule.oneOf.forEach((r) => {
+    //       if (
+    //         r.issuer &&
+    //         r.issuer.and &&
+    //         r.issuer.and.length === 1 &&
+    //         r.issuer.and[0].source &&
+    //         r.issuer.and[0].source.replace(/\\/g, "") ===
+    //           path.resolve(process.cwd(), "src/pages/_app")
+    //       ) {
+    //         r.issuer.or = [
+    //           ...r.issuer.and,
+    //           /[/\\]node_modules[/\\]monaco-editor[/\\]/,
+    //         ];
+    //         delete r.issuer.and;
+    //       }
+    //     });
+    //   });
     if (!isServer) {
       config.plugins.push(
         new MonacoWebpackPlugin({
@@ -186,4 +196,4 @@ if (isGithubActions) {
   console.log("next config is:", { ...conf, env: { ...envs } });
 }
 
-module.exports = withTM(removeImports(nextConfig));
+module.exports = removeImports(nextConfig);
