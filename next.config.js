@@ -124,7 +124,6 @@ const nextConfig = {
     "highlight.js",
     "diff2html",
     "monaco-editor",
-    "@hankliu/rc-monaco-editor",
   ],
   webpack: (config, { isServer }) => {
     // config.module.rules
