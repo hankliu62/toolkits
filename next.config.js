@@ -123,6 +123,7 @@ const nextConfig = {
     "@ant-design/icons-svg",
     "highlight.js",
     "diff2html",
+    "monaco-editor",
     "@hankliu/rc-monaco-editor",
   ],
   webpack: (config, { isServer }) => {
