@@ -1,4 +1,5 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
+import MonacoEditor, { LanguageDemo } from "@hankliu/rc-monaco-editor";
 import { Breadcrumb, Button, message, Select } from "antd";
 import h2m from "h2m";
 import htmlToMd from "html-to-md";
@@ -10,7 +11,6 @@ import Turndown from "turndown";
 import * as turndownGFM from "turndown-plugin-gfm";
 
 import Clipboard from "@/components/Clipboard";
-import MonacoEditor, { LanguageDemo } from "@hankliu/rc-monaco-editor";
 import { getRoutePrefix } from "@/utils/route";
 
 // 转化方式

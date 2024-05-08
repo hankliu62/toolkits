@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+
 import NoHeaderLayout from "@/layouts/no-header";
 
 const LifeWeatherPage = () => {

@@ -1,11 +1,11 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
+import MonacoEditor from "@hankliu/rc-monaco-editor";
 import { Breadcrumb, Button, Input, message } from "antd";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 
 import Clipboard from "@/components/Clipboard";
-import MonacoEditor from "@hankliu/rc-monaco-editor";
 import JsonToTs from "@/utils/json2ts";
 import { getRoutePrefix } from "@/utils/route";
 

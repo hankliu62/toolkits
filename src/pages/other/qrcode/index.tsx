@@ -4,6 +4,7 @@ import {
   FileAddOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import MonacoEditor from "@hankliu/rc-monaco-editor";
 import { Alert, Breadcrumb, Button, Image, Input, message, Upload } from "antd";
 import Link from "next/link";
 import QRCode from "qrcode";
@@ -13,7 +14,6 @@ import SplitPane from "react-split-pane";
 import { v4 as uuidv4 } from "uuid";
 
 import Clipboard from "@/components/Clipboard";
-import MonacoEditor from "@hankliu/rc-monaco-editor";
 import { getRoutePrefix } from "@/utils/route";
 
 const { Dragger } = Upload;

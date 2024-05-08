@@ -1,6 +1,7 @@
 import prettier from "prettier";
 import pluginAngular from "prettier/plugins/angular";
 import pluginBabel from "prettier/plugins/babel";
+import pluginEstree from "prettier/plugins/estree";
 import pluginFlow from "prettier/plugins/flow";
 import pluginGraphql from "prettier/plugins/graphql";
 import pluginHtml from "prettier/plugins/html";
@@ -8,7 +9,6 @@ import pluginMarkdown from "prettier/plugins/markdown";
 import pluginPostcss from "prettier/plugins/postcss";
 import pluginTypescript from "prettier/plugins/typescript";
 import pluginYaml from "prettier/plugins/yaml";
-import pluginEstree from "prettier/plugins/estree";
 import pluginJava from "prettier-plugin-java";
 import * as pluginRust from "prettier-plugin-rust";
 import { format as formatSQL } from "sql-formatter";
