@@ -13,11 +13,8 @@ import pluginJava from "prettier-plugin-java";
 import * as pluginRust from "prettier-plugin-rust";
 import { format as formatSQL } from "sql-formatter";
 
-let current;
-
-const ctx: Worker = self as any;
-
-const langToParser = {
+// 工作线程，不能从主项目中导入
+const LanguagePrettierParser = {
   json: "json",
   javascript: "babel",
   typescript: "typescript",
@@ -30,6 +27,10 @@ const langToParser = {
   html: "html",
   yaml: "yaml",
 };
+
+let current;
+
+const ctx: Worker = self as any;
 
 ctx.addEventListener("message", async (event) => {
   if (event.data._current) {
@@ -48,10 +49,10 @@ ctx.addEventListener("message", async (event) => {
   }
 
   try {
-    if (langToParser[event.data.language]) {
+    if (LanguagePrettierParser[event.data.language]) {
       respond({
         pretty: await prettier.format(event.data.text, {
-          parser: langToParser[event.data.language],
+          parser: LanguagePrettierParser[event.data.language],
           plugins: [
             pluginMarkdown,
             pluginHtml,
