@@ -697,366 +697,223 @@ template {
 }
 `;
 
-const LanguageDemoTypescript = `/* eslint-disable no-restricted-globals */
-/* eslint-disable no-case-declarations */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-param-reassign */
-import defaults from "lodash/defaults";
-import groupBy from "lodash/groupBy";
-import MyWorker from "worker-loader!./parser.worker.ts";
+const LanguageDemoTypescript = `enum EPromiseStatus {
+  Pending = 'pending',
+  Fulfilled = 'fulfilled',
+  Rejected = 'rejected'
+}
 
-import {
-  ICompletionItem,
-  ICursorInfo,
-  ITableInfo,
-  reader,
-} from "../sql-parser";
-import { IParseResult } from "../syntax-parser";
-import { DefaultOpts, IMonacoVersion, IParserType } from "./default-opts";
+type TResolveFunc<T> = (value?: any) => T
+type TRejectFunc<T> = (reason?: any) => T
 
-const supportedMonacoEditorVersion = ["0.13.2", "0.15.6"];
+/**
+ * 自定义Promise类，实现基本的Promise功能。
+ */
+class MyPromise {
+  private status: EPromiseStatus = EPromiseStatus.Pending; // 当前Promise的状态
+  private value: any; // Promise成功时的值
+  private reason: any; // Promise失败时的原因
+  private onFulfilledCallbacks: Array<Function> = []; // 成功回调函数列表
+  private onRejectedCallbacks: Array<Function> = []; // 失败回调函数列表
 
-export function monacoSqlAutocomplete(
-  monaco: any,
-  editor: any,
-  opts?: Partial<DefaultOpts>
-) {
-  opts = defaults(opts || {}, new DefaultOpts(monaco));
+  /**
+   * 构造函数，接受一个执行器函数，用于执行异步操作。
+   * @param executor 执行器函数，接受resolve和reject两个参数，用于改变Promise的状态。
+   */
+  constructor(executor: (resolve: TResolveFunc<void>, reject: TRejectFunc<void>) => void) {
+    const resolve = (value: any) => {
+      // 当状态为Pending时，改变状态为Fulfilled，并执行所有成功回调
+      if (this.status === EPromiseStatus.Pending) {
+        this.status = EPromiseStatus.Fulfilled;
+        this.value = value;
+        this.onFulfilledCallbacks.forEach(fn => fn());
+      }
+    };
 
-  // eslint-disable-next-line unicorn/prefer-includes
-  if (supportedMonacoEditorVersion.indexOf(opts.monacoEditorVersion) === -1) {
-    throw new Error(
-      \`monaco-editor version \${
-        opts.monacoEditorVersion
-      } is not allowed, only support \${supportedMonacoEditorVersion.join(" ")}\`
-    );
+    const reject = (reason: any) => {
+      // 当状态为Pending时，改变状态为Rejected，并执行所有失败回调
+      if (this.status === EPromiseStatus.Pending) {
+        this.status = EPromiseStatus.Rejected;
+        this.reason = reason;
+        this.onRejectedCallbacks.forEach(fn => fn());
+      }
+    };
+
+    try {
+      // 尝试执行executor函数，捕获异常并调用reject
+      executor(resolve, reject);
+    } catch (error) {
+      reject(error);
+    }
   }
 
-  // Get parser info and show error.
-  let currentParserPromise: any = null;
-  let editVersion = 0;
-
-  editor.onDidChangeModelContent((event: any) => {
-    editVersion++;
-    const currentEditVersion = editVersion;
-
-    currentParserPromise = new Promise((resolve) => {
-      setTimeout(() => {
-        const model = editor.getModel();
-
-        // eslint-disable-next-line promise/catch-or-return
-        asyncParser(
-          editor.getValue(),
-          model.getOffsetAt(editor.getPosition()),
-          opts.parserType
-        ).then((parseResult) => {
-          resolve(parseResult);
-
-          if (currentEditVersion !== editVersion) {
+  /**
+   * then方法，用于注册成功和失败的回调函数。
+   * @param onFulfilled 成功回调函数
+   * @param onRejected 失败回调函数
+   * @returns 返回一个新的MyPromise实例
+   */
+  public then(onFulfilled?: TResolveFunc<any>, onRejected?: TRejectFunc<any>): MyPromise {
+    // 如果回调函数未定义，直接返回当前实例
+    if (!onFulfilled || !onRejected) {
+      return this;
+    }
+    return new MyPromise((resolve, reject) => {
+      const handle = (action: typeof resolve | typeof reject, onHandler?: typeof onFulfilled | typeof onRejected) => {
+        try {
+          // 如果未提供处理函数，直接调用action
+          if (!onHandler) {
+            action(this.status === EPromiseStatus.Fulfilled ? this.value : this.reason)
             return;
           }
 
-          opts.onParse(parseResult);
-
-          if (parseResult.error) {
-            const newReason =
-              parseResult.error.reason === "incomplete"
-                ? \`Incomplete, expect next input: \n\${parseResult.error.suggestions
-                    .map((each) => {
-                      return each.value;
-                    })
-                    .join("\n")}\`
-                : \`Wrong input, expect: \n\${parseResult.error.suggestions
-                    .map((each) => {
-                      return each.value;
-                    })
-                    .join("\n")}\`;
-
-            const errorPosition = parseResult.error.token
-              ? {
-                  startLineNumber: model.getPositionAt(
-                    parseResult.error.token.position[0]
-                  ).lineNumber,
-                  startColumn: model.getPositionAt(
-                    parseResult.error.token.position[0]
-                  ).column,
-                  endLineNumber: model.getPositionAt(
-                    parseResult.error.token.position[1]
-                  ).lineNumber,
-                  endColumn:
-                    model.getPositionAt(parseResult.error.token.position[1])
-                      .column + 1,
-                }
-              : {
-                  startLineNumber: 0,
-                  startColumn: 0,
-                  endLineNumber: 0,
-                  endColumn: 0,
-                };
-
-            model.getPositionAt(parseResult.error.token);
-
-            monaco.editor.setModelMarkers(model, opts.language, [
-              {
-                ...errorPosition,
-                message: newReason,
-                severity: getSeverityByVersion(
-                  monaco,
-                  opts.monacoEditorVersion
-                ),
-              },
-            ]);
+          // 执行处理函数，根据结果调用resolve或reject
+          const result = onHandler(this.status === EPromiseStatus.Fulfilled ? this.value : this.reason);
+          if (result instanceof MyPromise) {
+            // 如果处理函数返回一个MyPromise，递归调用then
+            result.then(resolve, reject);
           } else {
-            monaco.editor.setModelMarkers(editor.getModel(), opts.language, []);
+            resolve(result);
           }
-        });
+        } catch (error) {
+          reject(error);
+        }
+      }
+
+      // 根据当前状态，异步调用handle函数
+      if (this.status === EPromiseStatus.Fulfilled) {
+        setTimeout(() => handle(resolve, onFulfilled), 0);
+      } else if (this.status === EPromiseStatus.Rejected) {
+        setTimeout(() => handle(reject, onRejected), 0);
+      } else {
+        // 如果状态为Pending，注册回调函数
+        this.onFulfilledCallbacks.push(() => handle(resolve, onFulfilled));
+        this.onRejectedCallbacks.push(() => handle(reject, onRejected));
+      }
+    });
+  }
+
+  /**
+   * catch方法，用于注册失败的回调函数。
+   * @param onRejected 失败回调函数
+   * @returns 返回一个新的MyPromise实例
+   */
+  public catch(onRejected?: TRejectFunc<any>): MyPromise {
+    // 使用then方法注册失败回调
+    return onRejected ? this.then(undefined, onRejected) : this;
+  }
+
+  /**
+   * finally方法，用于注册一个最终执行的回调函数。
+   * @param onFinally 最终执行的回调函数
+   * @returns 返回一个新的MyPromise实例
+   */
+  public finally(onFinally?: () => void): MyPromise {
+    // 使用then方法注册成功和失败的回调，均调用onFinally
+    return onFinally ? this.then(
+      (value) => {
+        onFinally();
+        return value;
+      },
+      (reason) => {
+        onFinally();
+        throw reason;
+      }
+    ) : this;
+  }
+
+  /**
+   * 静态方法，创建一个已成功状态的MyPromise实例。
+   * @param value 成功的值
+   * @returns 返回一个新的MyPromise实例
+   */
+  static resolve(value?: any): MyPromise {
+    return new MyPromise((resolve) => {
+      resolve(value);
+    });
+  }
+
+  /**
+   * 静态方法，创建一个已失败状态的MyPromise实例。
+   * @param reason 失败的原因
+   * @returns 返回一个新的MyPromise实例
+   */
+  static reject(reason?: any): MyPromise {
+    return new MyPromise((_, reject) => {
+      reject(reason);
+    });
+  }
+
+  /**
+   * 静态方法，接收一个Promise数组，当所有Promise都成功时，返回一个包含所有成功值的数组。
+   * @param promises Promise数组
+   * @returns 返回一个新的MyPromise实例，当所有输入的Promise都成功时解析为值数组，任一Promise失败则立即拒绝
+   */
+  static all(promises: MyPromise[]): MyPromise {
+    return new MyPromise((resolve, reject) => {
+      const results: any[] = []; // 存储成功的结果
+      let count = 0; // 记录处理的数量
+      for (let i = 0, len = promises.length; i < len; i ++) {
+        const promise = promises[i];
+        // 对每个Promise注册成功和失败的回调
+        promise.then((value) => {
+          results[i] = value;
+          count++;
+          if (count === promises.length) {
+            resolve(results);
+          }
+        }, reject);
+      }
+    });
+  }
+
+  /**
+   * 静态方法，接收一个Promise数组，当任一Promise成功或失败时，返回结果或原因。
+   * @param promises Promise数组
+   * @returns 返回一个新的MyPromise实例，当任一输入的Promise成功时解析其值，任一Promise失败则立即拒绝
+   */
+  static race(promises: MyPromise[]): MyPromise {
+    return new MyPromise((resolve, reject) => {
+      promises.forEach((promise) => {
+        // 对每个Promise注册成功和失败的回调
+        promise.then(resolve, reject);
       });
     });
-  });
+  }
 
-  monaco.languages.registerCompletionItemProvider(opts.language, {
-    triggerCharacters:
-      // eslint-disable-next-line unicorn/prefer-spread
-      " $.:{}=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-    provideCompletionItems: async () => {
-      const currentEditVersion = editVersion;
-      const parseResult: IParseResult = await currentParserPromise;
+  /**
+ * 接收一个 MyPromise 实例数组，并返回一个新的 MyPromise，该 MyPromise 在所有传入的 Promise 都解决（无论是成功还是失败）后解决。
+ * @param promises MyPromise 实例数组，每个实例要么成功解决，要么失败解决。
+ * @returns 返回一个 MyPromise，它包含一个结果数组，数组中每个元素都表示相应输入 Promise 的解决状态（成功或失败）和值。
+ */
+static allSettled(promises: MyPromise[]): MyPromise {
+  return new MyPromise((resolve) => {
+    const results: { status: EPromiseStatus, value: any }[] = []; // 用于存储每个 promise 的解决状态和值
+    let count = 0; // 记录已处理的 promise 数量
 
-      if (currentEditVersion !== editVersion) {
-        return returnCompletionItemsByVersion([], opts.monacoEditorVersion);
-      }
+    for (let i = 0, len = promises.length; i < len; i++) {
+      const promise = promises[i];
 
-      const cursorInfo = await reader.getCursorInfo(
-        parseResult.ast,
-        parseResult.cursorKeyPath
-      );
-
-      const parserSuggestion = opts.pipeKeywords(parseResult.nextMatchings);
-
-      if (!cursorInfo) {
-        return returnCompletionItemsByVersion(
-          parserSuggestion,
-          opts.monacoEditorVersion
-        );
-      }
-
-      switch (cursorInfo.type) {
-        case "tableField": {
-          const cursorRootStatementFields = await reader.getFieldsFromStatement(
-            parseResult.ast,
-            parseResult.cursorKeyPath,
-            opts.onSuggestTableFields
-          );
-
-          // group.fieldName
-          const groups = groupBy(
-            cursorRootStatementFields.filter((cursorRootStatementField) => {
-              return cursorRootStatementField.groupPickerName !== null;
-            }),
-            "groupPickerName"
-          );
-
-          const functionNames = await opts.onSuggestFunctionName(
-            cursorInfo.token.value
-          );
-
-          return returnCompletionItemsByVersion(
-            [
-              ...cursorRootStatementFields,
-              ...parserSuggestion,
-              ...functionNames,
-              ...(groups
-                ? Object.keys(groups).map((groupName) => {
-                    return opts.onSuggestFieldGroup(groupName);
-                  })
-                : []),
-            ],
-            opts.monacoEditorVersion
-          );
+      // 为每个 promise 注册成功和失败的回调
+      promise.then((value) => {
+        results[i] = {
+          status: EPromiseStatus.Fulfilled,
+          value,
+        };
+      }, (reason) => {
+        results[i] = {
+          status: EPromiseStatus.Rejected,
+          value: reason,
+        };
+      }).finally(() => {
+        count++; // 已处理的 promise 数量加一
+        if (count === promises.length) {
+          resolve(results); // 当所有 promise 都已处理时，解决返回的 promise
         }
-        case "tableFieldAfterGroup": {
-          // 字段 . 后面的部分
-          const cursorRootStatementFieldsAfter =
-            await reader.getFieldsFromStatement(
-              parseResult.ast,
-              parseResult.cursorKeyPath as any,
-              opts.onSuggestTableFields
-            );
-
-          return returnCompletionItemsByVersion(
-            [
-              ...cursorRootStatementFieldsAfter.filter(
-                (cursorRootStatementField: any) => {
-                  return (
-                    cursorRootStatementField.groupPickerName ===
-                    (cursorInfo as ICursorInfo<{ groupName: string }>).groupName
-                  );
-                }
-              ),
-              ...parserSuggestion,
-            ],
-            opts.monacoEditorVersion
-          );
-        }
-        case "tableName": {
-          const tableNames = await opts.onSuggestTableNames(
-            cursorInfo as ICursorInfo<ITableInfo>
-          );
-
-          return returnCompletionItemsByVersion(
-            [...tableNames, ...parserSuggestion],
-            opts.monacoEditorVersion
-          );
-        }
-        case "functionName": {
-          return opts.onSuggestFunctionName(cursorInfo.token.value);
-        }
-        default: {
-          return returnCompletionItemsByVersion(
-            parserSuggestion,
-            opts.monacoEditorVersion
-          );
-        }
-      }
-    },
-  });
-
-  monaco.languages.registerHoverProvider(opts.language, {
-    provideHover: async (model: any, position: any) => {
-      const parseResult: IParseResult = await asyncParser(
-        editor.getValue(),
-        model.getOffsetAt(position),
-        opts.parserType
-      );
-
-      const cursorInfo = await reader.getCursorInfo(
-        parseResult.ast,
-        parseResult.cursorKeyPath
-      );
-
-      if (!cursorInfo) {
-        return null as any;
-      }
-
-      let contents: any = [];
-
-      switch (cursorInfo.type) {
-        case "tableField": {
-          const extra = await reader.findFieldExtraInfo(
-            parseResult.ast,
-            cursorInfo,
-            opts.onSuggestTableFields,
-            parseResult.cursorKeyPath
-          );
-          contents = await opts.onHoverTableField(
-            cursorInfo.token.value,
-            extra
-          );
-          break;
-        }
-        case "tableFieldAfterGroup": {
-          const extraAfter = await reader.findFieldExtraInfo(
-            parseResult.ast,
-            cursorInfo,
-            opts.onSuggestTableFields,
-            parseResult.cursorKeyPath
-          );
-          contents = await opts.onHoverTableField(
-            cursorInfo.token.value,
-            extraAfter
-          );
-          break;
-        }
-        case "tableName": {
-          contents = await opts.onHoverTableName(cursorInfo as ICursorInfo);
-          break;
-        }
-        case "functionName": {
-          contents = await opts.onHoverFunctionName(cursorInfo.token.value);
-          break;
-        }
-        default:
-      }
-
-      return {
-        range: monaco.Range.fromPositions(
-          model.getPositionAt(cursorInfo.token.position[0]),
-          model.getPositionAt(cursorInfo.token.position[1] + 1)
-        ),
-        contents,
-      };
-    },
+      });
+    }
   });
 }
-
-// 实例化一个 worker
-const worker: Worker = new (MyWorker as any)();
-
-let parserIndex = 0;
-
-const asyncParser = async (
-  text: string,
-  index: number,
-  parserType: IParserType
-) => {
-  parserIndex++;
-  const currentParserIndex = parserIndex;
-
-  let resolve: any = null;
-  let reject: any = null;
-
-  // eslint-disable-next-line promise/param-names
-  const promise = new Promise((promiseResolve, promiseReject) => {
-    resolve = promiseResolve;
-    reject = promiseReject;
-  });
-
-  worker.postMessage({ text, index, parserType });
-
-  // eslint-disable-next-line unicorn/prefer-add-event-listener
-  worker.onmessage = (event) => {
-    if (currentParserIndex === parserIndex) {
-      resolve(event.data);
-    } else {
-      reject();
-    }
-  };
-
-  return promise as Promise<IParseResult>;
-};
-
-function returnCompletionItemsByVersion(
-  value: ICompletionItem[],
-  monacoVersion: IMonacoVersion
-) {
-  switch (monacoVersion) {
-    case "0.13.2": {
-      return value;
-    }
-    case "0.15.6": {
-      return {
-        suggestions: value,
-      };
-    }
-    default: {
-      throw new Error("Not supported version");
-    }
-  }
-}
-
-function getSeverityByVersion(monaco: any, monacoVersion: IMonacoVersion) {
-  switch (monacoVersion) {
-    case "0.13.2": {
-      return monaco.Severity.Error;
-    }
-    case "0.15.6": {
-      return monaco.MarkerSeverity.Error;
-    }
-    default: {
-      throw new Error("Not supported version");
-    }
-  }
 }
 `;
 
