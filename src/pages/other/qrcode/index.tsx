@@ -168,7 +168,7 @@ export default function QRCodePage() {
           <MonacoEditor
             className="h-60 min-h-0"
             value={content}
-            language="plaintext"
+            language={"plaintext" as any}
             onChange={(val) => {
               setContent(val);
             }}
