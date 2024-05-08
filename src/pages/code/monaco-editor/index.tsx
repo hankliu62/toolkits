@@ -1,14 +1,15 @@
 import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message, Select } from "antd";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   monaco as Monaco,
   TMonacoEditorLanguage,
 } from "@hankliu/rc-monaco-editor";
-import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/editor";
+import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/index";
 
+import { createWorkerQueue } from "@/utils/workers";
+import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worker";
 import { getRoutePrefix } from "@/utils/route";
 import dynamic from "next/dynamic";
 import { LanguageDemo } from "@/constants/editor";
@@ -31,6 +32,13 @@ export default function MonacoEditorPage() {
   const [value, setValue] = useState<string>();
   const [language, setLanguage] = useState<TMonacoEditorLanguage>("html");
   const editor = useRef<Monaco.editor.IStandaloneCodeEditor>();
+  const prettierWorker = useRef<any>();
+
+  useEffect(() => {
+    if (!prettierWorker.current) {
+      prettierWorker.current = createWorkerQueue(PrettierWorker);
+    }
+  }, []);
 
   /**
    * 格式化代码
