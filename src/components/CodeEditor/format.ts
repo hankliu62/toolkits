@@ -1,6 +1,6 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 // import PrettierWorker from "worker-loader!@hankliu/rc-monaco-editor/lib/workers/prettier.worker";
-import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worker";
+import PrettierWorker from "worker-loader!../../workers/editor-prettier.worker";
 
 import { createWorkerQueue } from "@/utils/workers";
 
