@@ -207,7 +207,7 @@ export default function Json2TsPage() {
         className="!m-6"
         items={[
           {
-            title: <Link href={getRoutePrefix() + "/"}>小工具集合</Link>,
+            title: <Link href="/">小工具集合</Link>,
           },
           {
             title: "TypeScript 类型生成器",

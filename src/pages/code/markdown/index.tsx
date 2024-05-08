@@ -73,7 +73,7 @@ export default function MarkdownPage() {
         className="!m-6"
         items={[
           {
-            title: <Link href={getRoutePrefix() + "/"}>小工具集合</Link>,
+            title: <Link href="/">小工具集合</Link>,
           },
           {
             title: "Markdown 编辑阅读器",

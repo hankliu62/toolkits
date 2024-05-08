@@ -276,7 +276,7 @@ export default function Diff() {
         className="!m-6"
         items={[
           {
-            title: <Link href={getRoutePrefix() + "/"}>小工具集合</Link>,
+            title: <Link href="/">小工具集合</Link>,
           },
           {
             title: "内容差异",
