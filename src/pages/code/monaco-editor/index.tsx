@@ -7,7 +7,7 @@ import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, message, Select } from "antd";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import PrettierWorker from "worker-loader!../../workers/editor-prettier.worker";
+import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worker";
 
 import MonacoEditor from "@/components/CodeEditor";
 import { LanguageDemo, Languages } from "@/constants/editor";
