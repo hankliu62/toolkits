@@ -1,6 +1,6 @@
 import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
-import MonacoEditor from "@hankliu/rc-monaco-editor";
 import { Breadcrumb, Button, Input, message } from "antd";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
@@ -8,6 +8,10 @@ import SplitPane from "react-split-pane";
 import Clipboard from "@/components/Clipboard";
 import JsonToTs from "@/utils/json2ts";
 import { getRoutePrefix } from "@/utils/route";
+
+const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
+  ssr: false,
+});
 
 const Demo = {
   url: "https://api.github.com/repos/hankliu62/hankliu62.github.com/issues/80",
