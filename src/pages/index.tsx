@@ -1,4 +1,10 @@
-import { BankOutlined } from "@ant-design/icons";
+import {
+  AlertOutlined,
+  BankOutlined,
+  CloudOutlined,
+  CoffeeOutlined,
+  FieldTimeOutlined,
+} from "@ant-design/icons";
 import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
 import {
   AdjustmentsHorizontalIcon,
@@ -140,6 +146,37 @@ const navigation: {
           "银行卡号码生成器是按银行卡验证规则生成虚拟银行卡号，非真实银行卡，仅供测试使用，请勿用于非法用途。",
         href: "/back-no",
         icon: BankOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "人生一格",
+        description:
+          "多花一些时间了解自己，少花一些时间在应付他人身上，珍惜时光，陪伴对的人。",
+        href: "/count",
+        icon: FieldTimeOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "天气预报",
+        description:
+          "查询每日天气，对未来几天天气进行预报，出门常备伞，没有伞的孩子只能努力奔跑。",
+        href: "/weather",
+        icon: CloudOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "中午吃什么",
+        description: "中午吃什么，不知道？那就吃这个吧！",
+        href: "/what-lunch",
+        icon: CoffeeOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "懒人选择器",
+        description:
+          "懒人选择困难证用户的福音，根据天时，地利和人和的因素帮助选择困难证用户快速的做出最优选择，如果结果非最优，可能是你太衰了。",
+        href: "/lucky-choose",
+        icon: AlertOutlined,
         status: EIToolkitStatus.NORMAL,
       },
     ],
