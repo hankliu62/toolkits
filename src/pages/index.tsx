@@ -1,6 +1,7 @@
 import {
   AlertOutlined,
   BankOutlined,
+  BilibiliOutlined,
   CloudOutlined,
   CoffeeOutlined,
   FieldTimeOutlined,
@@ -92,14 +93,14 @@ const navigation: {
       },
       {
         name: "HTML2Markdown",
-        description: "工具主要实现从HTML转Markdown的方法",
+        description: "在线HTML转Markdown的工具网站，支持HTML转Markdown的功能。",
         href: "/h2d",
         icon: VariableIcon,
         status: EIToolkitStatus.NORMAL,
       },
       {
         name: "Yaml2Json",
-        description: "工具主要实现从Yaml转Json的方法",
+        description: "在线Yaml转Json的工具网站，支持Yaml转Json的功能。",
         href: "/yaml2json",
         icon: HashtagIcon,
         status: EIToolkitStatus.NORMAL,
@@ -125,6 +126,14 @@ const navigation: {
           "支持m3u8格式的在线视频播放器网站提供了便捷的视频播放服务，用户可以在网站上上传或输入m3u8格式的视频链接进行播放，涵盖了丰富的视频分类和资源，满足用户各种需求。同时，该网站还提供了多种播放模式、清晰度选择和画面比例调整等功能，用户可以根据自己的喜好自主进行设置，让视频观看更加舒适，是一款值得推荐的在线视频播放器网站。",
         href: "/video-player",
         icon: PlayCircleIcon,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "解析 bilibili 视频",
+        description:
+          "在线解析 Bilibili 视频工具网站，包含解析 Bilibili 视频，在线播放，视频下载等功能，让我们一起在 Bilibili 的潮流中畅游，感受创意的火花与热情的迸发",
+        href: "/parse-bilibili",
+        icon: BilibiliOutlined,
         status: EIToolkitStatus.NORMAL,
       },
     ],
