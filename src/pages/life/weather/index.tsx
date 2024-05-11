@@ -6,7 +6,7 @@ const LifeWeatherPage = () => {
   return (
     <iframe
       title="人生一格"
-      src="https://hankliu62.github.io/weather?with-header=1&with-breadcrumb=1"
+      src="https://hankliu62.github.io/weather?with-footer=1&with-breadcrumb=1"
       width="100%"
       height="100%"
       className="h-[100vh] border-0"
