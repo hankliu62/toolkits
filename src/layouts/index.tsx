@@ -35,7 +35,7 @@ export default function DefaultLayout({ children }: LayoutProps) {
         </main>
 
         {/* footer */}
-        {!!(isTop || router.query?.["with-header"]) && <Footer />}
+        {!!(isTop || router.query?.["with-footer"]) && <Footer />}
       </div>
     </>
   );
