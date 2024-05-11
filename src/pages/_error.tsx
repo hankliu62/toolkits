@@ -7,7 +7,7 @@ import NoHeaderLayout from "@/layouts/no-header";
 
 function ErrorPage({ statusCode }) {
   return (
-    <div className="flex flex-1 flex-col justify-center">
+    <div className="flex h-[100vh] flex-1 flex-col justify-center">
       <Exception code={statusCode} />
       <div className="mt-12 flex justify-center">
         <Button

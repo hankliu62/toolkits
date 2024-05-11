@@ -53,7 +53,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <Head>
-        <title>H.L Toolkits - 小工具集合</title>
+        <title>小工具集合 - H.L Toolkits</title>
         <link rel="icon" href={`${getRoutePrefix()}/favicon.ico`} />
         <meta
           name="description"
@@ -64,6 +64,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           content="toolkit,toolkits,前端开发,前端开发工具,前端开发工具集合,在线工具,toolbox,frontend,卡鲁秋,Hank,HankLiu"
         />
         <meta name="author" content="Hank.Liu" />
+        <meta name="copyright" content="卡鲁秋" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       </Head>
 
       {getLayout(

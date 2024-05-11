@@ -4,6 +4,7 @@ import {
   CloudOutlined,
   CoffeeOutlined,
   FieldTimeOutlined,
+  SignatureOutlined,
 } from "@ant-design/icons";
 import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
 import {
@@ -22,6 +23,7 @@ import { Divider, message, Tooltip } from "antd";
 import AOS from "aos";
 import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import useTopWindow from "@/hooks/useTopWindow";
 
 import { getRoutePrefix } from "@/utils/route";
 
@@ -194,6 +196,14 @@ const navigation: {
         icon: QrCodeIcon,
         status: EIToolkitStatus.NORMAL,
       },
+      {
+        name: "手绘白板",
+        description:
+          "一款优雅的虚拟合作绘图工具，为您提供了一个舒适的绘画空间，仿佛置身于一片纯净的白板上。在这里，您可以尽情地发挥想象，轻松地绘制出具有手绘韵味的图表和图形。",
+        href: "/whiteboard",
+        icon: SignatureOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
     ],
   },
 ];
@@ -205,6 +215,7 @@ const navigation: {
  */
 export default function Index() {
   const [location, setLocation] = useState<string>();
+  const isTop = useTopWindow();
 
   useEffect(() => {
     if (window !== undefined) {
@@ -253,6 +264,16 @@ export default function Index() {
                         key={link + index}
                         href={link}
                         className="flex flex-col items-stretch rounded-lg bg-white p-5 shadow hover:bg-gray-50"
+                        onClick={(e) => {
+                          if (!isTop) {
+                            if (window.top.location) {
+                              window.top.location.href = fullLink;
+                            } else if (window.top.open) {
+                              window.top.open(fullLink, "_blank");
+                            }
+                            e.preventDefault();
+                          }
+                        }}
                       >
                         <div className="flex items-start">
                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
