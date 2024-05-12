@@ -23,6 +23,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
 
+import useSubPageBreadcrumb from "@/hooks/useSubPageBreadcrumb";
 import useTopWindow from "@/hooks/useTopWindow";
 import DefaultLayout from "@/layouts/index";
 import theme from "@/theme/themeConfig";
@@ -49,6 +50,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   const isTop = useTopWindow();
+
+  useSubPageBreadcrumb();
 
   return (
     <>
