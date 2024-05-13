@@ -5,6 +5,7 @@ import {
   CloudOutlined,
   CoffeeOutlined,
   FieldTimeOutlined,
+  HistoryOutlined,
   SignatureOutlined,
 } from "@ant-design/icons";
 import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
@@ -211,6 +212,14 @@ const navigation: {
           "一款优雅的虚拟合作绘图工具，为您提供了一个舒适的绘画空间，仿佛置身于一片纯净的白板上。在这里，您可以尽情地发挥想象，轻松地绘制出具有手绘韵味的图表和图形。",
         href: "/whiteboard",
         icon: SignatureOutlined,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "番茄工作法",
+        description:
+          "一个在线番茄工作法网站，这个网站旨在向您展示如何有效地运用番茄工作法，提高工作效率，增强工作质量。让我们一起在这个小番茄的世界里，创造更加美好的工作体验吧！",
+        href: "/pomodoro-technique",
+        icon: HistoryOutlined,
         status: EIToolkitStatus.NORMAL,
       },
     ],
