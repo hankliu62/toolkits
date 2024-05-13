@@ -5,6 +5,7 @@ import {
   CloudOutlined,
   CoffeeOutlined,
   FieldTimeOutlined,
+  FunctionOutlined,
   HistoryOutlined,
   SignatureOutlined,
 } from "@ant-design/icons";
@@ -112,6 +113,14 @@ const navigation: {
           "TypeScript 类型生成器工具将JSON数据转换为TypeScript类型定义，从而让TypeScript项目更高效的开发。",
         href: "/json2ts",
         icon: CommandLineIcon,
+        status: EIToolkitStatus.NORMAL,
+      },
+      {
+        name: "CSS 兼容性处理",
+        description:
+          "一个在线 CSS 兼容性处理网站，用于解析您的 CSS 并自动添加浏览器兼容性前缀。通过在线 CSS 兼容性处理，可以让网站更具魅力和稳定性，使其在各种环境下都能够提供出色的用户体验。",
+        href: "/autoprefixer",
+        icon: FunctionOutlined,
         status: EIToolkitStatus.NORMAL,
       },
     ],
