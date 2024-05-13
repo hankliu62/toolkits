@@ -347,8 +347,10 @@ export default function Index() {
                           </p>
                         </div>
 
-                        <div className="mt-2 flex w-full select-none items-center justify-between">
-                          <p className="text-xs text-gray-400">{link}</p>
+                        <div className="mt-2 flex w-full select-none items-center justify-between overflow-hidden">
+                          <p className="mr-2 truncate text-xs text-gray-400">
+                            {link}
+                          </p>
 
                           <CopyToClipboard
                             text={fullLink}
@@ -358,7 +360,7 @@ export default function Index() {
                               className="group/copy flex cursor-pointer"
                               onClick={(e) => e.preventDefault()}
                             >
-                              <span className="bg-gradient-to-r from-[rgb(31_41_55_/_80%)] to-[rgb(31_41_55_/_90%)] bg-[length:0_1px] bg-[left_100%] bg-no-repeat text-xs leading-[18px] text-gray-800 transition-all group-hover/copy:bg-[length:100%_1px]">
+                              <span className="whitespace-nowrap bg-gradient-to-r from-[rgb(31_41_55_/_80%)] to-[rgb(31_41_55_/_90%)] bg-[length:0_1px] bg-[left_100%] bg-no-repeat text-xs leading-[18px] text-gray-800 transition-all group-hover/copy:bg-[length:100%_1px]">
                                 复制链接
                               </span>
                             </div>
