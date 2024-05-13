@@ -11,7 +11,6 @@ import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worke
 
 import MonacoEditor from "@/components/CodeEditor";
 import { LanguageDemo, Languages } from "@/constants/editor";
-import { getRoutePrefix } from "@/utils/route";
 import { createWorkerQueue } from "@/utils/workers";
 
 // const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
