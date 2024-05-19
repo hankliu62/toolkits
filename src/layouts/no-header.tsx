@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
-import useTopWindow from "@/hooks/useTopWindow";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
+
+import useTopWindow from "@/hooks/useTopWindow";
 
 const Footer = dynamic(() => import("@hankliu/rc-footer"), {
   ssr: false,

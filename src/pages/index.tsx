@@ -7,6 +7,7 @@ import {
   FieldTimeOutlined,
   FunctionOutlined,
   HistoryOutlined,
+  PictureFilled,
   SignatureOutlined,
 } from "@ant-design/icons";
 import { AntdIconProps } from "@ant-design/icons/lib/components/AntdIcon";
@@ -149,9 +150,24 @@ const navigation: {
     ],
   },
   {
+    type: "image",
+    name: "图片工具",
+    bgColor: "#fefefe",
+    children: [
+      {
+        name: "图片提取文字",
+        description:
+          "在线图片提取文字网站，用于解析您的上传的图片，自动获取图片中的文字内容。",
+        href: "/extract-text",
+        icon: PictureFilled,
+        status: EIToolkitStatus.NORMAL,
+      },
+    ],
+  },
+  {
     type: "life",
     name: "生活工具",
-    bgColor: "#fefefe",
+    bgColor: "#f3f5f7",
     children: [
       {
         name: "身份证生成器",
@@ -205,7 +221,7 @@ const navigation: {
   {
     type: "other",
     name: "其他工具",
-    bgColor: "#f3f5f7",
+    bgColor: "#fefefe",
     children: [
       {
         name: "QRCode",
