@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import type { ReactElement } from 'react';
 
-import NoHeaderLayout from "@/layouts/no-header";
+import NoHeaderLayout from '@/layouts/no-header';
 
 /**
  * CSS 兼容性处理

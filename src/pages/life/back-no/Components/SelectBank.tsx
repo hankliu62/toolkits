@@ -1,20 +1,18 @@
-import { Select, SelectProps } from "antd";
-import { useCallback, useMemo } from "react";
+import type { SelectProps } from 'antd';
+import { Select } from 'antd';
+import { useCallback, useMemo } from 'react';
 
-import { bankList } from "@/constants/bank";
+import { bankList } from '@/constants/bank';
 
 export type TBackInfo = (typeof bankList)[number];
 
-interface ISelectBankProps extends Omit<SelectProps, "onChange"> {
+interface ISelectBankProps extends Omit<SelectProps, 'onChange'> {
   className?: string;
   value?: string;
-  onChange?: (
-    value: string | undefined,
-    backInfo: TBackInfo | undefined
-  ) => void;
+  onChange?: (value: string | undefined, backInfo: TBackInfo | undefined) => void;
 }
 
-type TBackInfoMap = Record<TBackInfo["bankCode"], TBackInfo>;
+type TBackInfoMap = Record<TBackInfo['bankCode'], TBackInfo>;
 
 /**
  * 银行选择器
@@ -35,7 +33,7 @@ export default function SelectBank({
 
     bankList.reduce(
       (record: TBackInfoMap, item) => ((record[item.bankCode] = item), record),
-      backInfoMap
+      backInfoMap,
     );
 
     return backInfoMap;
@@ -45,8 +43,8 @@ export default function SelectBank({
     return (bankList || []).map(({ bankName, bankCode }) => ({
       label: bankName,
       value: bankCode,
-      description: bankCode || "",
-      filterLabel: bankName + "|" + (bankCode || ""),
+      description: bankCode || '',
+      filterLabel: bankName + '|' + (bankCode || ''),
     }));
   }, []);
 
@@ -61,7 +59,7 @@ export default function SelectBank({
         onChange(val, undefined);
       }
     },
-    [backMap, onChange]
+    [backMap, onChange],
   );
 
   return (
@@ -76,11 +74,7 @@ export default function SelectBank({
         showSearch
       >
         {options.map((option) => (
-          <Select.Option
-            key={option.value}
-            value={option.value}
-            label={option.filterLabel}
-          >
+          <Select.Option key={option.value} value={option.value} label={option.filterLabel}>
             <div className="inline-flex w-full items-center truncate">
               {option.label}
               <span className="description text-lighter ml-2 flex-1 truncate text-xs">

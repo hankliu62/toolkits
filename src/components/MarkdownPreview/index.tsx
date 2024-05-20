@@ -1,9 +1,9 @@
-import { MarkdownPreviewProps } from "@uiw/react-markdown-preview/lib/Props";
-import { Skeleton } from "antd";
-import dynamic from "next/dynamic";
-import { useLayoutEffect, useRef, useState } from "react";
+import type { MarkdownPreviewProps } from '@uiw/react-markdown-preview/lib/Props';
+import { Skeleton } from 'antd';
+import dynamic from 'next/dynamic';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-const MDPreview = dynamic(() => import("@uiw/react-markdown-preview"), {
+const MDPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
   ssr: false,
 });
 
@@ -23,12 +23,11 @@ export default function MarkdownPreview({
   const rootElement = useRef<HTMLDivElement>();
 
   // 是否正在渲染Markdown预览器
-  const [loadingMarkdownPreview, setLoadingMarkdownPreview] =
-    useState<boolean>(true);
+  const [loadingMarkdownPreview, setLoadingMarkdownPreview] = useState<boolean>(true);
 
   useLayoutEffect(() => {
     function checkMDPreviewLoaded() {
-      const preview = rootElement.current?.querySelectorAll(".wmde-markdown");
+      const preview = rootElement.current?.querySelectorAll('.wmde-markdown');
       if (preview && preview.length > 0) {
         if (!loaded.current) {
           setLoadingMarkdownPreview(false);

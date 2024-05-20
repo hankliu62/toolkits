@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 function useTopWindow() {
   const [isTop, setIsTop] = useState<boolean>(true);

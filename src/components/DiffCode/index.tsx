@@ -14,15 +14,13 @@
 // id Diff2HtmlUI 挂载html的id，多实例的情况下，各个实例需要唯一id，防止页面冲突
 // fileListToggle Diff2HtmlUI 文件目录概要是否要隐藏，true显示，false隐藏
 
-import { Radio } from "antd";
-import { createPatch } from "diff";
-import { html, parse } from "diff2html";
-import {
-  Diff2HtmlUI,
-  Diff2HtmlUIConfig,
-} from "diff2html/lib/ui/js/diff2html-ui";
-import yaml from "js-yaml";
-import React, { useEffect, useState } from "react";
+import { Radio } from 'antd';
+import { createPatch } from 'diff';
+import { html, parse } from 'diff2html';
+import type { Diff2HtmlUIConfig } from 'diff2html/lib/ui/js/diff2html-ui';
+import { Diff2HtmlUI } from 'diff2html/lib/ui/js/diff2html-ui';
+import yaml from 'js-yaml';
+import React, { useEffect, useState } from 'react';
 
 interface IDiffCodeProps extends Partial<Diff2HtmlUIConfig> {
   isUseUi?: boolean; // 是否使用Diff2HtmlUI
@@ -50,26 +48,18 @@ function DiffCode({
   headerExtraRender,
   ...config
 }: IDiffCodeProps) {
-  const [diffData, setDiffData] = useState("");
+  const [diffData, setDiffData] = useState('');
 
-  const [outputFormat, setOutputFormat] = useState<
-    Diff2HtmlUIConfig["outputFormat"]
-  >(config.outputFormat || "line-by-line");
+  const [outputFormat, setOutputFormat] = useState<Diff2HtmlUIConfig['outputFormat']>(
+    config.outputFormat || 'line-by-line',
+  );
 
   useEffect(() => {
     const diffJsonList = [];
     for (const item of diffDataList) {
-      const {
-        fileName,
-        oldHeader,
-        newHeader,
-        prevData,
-        newData,
-        isJson,
-        isYaml,
-      } = item;
-      let oldString = prevData || "";
-      let newString = newData || "";
+      const { fileName, oldHeader, newHeader, prevData, newData, isJson, isYaml } = item;
+      let oldString = prevData || '';
+      let newString = newData || '';
       // 特定需求处理
       if (isYaml) {
         // 将json转化为yaml格式
@@ -81,11 +71,11 @@ function DiffCode({
         newString = JSON.stringify(newData, null, 2);
       }
       const args = [
-        fileName || "",
+        fileName || '',
         oldString,
         newString,
-        oldHeader || "",
-        newHeader || "",
+        oldHeader || '',
+        newHeader || '',
         { context: 99_999 },
       ];
       // 对比差异
@@ -102,15 +92,11 @@ function DiffCode({
       const configuration: Diff2HtmlUIConfig = {
         ...config,
         drawFileList: true,
-        matching: "lines",
+        matching: 'lines',
         highlight: true,
         outputFormat,
       };
-      const diff2htmlUi = new Diff2HtmlUI(
-        targetElement,
-        diffJsonList,
-        configuration
-      );
+      const diff2htmlUi = new Diff2HtmlUI(targetElement, diffJsonList, configuration);
       diff2htmlUi.draw(); //绘制页面
       diff2htmlUi.highlightCode(); // 高亮数据
       diff2htmlUi.fileListToggle(!!configuration.fileListToggle); // 是否折叠概要
@@ -119,7 +105,7 @@ function DiffCode({
       const diffHtml = html(diffJsonList, {
         ...config,
         drawFileList: false,
-        matching: "lines",
+        matching: 'lines',
         outputFormat,
       });
       setDiffData(diffHtml);
@@ -133,21 +119,16 @@ function DiffCode({
           <div className="mr-2 last:mr-0 empty:hidden">{icon}</div>
           <div className="mr-2 text-sm last:mr-0 empty:hidden">{title}</div>
           <div className="mr-2 text-sm last:mr-0">
-            <Radio.Group
-              value={outputFormat}
-              onChange={(e) => setOutputFormat(e.target.value)}
-            >
+            <Radio.Group value={outputFormat} onChange={(e) => setOutputFormat(e.target.value)}>
               <Radio.Button value="line-by-line">Inline</Radio.Button>
               <Radio.Button value="side-by-side">Side-by-side</Radio.Button>
             </Radio.Group>
           </div>
         </div>
-        <div className="empty:hidden">
-          {headerExtraRender && headerExtraRender()}
-        </div>
+        <div className="empty:hidden">{headerExtraRender && headerExtraRender()}</div>
       </div>
       {isUseUi ? (
-        <div id={id || "code-diff-ui"} />
+        <div id={id || 'code-diff-ui'} />
       ) : (
         <div id="code-diff" dangerouslySetInnerHTML={{ __html: diffData }} />
       )}

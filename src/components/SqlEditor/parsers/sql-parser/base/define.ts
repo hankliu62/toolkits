@@ -1,9 +1,9 @@
-import { IToken } from "../../syntax-parser";
+import type { IToken } from '../../syntax-parser';
 
 export type IStatements = IStatement[];
 
 export interface IStatement {
-  type: "statement" | "identifier";
+  type: 'statement' | 'identifier';
   variant: string;
 }
 
@@ -46,12 +46,12 @@ export interface ICompletionItem {
 }
 
 export type CursorType =
-  | "tableField"
-  | "tableName"
-  | "namespace"
-  | "namespaceOne"
-  | "functionName"
-  | "tableFieldAfterGroup";
+  | 'tableField'
+  | 'tableName'
+  | 'namespace'
+  | 'namespaceOne'
+  | 'functionName'
+  | 'tableFieldAfterGroup';
 
 export type ICursorInfo<T = {}> = {
   token: IToken;
@@ -61,5 +61,5 @@ export type ICursorInfo<T = {}> = {
 export type IGetFieldsByTableName = (
   tableName: ITableInfo,
   inputValue: string,
-  rootStatement: IStatement
+  rootStatement: IStatement,
 ) => Promise<ICompletionItem[]>;

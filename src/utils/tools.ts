@@ -1,13 +1,11 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
-import { locationIDNoMap } from "@/components/Location/location";
-import { BankCardTypeName, bankList, EBankCardType } from "@/constants/bank";
-import { ESex } from "@/enums/common";
+import { locationIDNoMap } from '@/components/Location/location';
+import { BankCardTypeName, bankList, EBankCardType } from '@/constants/bank';
+import { ESex } from '@/enums/common';
 
 // 身份证加权因子
-export const IDNoWeightingFactor = [
-  7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1,
-];
+export const IDNoWeightingFactor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
 // 身份证验证位值.10代表X
 export const IDNoVerifyBitValue = [1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2];
 
@@ -48,11 +46,8 @@ export function parseIDNoInfo(IDNo: string) {
    * 根据身份证号码获取地址信息
    * @returns
    */
-  function getAddressInfo(): Pick<
-    IParseIDNoInfo,
-    "province" | "city" | "county"
-  > {
-    const info: Pick<IParseIDNoInfo, "province" | "city" | "county"> = {
+  function getAddressInfo(): Pick<IParseIDNoInfo, 'province' | 'city' | 'county'> {
+    const dataInfo: Pick<IParseIDNoInfo, 'province' | 'city' | 'county'> = {
       province: null, // 省
       city: null, // 市
       county: null, // 县
@@ -62,27 +57,27 @@ export function parseIDNoInfo(IDNo: string) {
     const address = IDNo.slice(0, 6);
     const location = locationIDNoMap[address];
     if (location) {
-      if (location.superId === "0") {
-        info.province = location.name;
+      if (location.superId === '0') {
+        dataInfo.province = location.name;
       } else {
         const parentLocation = locationIDNoMap[location.superId];
         if (parentLocation) {
-          if (parentLocation.superId === "0") {
-            info.province = parentLocation.name;
-            info.city = location.name;
+          if (parentLocation.superId === '0') {
+            dataInfo.province = parentLocation.name;
+            dataInfo.city = location.name;
           } else {
             const rootLocation = locationIDNoMap[parentLocation.superId];
-            if (rootLocation?.superId === "0") {
-              info.province = rootLocation.name;
-              info.city = parentLocation.name;
-              info.county = location.name;
+            if (rootLocation?.superId === '0') {
+              dataInfo.province = rootLocation.name;
+              dataInfo.city = parentLocation.name;
+              dataInfo.county = location.name;
             }
           }
         }
       }
     }
 
-    return info;
+    return dataInfo;
   }
 
   if (!IDNo || (IDNo.length !== 15 && IDNo.length !== 18)) {
@@ -98,7 +93,7 @@ export function parseIDNoInfo(IDNo: string) {
     const birthday = new Date(
       Number.parseInt(year, 10),
       Number.parseInt(month, 10) - 1,
-      Number.parseInt(day, 10)
+      Number.parseInt(day, 10),
     );
     // 对于老身份证中的年龄则不需考虑千年虫问题而使用getYear()方法
     if (
@@ -112,7 +107,7 @@ export function parseIDNoInfo(IDNo: string) {
       info.year = birthday.getFullYear();
       info.month = birthday.getMonth() + 1;
       info.day = birthday.getDate();
-      info.birthday = dayjs(birthday).format("YYYY-MM-DD");
+      info.birthday = dayjs(birthday).format('YYYY-MM-DD');
 
       if (Number.parseInt(p, 10) % 2 === 0) {
         info.isFemale = true;
@@ -140,7 +135,7 @@ export function parseIDNoInfo(IDNo: string) {
     const birthday = new Date(
       Number.parseInt(year, 10),
       Number.parseInt(month, 10) - 1,
-      Number.parseInt(day, 10)
+      Number.parseInt(day, 10),
     );
     // 这里用getFullYear()获取年份，避免千年虫问题
     if (
@@ -158,10 +153,10 @@ export function parseIDNoInfo(IDNo: string) {
     // 验证校验位
     let sum = 0; // 声明加权求和变量
 
-    const _IDNo: any[] = IDNo.split("");
+    const _IDNo: any[] = IDNo.split('');
 
-    if ((_IDNo[17] as string).toLowerCase() === "x") {
-      _IDNo[17] = "10"; // 将最后位为x的验证码替换为10方便后续操作
+    if ((_IDNo[17] as string).toLowerCase() === 'x') {
+      _IDNo[17] = '10'; // 将最后位为x的验证码替换为10方便后续操作
     }
     for (let i = 0; i < 17; i++) {
       sum += Wi[i] * _IDNo[i]; // 加权求和
@@ -177,7 +172,7 @@ export function parseIDNoInfo(IDNo: string) {
     info.year = birthday.getFullYear();
     info.month = birthday.getMonth() + 1;
     info.day = birthday.getDate();
-    info.birthday = dayjs(birthday).format("YYYY-MM-DD");
+    info.birthday = dayjs(birthday).format('YYYY-MM-DD');
 
     if (Number.parseInt(p, 10) % 2 === 0) {
       info.isFemale = true;
@@ -206,14 +201,10 @@ export function parseIDNoInfo(IDNo: string) {
  * @param birthday 生日
  * @param sex 性别
  */
-export function randomIDNo(
-  addressNo: string,
-  birthday: Date,
-  sex: ESex
-): string {
-  const day = dayjs(birthday).format("YYYYMMDD"); // 生日
+export function randomIDNo(addressNo: string, birthday: Date, sex: ESex): string {
+  const day = dayjs(birthday).format('YYYYMMDD'); // 生日
 
-  let s = "";
+  let s = '';
   while (!s) {
     const randomStr =
       Math.floor(Math.random() * 10).toString() +
@@ -227,15 +218,14 @@ export function randomIDNo(
     }
   }
 
-  const idNoCodes = (addressNo + day + s).split("");
+  const idNoCodes = (addressNo + day + s).split('');
   let total = 0;
   for (let index = 0, len = idNoCodes.length; index < len; index++) {
-    total =
-      total + Number.parseInt(idNoCodes[index]) * IDNoWeightingFactor[index];
+    total = total + Number.parseInt(idNoCodes[index]) * IDNoWeightingFactor[index];
   }
   const lastCode = IDNoVerifyBitValue[total % 11];
 
-  return addressNo + day + s + (lastCode === 10 ? "X" : lastCode);
+  return addressNo + day + s + (lastCode === 10 ? 'X' : lastCode);
 }
 
 /**
@@ -296,17 +286,11 @@ export function verifyBankNo(bankNo: string) {
     sumEvenNumber = sumEvenNumber + Number.parseInt(num);
   }
   for (const [i, num] of maxOddNumberOnesPlaces.entries()) {
-    sumMaxOddNumberOnesPlaces =
-      sumMaxOddNumberOnesPlaces + Number.parseInt(num);
-    sumMaxOddNumberDecades =
-      sumMaxOddNumberDecades + Number.parseInt(maxOddNumberDecades[i]);
+    sumMaxOddNumberOnesPlaces = sumMaxOddNumberOnesPlaces + Number.parseInt(num);
+    sumMaxOddNumberDecades = sumMaxOddNumberDecades + Number.parseInt(maxOddNumberDecades[i]);
   }
   //计算总和
-  sumTotal =
-    sumMinOddNumber +
-    sumEvenNumber +
-    sumMaxOddNumberOnesPlaces +
-    sumMaxOddNumberDecades;
+  sumTotal = sumMinOddNumber + sumEvenNumber + sumMaxOddNumberOnesPlaces + sumMaxOddNumberDecades;
   //计算Luhn值
   const k = sumTotal % 10 === 0 ? 10 : sumTotal % 10;
   // 是否通过Luhn验证
@@ -336,7 +320,7 @@ export function parseBankNoInfo(bankNo: string): IBankNoInfo {
         const info: IBankNoInfo = {
           bankName: bankcard.bankName, // 银行名称
           bankCode: bankcard.bankCode, // 银行代码
-          cardType: pattern.cardType as IBankNoInfo["cardType"], // 银行卡类型
+          cardType: pattern.cardType as IBankNoInfo['cardType'], // 银行卡类型
           cardTypeName: BankCardTypeName[pattern.cardType], // 银行卡类型名称
           isValidateLuhn: verifyBankNo(bankNo), // 是否符合Luhn(“模10算法”)校验
         };
@@ -356,11 +340,10 @@ export function parseBankNoInfo(bankNo: string): IBankNoInfo {
  * @returns
  */
 export function randomBankNo(bankCode: string, bankCardType: EBankCardType) {
-  let prefix = "622200"; // 中国工商银行
+  let prefix = '622200'; // 中国工商银行
   let suffixCount = 13; // 后面code长度
   const bankType = bankCardType || EBankCardType.DC;
-  const back =
-    bankList.find((item) => item.bankCode === bankCode) || bankList[0];
+  const back = bankList.find((item) => item.bankCode === bankCode) || bankList[0];
 
   const patterns = back.patterns;
   if (patterns && patterns.length > 0) {
@@ -368,7 +351,7 @@ export function randomBankNo(bankCode: string, bankCardType: EBankCardType) {
     if (pattern?.reg) {
       const matched = /^\^\(([\d|]+)[^)]+\)\\d{(\d+)}\$$/.exec(pattern.reg);
       if (matched && matched.length > 0 && matched[1] && matched[2]) {
-        const prefixes = matched[1].split("|");
+        const prefixes = matched[1].split('|');
         prefix = prefixes.sort(() => Math.random() - 0.5).pop();
         suffixCount = Number.parseInt(matched[2]);
       }

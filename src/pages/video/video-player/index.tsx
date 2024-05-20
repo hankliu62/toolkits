@@ -1,12 +1,10 @@
-import { PlaySquareOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Input, message } from "antd";
-import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { PlaySquareOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Input, message } from 'antd';
+import Link from 'next/link';
+import { useCallback, useRef, useState } from 'react';
 
-import VideoPlayer, {
-  IVideoPlayerImperativeHandles,
-} from "@/components/VideoPlayer";
-import { getRoutePrefix } from "@/utils/route";
+import type { IVideoPlayerImperativeHandles } from '@/components/VideoPlayer';
+import VideoPlayer from '@/components/VideoPlayer';
 
 const TextArea = Input.TextArea;
 
@@ -26,7 +24,7 @@ export default function VideoPlayerPage() {
    */
   const onPlay = useCallback(() => {
     if (!source) {
-      message.error("请输入视频数据源");
+      message.error('请输入视频数据源');
       return;
     }
 
@@ -42,7 +40,7 @@ export default function VideoPlayerPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "VideoPlayer",
+            title: 'VideoPlayer',
           },
         ]}
       />
@@ -75,11 +73,7 @@ export default function VideoPlayerPage() {
           </div>
 
           <div>
-            <VideoPlayer
-              className="h-[800px]"
-              ref={videoPlayer}
-              source={source}
-            />
+            <VideoPlayer className="h-[800px]" ref={videoPlayer} source={source} />
           </div>
         </div>
       </div>

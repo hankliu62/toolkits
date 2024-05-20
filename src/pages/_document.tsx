@@ -1,17 +1,14 @@
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
-import type { DocumentContext } from "next/document";
-import Document, { Head, Html, Main, NextScript } from "next/document";
-import React from "react";
+import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
+import type { DocumentContext } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import React from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
+import { getRoutePrefix } from '@/utils/route';
 
 const MyDocument = () => (
   <Html lang="en">
     <Head>
-      <link
-        rel="stylesheet"
-        href={`${getRoutePrefix()}/styles/animate.css/@4.1.1/animate.css`}
-      />
+      <link rel="stylesheet" href={`${getRoutePrefix()}/styles/animate.css/@4.1.1/animate.css`} />
     </Head>
     <body>
       <Main />

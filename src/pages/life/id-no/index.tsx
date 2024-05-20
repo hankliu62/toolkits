@@ -1,4 +1,4 @@
-import { HourglassOutlined } from "@ant-design/icons";
+import { HourglassOutlined } from '@ant-design/icons';
 import {
   Alert,
   Breadcrumb,
@@ -10,22 +10,19 @@ import {
   message,
   Popover,
   Radio,
-} from "antd";
-import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
-import SplitPane from "react-split-pane";
+} from 'antd';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
+import SplitPane from 'react-split-pane';
 
-import Location from "@/components/Location";
-import {
-  locationNameIDNoMap,
-  locations,
-  TLocation,
-} from "@/components/Location/location";
-import { ESex } from "@/enums/common";
-import { getRoutePrefix } from "@/utils/route";
-import { IParseIDNoInfo, parseIDNoInfo, randomIDNo } from "@/utils/tools";
+import Location from '@/components/Location';
+import type { TLocation } from '@/components/Location/location';
+import { locationNameIDNoMap, locations } from '@/components/Location/location';
+import { ESex } from '@/enums/common';
+import type { IParseIDNoInfo } from '@/utils/tools';
+import { parseIDNoInfo, randomIDNo } from '@/utils/tools';
 
 /**
  * 在线身份证生成和解析工具
@@ -34,15 +31,9 @@ import { IParseIDNoInfo, parseIDNoInfo, randomIDNo } from "@/utils/tools";
  */
 export default function IDNoPage() {
   // 出生地址(默认湖南省 - 娄底市 - 涟源市)
-  const [location, setLocation] = useState<string[]>([
-    "430000",
-    "431300",
-    "431382",
-  ]);
+  const [location, setLocation] = useState<string[]>(['430000', '431300', '431382']);
   // 生日
-  const [birthday, setBirthday] = useState<Dayjs>(
-    dayjs("1993-09-26", "YYYY-MM-DD")
-  );
+  const [birthday, setBirthday] = useState<Dayjs>(dayjs('1993-09-26', 'YYYY-MM-DD'));
   // 性别
   const [sex, setSex] = useState<ESex>(ESex.Male);
   // 生成数量
@@ -55,7 +46,7 @@ export default function IDNoPage() {
    */
   const onCreateIDNo = useCallback(() => {
     if (!location || location.length === 0 || !location.at(-1)) {
-      message.error("请先选择出生地址");
+      message.error('请先选择出生地址');
       return;
     }
 
@@ -71,15 +62,14 @@ export default function IDNoPage() {
 
   // 省级列表
   const provinces = useMemo<TLocation[]>(() => {
-    return locations.filter((item) => item.superId === "0");
+    return locations.filter((item) => item.superId === '0');
   }, []);
 
   // 需要解析的身份证号码
   const [parseIDNo, setParseIDNo] = useState<string>();
 
   // 解析身份证信息
-  const [parseIDNoInfoResult, setParseIDNoInfoResult] =
-    useState<IParseIDNoInfo>();
+  const [parseIDNoInfoResult, setParseIDNoInfoResult] = useState<IParseIDNoInfo>();
   const [parseIDNoInfoError, setParseIDNoInfoError] = useState<string>();
 
   /**
@@ -92,7 +82,7 @@ export default function IDNoPage() {
 
     // 如果身份证号码不是18位，提示错误
     if (parseIDNo?.length !== 18) {
-      message.error("请输入18位二代身份证号码");
+      message.error('请输入18位二代身份证号码');
       return;
     }
 
@@ -102,7 +92,7 @@ export default function IDNoPage() {
     if (IDNoInfo.isTrue) {
       setParseIDNoInfoResult(IDNoInfo);
     } else {
-      setParseIDNoInfoError("输入的二代身份证号码不正确");
+      setParseIDNoInfoError('输入的二代身份证号码不正确');
     }
   }, [parseIDNo]);
 
@@ -110,7 +100,7 @@ export default function IDNoPage() {
    * 设置案例
    */
   const onSetExample = useCallback(() => {
-    setParseIDNo("110101200006128958");
+    setParseIDNo('110101200006128958');
   }, []);
 
   return (
@@ -122,7 +112,7 @@ export default function IDNoPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "身份证生成器",
+            title: '身份证生成器',
           },
         ]}
       />
@@ -244,9 +234,7 @@ export default function IDNoPage() {
           </div>
 
           <div className="m-4 rounded border border-common-border">
-            <div className="bg-[#d3ccd6] px-4 py-3 text-sm text-[#6f4b3e]">
-              身份证号大全
-            </div>
+            <div className="bg-[#d3ccd6] px-4 py-3 text-sm text-[#6f4b3e]">身份证号大全</div>
             <div className="space-y-3 p-4">
               <div>
                 <h2 className="text-lg text-[#cd5e3c]">身份证号码查询</h2>
@@ -296,30 +284,22 @@ export default function IDNoPage() {
                         <div className="w-52">{parseIDNo}</div>
                         <div className="w-10">
                           {parseIDNoInfoResult.isMale
-                            ? "男"
+                            ? '男'
                             : parseIDNoInfoResult.isFemale
-                              ? "女"
-                              : "未知"}
+                              ? '女'
+                              : '未知'}
                         </div>
-                        <div className="w-32">
-                          {parseIDNoInfoResult.birthday}
-                        </div>
+                        <div className="w-32">{parseIDNoInfoResult.birthday}</div>
                         <div className="flex-1">
                           {parseIDNoInfoResult.province && (
                             <Popover
                               content={
-                                locationNameIDNoMap[
-                                  parseIDNoInfoResult.province
-                                ] ? (
+                                locationNameIDNoMap[parseIDNoInfoResult.province] ? (
                                   <div className="text-lg">
                                     {parseIDNoInfoResult.province}
-                                    身份证开头前6位:{" "}
+                                    身份证开头前6位:{' '}
                                     <span className="text-red-500">
-                                      {
-                                        locationNameIDNoMap[
-                                          parseIDNoInfoResult.province
-                                        ]
-                                      }
+                                      {locationNameIDNoMap[parseIDNoInfoResult.province]}
                                     </span>
                                   </div>
                                 ) : null
@@ -327,11 +307,7 @@ export default function IDNoPage() {
                               trigger="click"
                               placement="topRight"
                             >
-                              <Button
-                                type="link"
-                                size="small"
-                                className="!px-1"
-                              >
+                              <Button type="link" size="small" className="!px-1">
                                 {parseIDNoInfoResult.province}
                               </Button>
                             </Popover>
@@ -343,19 +319,12 @@ export default function IDNoPage() {
                               </Button>
                               <Popover
                                 content={
-                                  locationNameIDNoMap[
-                                    parseIDNoInfoResult.city
-                                  ] ? (
+                                  locationNameIDNoMap[parseIDNoInfoResult.city] ? (
                                     <div className="text-lg">
-                                      {parseIDNoInfoResult.province}·
-                                      {parseIDNoInfoResult.city}
-                                      身份证开头前6位:{" "}
+                                      {parseIDNoInfoResult.province}·{parseIDNoInfoResult.city}
+                                      身份证开头前6位:{' '}
                                       <span className="text-red-500">
-                                        {
-                                          locationNameIDNoMap[
-                                            parseIDNoInfoResult.city
-                                          ]
-                                        }
+                                        {locationNameIDNoMap[parseIDNoInfoResult.city]}
                                       </span>
                                     </div>
                                   ) : null
@@ -363,11 +332,7 @@ export default function IDNoPage() {
                                 trigger="click"
                                 placement="topRight"
                               >
-                                <Button
-                                  type="link"
-                                  size="small"
-                                  className="!px-1"
-                                >
+                                <Button type="link" size="small" className="!px-1">
                                   {parseIDNoInfoResult.city}
                                 </Button>
                               </Popover>
@@ -380,20 +345,13 @@ export default function IDNoPage() {
                               </Button>
                               <Popover
                                 content={
-                                  locationNameIDNoMap[
-                                    parseIDNoInfoResult.county
-                                  ] ? (
+                                  locationNameIDNoMap[parseIDNoInfoResult.county] ? (
                                     <div className="text-lg">
-                                      {parseIDNoInfoResult.province}·
-                                      {parseIDNoInfoResult.city}·
+                                      {parseIDNoInfoResult.province}·{parseIDNoInfoResult.city}·
                                       {parseIDNoInfoResult.county}
-                                      身份证开头前6位:{" "}
+                                      身份证开头前6位:{' '}
                                       <span className="text-red-500">
-                                        {
-                                          locationNameIDNoMap[
-                                            parseIDNoInfoResult.county
-                                          ]
-                                        }
+                                        {locationNameIDNoMap[parseIDNoInfoResult.county]}
                                       </span>
                                     </div>
                                   ) : null
@@ -401,11 +359,7 @@ export default function IDNoPage() {
                                 trigger="click"
                                 placement="topRight"
                               >
-                                <Button
-                                  type="link"
-                                  size="small"
-                                  className="!px-1"
-                                >
+                                <Button type="link" size="small" className="!px-1">
                                   {parseIDNoInfoResult.county}
                                 </Button>
                               </Popover>
@@ -449,9 +403,7 @@ export default function IDNoPage() {
               <Divider dashed className="!my-5" />
 
               <div>
-                <h2 className="text-lg text-[#cd5e3c]">
-                  其它地区身份证号码大全
-                </h2>
+                <h2 className="text-lg text-[#cd5e3c]">其它地区身份证号码大全</h2>
                 <div className="mt-1">
                   <div className="grid grid-cols-3">
                     {provinces.map(({ id, name }) => (
@@ -460,8 +412,7 @@ export default function IDNoPage() {
                         <Popover
                           content={
                             <div className="text-lg">
-                              {name}身份证开头前6位:{" "}
-                              <span className="text-red-500">{id}</span>
+                              {name}身份证开头前6位: <span className="text-red-500">{id}</span>
                             </div>
                           }
                           trigger="click"
@@ -477,11 +428,7 @@ export default function IDNoPage() {
                       .map((item, index) => (
                         <div key={index}>
                           <Divider className="!my-2" />
-                          <Button
-                            className="!opacity-0"
-                            type="link"
-                            size="small"
-                          >
+                          <Button className="!opacity-0" type="link" size="small">
                             1
                           </Button>
                         </div>

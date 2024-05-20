@@ -1,14 +1,14 @@
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import type { ReactNode } from 'react';
 
-import useTopWindow from "@/hooks/useTopWindow";
+import useTopWindow from '@/hooks/useTopWindow';
 
-const Footer = dynamic(() => import("@hankliu/rc-footer"), {
+const Footer = dynamic(() => import('@hankliu/rc-footer'), {
   ssr: false,
 });
 
-const Header = dynamic(() => import("@/components/Header"), {
+const Header = dynamic(() => import('@/components/Header'), {
   ssr: false,
 });
 
@@ -24,7 +24,7 @@ export default function DefaultLayout({ children }: LayoutProps) {
     <>
       <div
         className="flex h-full min-h-[100vh] w-full flex-col"
-        style={{ flexDirection: "column", minHeight: "100vh" }}
+        style={{ flexDirection: 'column', minHeight: '100vh' }}
       >
         {/* header */}
         <Header />
@@ -35,7 +35,7 @@ export default function DefaultLayout({ children }: LayoutProps) {
         </main>
 
         {/* footer */}
-        {!!(isTop || router.query?.["with-footer"]) && <Footer />}
+        {!!(isTop || router.query?.['with-footer']) && <Footer />}
       </div>
     </>
   );

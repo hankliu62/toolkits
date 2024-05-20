@@ -1,9 +1,9 @@
-import Exception from "@hankliu/rc-exception";
-import { Button } from "antd";
-import router from "next/router";
-import { ReactElement } from "react";
+import Exception from '@hankliu/rc-exception';
+import { Button } from 'antd';
+import router from 'next/router';
+import type { ReactElement } from 'react';
 
-import NoHeaderLayout from "@/layouts/no-header";
+import NoHeaderLayout from '@/layouts/no-header';
 
 function ErrorPage({ statusCode }) {
   return (

@@ -1,19 +1,14 @@
-import classNames from "classnames";
+import classNames from 'classnames';
 // import odd from "odd.player.js";
-import {
-  forwardRef,
-  ForwardRefRenderFunction,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from "react";
-import VideoJs from "video.js";
+import type { ForwardRefRenderFunction } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import VideoJs from 'video.js';
 
 // 视频播放方式
 export enum EVideoType {
-  VideoJs = "VideoJs",
-  OddPlayerJs = "OddPlayerJs",
+  // eslint-disable-next-line
+  VideoJs = 'VideoJs',
+  OddPlayerJs = 'OddPlayerJs',
 }
 
 type TPlayer = any;
@@ -30,12 +25,9 @@ export interface IVideoPlayerImperativeHandles {
   pause: () => void;
 }
 
-const VideoPlayer: ForwardRefRenderFunction<
-  IVideoPlayerImperativeHandles,
-  IVideoPlayerProps
-> = (
+const VideoPlayer: ForwardRefRenderFunction<IVideoPlayerImperativeHandles, IVideoPlayerProps> = (
   { className, source, type = EVideoType.VideoJs }: IVideoPlayerProps,
-  ref
+  ref,
 ) => {
   const videoPlayer = useRef<TPlayer>();
   const videoPlayerNode = useRef<HTMLDivElement | null>(null);
@@ -43,10 +35,10 @@ const VideoPlayer: ForwardRefRenderFunction<
   const getVideoPlayer = useCallback((): TPlayer => {
     if (!videoPlayer.current) {
       if (type === EVideoType.VideoJs) {
-        videoPlayer.current = VideoJs("videoPlayer", {
+        videoPlayer.current = VideoJs('videoPlayer', {
           autoplay: false, // 设置自动播放
           muted: true, // 设置了它为true，才可实现自动播放,同时视频也被静音 （Chrome66及以上版本，禁止音视频的自动播放）
-          preload: "auto", // 预加载
+          preload: 'auto', // 预加载
           controls: true, // 显示播放的控件
         });
       } else {
@@ -136,7 +128,7 @@ const VideoPlayer: ForwardRefRenderFunction<
       play: onPlay,
       pause: onPause,
     }),
-    [getVideoPlayer, onPause, onPlay]
+    [getVideoPlayer, onPause, onPlay],
   );
 
   useEffect(() => {
@@ -151,7 +143,7 @@ const VideoPlayer: ForwardRefRenderFunction<
   useEffect(() => {
     const video = {
       withCredentials: false,
-      type: "application/x-mpegurl",
+      type: 'application/x-mpegurl',
       src: source,
     };
     videoPlayer.current && videoPlayer.current.reset(); // in IE11 (mode IE10) direct usage of src() when <src> is already set, generated errors,
@@ -162,7 +154,7 @@ const VideoPlayer: ForwardRefRenderFunction<
   }, [source]);
 
   return (
-    <div className={classNames("relative", { [className]: className })}>
+    <div className={classNames('relative', { [className]: className })}>
       {type === EVideoType.VideoJs ? (
         <video
           id="videoPlayer"
@@ -170,11 +162,7 @@ const VideoPlayer: ForwardRefRenderFunction<
           controls
         />
       ) : (
-        <div
-          ref={videoPlayerNode}
-          id="videoPlayer"
-          className="h-full w-full object-fill"
-        />
+        <div ref={videoPlayerNode} id="videoPlayer" className="h-full w-full object-fill" />
       )}
     </div>
   );

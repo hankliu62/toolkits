@@ -1,5 +1,4 @@
 export function isOkay(obj: any) {
-  // eslint-disable-next-line eqeqeq
   return obj != null;
 }
 
@@ -13,10 +12,10 @@ export function flattenAll(arr: any[]) {
     }, []);
 }
 
-export function createTableName(tableNames: { [key: string]: string }) {
+export function createTableName(tableNames: Record<string, string>) {
   const returnValue: any = {
-    type: "identifier",
-    variant: "tableName",
+    type: 'identifier',
+    variant: 'tableName',
   };
 
   for (const eachTableNamesKey of Object.keys(tableNames)) {

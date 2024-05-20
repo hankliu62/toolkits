@@ -8,8 +8,8 @@
 /* stylelint-disable no-descending-specificity */
 /* stylelint-disable indentation */
 /* stylelint-disable selector-descendant-combinator-no-non-space */
-@import url("./prose.css");
-@import url("./font.css");
+@import url('./prose.css');
+@import url('./font.css');
 
 @tailwind base;
 @tailwind components;
@@ -80,10 +80,7 @@ body > #__next {
   @apply mb-2;
 }
 
-.issues-card
-  .issues-list.ant-list.ant-list-vertical
-  .ant-list-item
-  .ant-list-item-action {
+.issues-card .issues-list.ant-list.ant-list-vertical .ant-list-item .ant-list-item-action {
   @apply mt-2;
 }
 
@@ -96,9 +93,7 @@ body > #__next {
   @apply underline;
 }
 
-.question-menus-collapse.ant-collapse
-  .ant-collapse-content
-  > .ant-collapse-content-box {
+.question-menus-collapse.ant-collapse .ant-collapse-content > .ant-collapse-content-box {
   @apply px-0;
 }
 
@@ -158,15 +153,11 @@ body > #__next {
   box-shadow: -25px 30px 72px 0 #0000001a;
 }
 
-.articles-collapse.ant-collapse
-  .ant-collapse-content
-  > .ant-collapse-content-box {
+.articles-collapse.ant-collapse .ant-collapse-content > .ant-collapse-content-box {
   @apply p-0;
 }
 
-.questions-collapse.ant-collapse
-  .ant-collapse-content
-  > .ant-collapse-content-box {
+.questions-collapse.ant-collapse .ant-collapse-content > .ant-collapse-content-box {
   @apply p-0;
 }
 
@@ -255,7 +246,7 @@ body > #__next {
 }
 
 .toolkits-title:hover {
-  filter: url("#filter");
+  filter: url('#filter');
 }
 
 .fireworks {

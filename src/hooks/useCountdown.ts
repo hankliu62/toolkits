@@ -1,10 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-const useCountdown = (
-  countdownNumber: number,
-  ms: number = 1000,
-  onEnd: () => void = () => {}
-) => {
+const useCountdown = (countdownNumber: number, ms: number = 1000, onEnd: () => void = () => {}) => {
   const [count, setCount] = useState<number>(countdownNumber);
   // 上一次执行的时间点
   const lastTime = useRef<number>(Date.now());
@@ -36,10 +32,7 @@ const useCountdown = (
       return nextCount > 0 ? nextCount : 0;
     });
 
-    timer.current = setTimeout(
-      startCountdown,
-      nextTimeMs.current
-    ) as unknown as number;
+    timer.current = setTimeout(startCountdown, nextTimeMs.current) as unknown as number;
   };
 
   useEffect(() => {

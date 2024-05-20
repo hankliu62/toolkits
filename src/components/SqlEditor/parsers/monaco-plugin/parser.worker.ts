@@ -1,4 +1,4 @@
-import { mysqlParser } from "../sql-parser";
+import { mysqlParser } from '../sql-parser';
 
 const ctx: Worker = self as any;
 

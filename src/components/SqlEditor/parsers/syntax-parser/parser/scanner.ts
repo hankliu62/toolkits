@@ -1,4 +1,4 @@
-import { IToken } from "../lexer/token";
+import type { IToken } from '../lexer/token';
 
 export class Scanner {
   private tokens: IToken[] = [];
@@ -57,10 +57,7 @@ export class Scanner {
     }
 
     for (const token of this.tokens) {
-      if (
-        characterIndex >= token.position[0] &&
-        characterIndex - 1 <= token.position[1]
-      ) {
+      if (characterIndex >= token.position[0] && characterIndex - 1 <= token.position[1]) {
         return token;
       }
     }
@@ -93,9 +90,7 @@ export class Scanner {
   };
 
   public addToken = (token: IToken) => {
-    const { prevToken, prevTokenIndex } = this.getPrevTokenByCharacterIndex(
-      token.position[0]
-    );
+    const { prevToken, prevTokenIndex } = this.getPrevTokenByCharacterIndex(token.position[0]);
 
     if (prevToken) {
       // prevTokenIndex

@@ -1,6 +1,6 @@
-import { IToken } from "../lexer/token";
-import { IMatch } from "./match";
-import { Scanner } from "./scanner";
+import type { IToken } from '../lexer/token';
+import type { IMatch } from './match';
+import type { Scanner } from './scanner';
 
 // tslint:disable:max-classes-per-file
 
@@ -11,7 +11,7 @@ export interface IParseResult {
   nextMatchings: IMatching[];
   error: {
     token: IToken;
-    reason: "wrong" | "incomplete";
+    reason: 'wrong' | 'incomplete';
     suggestions: IMatching[];
   };
   debugInfo: {
@@ -37,7 +37,7 @@ export type ParentNode = TreeNode | ChainNode;
 
 export interface IMatching {
   // loose not cost token, and result is fixed true of false.
-  type: "string" | "loose" | "special";
+  type: 'string' | 'loose' | 'special';
   value: string | boolean;
 }
 
@@ -49,16 +49,14 @@ export type IElements = IElement[];
 
 export type ISolveAst = (astResult: IAst[]) => IAst;
 
-export type Chain = (
-  ...elements: IElements
-) => (solveAst?: ISolveAst) => ChainNodeFactory;
+export type Chain = (...elements: IElements) => (solveAst?: ISolveAst) => ChainNodeFactory;
 
 export type ChainNodeFactory = (
   parentNode?: ParentNode,
   // If parent node is a function, here will get it's name.
   creatorFunction?: ChainFunction,
   parentIndex?: number,
-  parser?: Parser
+  parser?: Parser,
 ) => ChainNode;
 
 export type ChainFunction = () => ChainNodeFactory;
@@ -91,7 +89,7 @@ export class VisiterStore {
 
   constructor(
     public scanner: Scanner,
-    public parser: Parser
+    public parser: Parser,
   ) {
     //
   }
@@ -109,7 +107,7 @@ export class VisiterOption {
   public onMatchNode: (
     matchNode: MatchNode,
     store: VisiterStore,
-    visiterOption: VisiterOption
+    visiterOption: VisiterOption,
   ) => void;
 
   public generateAst?: boolean = true;
@@ -153,18 +151,13 @@ export class FunctionNode {
   constructor(
     public chainFunction: ChainFunction,
     public parentIndex: number,
-    public parser: Parser
+    public parser: Parser,
   ) {
     //
   }
 
   public run = () => {
-    return this.chainFunction()(
-      this.parentNode,
-      this.chainFunction,
-      this.parentIndex,
-      this.parser
-    );
+    return this.chainFunction()(this.parentNode, this.chainFunction, this.parentIndex, this.parser);
   };
 }
 
@@ -174,7 +167,7 @@ export class MatchNode {
   constructor(
     private matchFunction: IMatchFn,
     public matching: IMatching,
-    public parentIndex: number
+    public parentIndex: number,
   ) {
     //
   }

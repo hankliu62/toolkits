@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
+import { getRoutePrefix } from '@/utils/route';
 
 const useLazyLoad = (style: React.CSSProperties) => {
   const imgRef = useRef<HTMLDivElement>(null);
@@ -9,7 +9,7 @@ const useLazyLoad = (style: React.CSSProperties) => {
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          imgRef.current!.style.backgroundImage = style?.backgroundImage ?? "";
+          imgRef.current!.style.backgroundImage = style?.backgroundImage ?? '';
           observer.unobserve(entry.target);
         }
       }
@@ -41,14 +41,10 @@ const LazyBgImage = ({
 }: ILazyBgImageProps) => {
   const { imgRef } = useLazyLoad(style);
 
-  const { backgroundImage, ...otherStyle } = style;
+  const { backgroundImage: _backgroundImage, ...otherStyle } = style;
 
   return (
-    <div
-      ref={imgRef}
-      style={{ ...otherStyle, backgroundImage: `url(${fallbackSrc})` }}
-      {...props}
-    >
+    <div ref={imgRef} style={{ ...otherStyle, backgroundImage: `url(${fallbackSrc})` }} {...props}>
       {children}
     </div>
   );

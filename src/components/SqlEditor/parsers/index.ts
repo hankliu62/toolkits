@@ -1,1 +1,1 @@
-export * from "./monaco-plugin";
+export * from './monaco-plugin';

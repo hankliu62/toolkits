@@ -1,35 +1,35 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 // monaco-editor
-import "highlight.js/styles/googlecode.css";
-import "diff2html/bundles/css/diff2html.min.css";
+import 'highlight.js/styles/googlecode.css';
+import 'diff2html/bundles/css/diff2html.min.css';
 // video.js
-import "video.js/dist/video-js.min.css";
-import "nprogress/nprogress.css";
+import 'video.js/dist/video-js.min.css';
+import 'nprogress/nprogress.css';
 // markdown-editor
-import "@uiw/react-md-editor/markdown-editor.css";
-import "@uiw/react-markdown-preview/markdown.css";
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 // 页面滚动元素动画
-import "aos/dist/aos.css";
+import 'aos/dist/aos.css';
 // footer组件
-import "@hankliu/rc-footer/assets/index.css";
+import '@hankliu/rc-footer/assets/index.css';
 // exception组件
-import "@hankliu/rc-exception/assets/index.css";
-import "dayjs/locale/zh-cn";
+import '@hankliu/rc-exception/assets/index.css';
+import 'dayjs/locale/zh-cn';
 
-import { ConfigProvider, Watermark } from "antd";
-import dayjs from "dayjs";
-import { NextPage } from "next";
-import type { AppProps } from "next/app";
-import Head from "next/head";
-import { ReactElement, ReactNode } from "react";
+import { ConfigProvider, Watermark } from 'antd';
+import dayjs from 'dayjs';
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import type { ReactElement, ReactNode } from 'react';
 
-import useSubPageBreadcrumb from "@/hooks/useSubPageBreadcrumb";
-import useTopWindow from "@/hooks/useTopWindow";
-import DefaultLayout from "@/layouts/index";
-import theme from "@/theme/themeConfig";
-import { getRoutePrefix } from "@/utils/route";
+import useSubPageBreadcrumb from '@/hooks/useSubPageBreadcrumb';
+import useTopWindow from '@/hooks/useTopWindow';
+import DefaultLayout from '@/layouts/index';
+import theme from '@/theme/themeConfig';
+import { getRoutePrefix } from '@/utils/route';
 
-dayjs.locale("zh_CN");
+dayjs.locale('zh_CN');
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -46,8 +46,7 @@ type AppPropsWithLayout = AppProps & {
  */
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
-  const getLayout =
-    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
+  const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   const isTop = useTopWindow();
 
@@ -75,13 +74,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       {getLayout(
         <ConfigProvider theme={theme}>
           <Watermark
-            content={isTop ? "HankLiu Toolkits" : ""}
-            font={{ color: "rgba(0, 0, 0, 0.1)" }}
+            content={isTop ? 'HankLiu Toolkits' : ''}
+            font={{ color: 'rgba(0, 0, 0, 0.1)' }}
             className="flex h-full flex-1 flex-col"
           >
             <Component {...pageProps} />
           </Watermark>
-        </ConfigProvider>
+        </ConfigProvider>,
       )}
     </>
   );

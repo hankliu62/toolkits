@@ -1,33 +1,22 @@
-import get from "lodash/get";
-import upperCase from "lodash/upperCase";
+import get from 'lodash/get';
+import upperCase from 'lodash/upperCase';
 
-import {
-  ICompletionItem,
-  ICursorInfo,
-  IStatement,
-  ITableInfo,
-} from "../sql-parser";
-import { IMatching, IParseResult } from "../syntax-parser";
+import type { ICompletionItem, ICursorInfo, IStatement, ITableInfo } from '../sql-parser';
+import type { IMatching, IParseResult } from '../syntax-parser';
 
-export type IMonacoVersion = "0.13.2" | "0.15.6";
+export type IMonacoVersion = '0.13.2' | '0.15.6';
 
-export type IParserType =
-  | "mysql"
-  | "odps"
-  | "blink"
-  | "dsql"
-  | "grail"
-  | "emcsql";
+export type IParserType = 'mysql' | 'odps' | 'blink' | 'dsql' | 'grail' | 'emcsql';
 
 export class DefaultOpts {
-  public monacoEditorVersion: IMonacoVersion = "0.15.6";
+  public monacoEditorVersion: IMonacoVersion = '0.15.6';
 
-  public parserType: IParserType = "odps";
+  public parserType: IParserType = 'odps';
 
-  public language = "sql";
+  public language = 'sql';
 
   // TODO: replace by backend api
-  protected tableNames: string[] = ["dt", "b2b", "tmall", "test"];
+  protected tableNames: string[] = ['dt', 'b2b', 'tmall', 'test'];
 
   // TODO: replace by backend api
   protected tableColumns: Record<string, string[]> = {
@@ -54,9 +43,9 @@ export class DefaultOpts {
   };
 
   public onSuggestTableNames?: (
-    cursorInfo?: ICursorInfo<ITableInfo>
+    cursorInfo?: ICursorInfo<ITableInfo>,
   ) => Promise<ICompletionItem[]> = (cursorInfo) => {
-    console.log(cursorInfo, "cursorInfo----------------------------");
+    console.log(cursorInfo, 'cursorInfo----------------------------');
 
     return Promise.resolve(
       this.tableNames.map((name) => {
@@ -66,20 +55,18 @@ export class DefaultOpts {
           sortText: `A${name}`,
           kind: this.monaco.languages.CompletionItemKind.Folder,
         };
-      })
+      }),
     );
   };
 
   public onSuggestTableFields?: (
     tableInfo?: ITableInfo,
     cursorValue?: string,
-    rootStatement?: IStatement
+    rootStatement?: IStatement,
   ) => Promise<ICompletionItem[]> = (tableInfo) => {
-    const tableName =
-      get(tableInfo, "namespace.value", "") +
-      get(tableInfo, "tableName.value", "");
+    const tableName = get(tableInfo, 'namespace.value', '') + get(tableInfo, 'tableName.value', '');
 
-    const tableColumns = this.tableColumns[tableName] || ["aa", "bb", "cc"];
+    const tableColumns = this.tableColumns[tableName] || ['aa', 'bb', 'cc'];
     return Promise.resolve(
       tableColumns.map((fieldName) => {
         return {
@@ -88,14 +75,14 @@ export class DefaultOpts {
           sortText: `B${fieldName}`,
           kind: this.monaco.languages.CompletionItemKind.Field,
         };
-      })
+      }),
     );
   };
 
   public pipeKeywords = (keywords: IMatching[]) => {
     return keywords
       .filter((matching) => {
-        return matching.type === "string";
+        return matching.type === 'string';
       })
       .map((matching) => {
         const value = /[A-Za-z]+/.test(matching.value.toString())
@@ -104,67 +91,63 @@ export class DefaultOpts {
         return {
           label: value,
           insertText: value,
-          documentation: "documentation",
-          detail: "detail",
+          documentation: 'documentation',
+          detail: 'detail',
           kind: this.monaco.languages.CompletionItemKind.Keyword,
           sortText: `W${matching.value}`,
         };
       });
   };
 
-  public onSuggestFunctionName?: (
-    inputValue?: string
-  ) => Promise<ICompletionItem[]> = (inputValue) => {
+  public onSuggestFunctionName?: (inputValue?: string) => Promise<ICompletionItem[]> = (
+    inputValue,
+  ) => {
     return Promise.resolve(
-      ["sum", "count"].map((each) => {
+      ['sum', 'count'].map((each) => {
         return {
           label: each,
           insertText: each,
           sortText: `C${each}`,
           kind: this.monaco.languages.CompletionItemKind.Function,
         };
-      })
+      }),
     );
   };
 
-  public onSuggestFieldGroup?: (tableNameOrAlias?: string) => ICompletionItem =
-    (tableNameOrAlias) => {
-      return {
-        label: tableNameOrAlias,
-        insertText: tableNameOrAlias,
-        sortText: `D${tableNameOrAlias}`,
-        kind: this.monaco.languages.CompletionItemKind.Folder,
-      };
+  public onSuggestFieldGroup?: (tableNameOrAlias?: string) => ICompletionItem = (
+    tableNameOrAlias,
+  ) => {
+    return {
+      label: tableNameOrAlias,
+      insertText: tableNameOrAlias,
+      sortText: `D${tableNameOrAlias}`,
+      kind: this.monaco.languages.CompletionItemKind.Folder,
     };
+  };
 
-  public onHoverTableField?: (
-    fieldName?: string,
-    extra?: ICompletionItem
-  ) => Promise<any> = (...args) => {
+  public onHoverTableField?: (fieldName?: string, extra?: ICompletionItem) => Promise<any> = (
+    ...args
+  ) => {
     return Promise.resolve([
-      { value: "onHoverTableField" },
+      { value: 'onHoverTableField' },
       {
         value: `\`\`\`json\n${JSON.stringify(args, null, 2)}\n\`\`\``,
       },
     ]);
   };
 
-  public onHoverTableName?: (cursorInfo?: ICursorInfo) => Promise<any> = (
-    ...args
-  ) => {
+  public onHoverTableName?: (cursorInfo?: ICursorInfo) => Promise<any> = (...args) => {
     return Promise.resolve([
-      { value: "onHoverTableName" },
+      { value: 'onHoverTableName' },
       {
         value: `\`\`\`json\n${JSON.stringify(args, null, 2)}\n\`\`\``,
       },
     ]);
   };
 
-  public onHoverFunctionName?: (functionName?: string) => Promise<any> = (
-    ...args
-  ) => {
+  public onHoverFunctionName?: (functionName?: string) => Promise<any> = (...args) => {
     return Promise.resolve([
-      { value: "onHoverFunctionName" },
+      { value: 'onHoverFunctionName' },
       {
         value: `\`\`\`json\n${JSON.stringify(args, null, 2)}\n\`\`\``,
       },

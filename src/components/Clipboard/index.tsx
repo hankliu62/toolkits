@@ -1,6 +1,6 @@
-import { message } from "antd";
-import copy from "copy-to-clipboard";
-import React from "react";
+import { message } from 'antd';
+import copy from 'copy-to-clipboard';
+import React from 'react';
 
 export interface ClipboardProps {
   tag: string;
@@ -16,10 +16,10 @@ export interface ClipboardProps {
 
 class Clipboard extends React.Component<ClipboardProps, any> {
   static defaultProps = {
-    tag: "span",
-    text: "",
+    tag: 'span',
+    text: '',
     onSuccess() {
-      message.success("已将内容复制到剪贴板");
+      message.success('已将内容复制到剪贴板');
     },
     options: {},
   };
@@ -29,14 +29,14 @@ class Clipboard extends React.Component<ClipboardProps, any> {
   onClick = (event: any) => {
     const { children, text, onSuccess, options } = this.props;
     const elem = React.Children.only(children);
-    const copyText = typeof text === "function" ? text() : text;
+    const copyText = typeof text === 'function' ? text() : text;
     const result = copy(copyText, options);
 
     if (onSuccess) {
       onSuccess(copyText, result);
     }
 
-    if (elem?.props && typeof elem.props.onClick === "function") {
+    if (elem?.props && typeof elem.props.onClick === 'function') {
       elem.props.onClick(event);
     }
   };

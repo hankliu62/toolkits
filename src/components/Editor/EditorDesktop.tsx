@@ -1,30 +1,30 @@
-import type { EditorLanguage } from "monaco-editor/esm/metadata";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { CommandsRegistry } from "monaco-editor/esm/vs/platform/commands/common/commands";
-import React, { useEffect, useRef } from "react";
+import type { EditorLanguage } from 'monaco-editor/esm/metadata';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { CommandsRegistry } from 'monaco-editor/esm/vs/platform/commands/common/commands';
+import React, { useEffect, useRef } from 'react';
 
-import { registerDocumentFormattingEditProviders } from "./format";
+import { registerDocumentFormattingEditProviders } from './format';
 
 function setupKeybindings(editor) {
-  const formatCommandId = "editor.action.formatDocument";
+  const formatCommandId = 'editor.action.formatDocument';
   const { handler, when } = CommandsRegistry.getCommand(formatCommandId);
   editor._standaloneKeybindingService.addDynamicKeybinding(
     formatCommandId,
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
     handler,
-    when
+    when,
   );
 }
 registerDocumentFormattingEditProviders();
 
 const languageToMode = {
-  html: "html",
-  css: "css",
-  less: "less",
-  scss: "scss",
-  javascript: "javascript",
-  babel: "javascript",
-  typescript: "typescript",
+  html: 'html',
+  css: 'css',
+  less: 'less',
+  scss: 'scss',
+  javascript: 'javascript',
+  babel: 'javascript',
+  typescript: 'typescript',
 };
 
 export interface IEditorProps {
@@ -42,7 +42,7 @@ const Editor = ({ language, defaultValue, value, onChange }: IEditorProps) => {
     if (divEl.current) {
       editor.current = monaco.editor.create(divEl.current, {
         minimap: { enabled: false },
-        theme: "vs-dark",
+        theme: 'vs-dark',
       });
       editor.current.onDidChangeModelContent(() => {
         onChange(editor.current.getValue());

@@ -1,6 +1,6 @@
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-const EditorDesktop = dynamic(() => import("./editor"), {
+const EditorDesktop = dynamic(() => import('./editor'), {
   ssr: false,
 });
 

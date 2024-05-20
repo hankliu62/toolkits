@@ -1,10 +1,10 @@
-import { run } from "json_typegen_wasm";
+import { run } from 'json_typegen_wasm';
 
 let current;
 
 const ctx: Worker = self as any;
 
-ctx.addEventListener("message", async (event) => {
+ctx.addEventListener('message', async (event) => {
   if (event.data._current) {
     current = event.data._current;
     return;
@@ -22,7 +22,7 @@ ctx.addEventListener("message", async (event) => {
 
   try {
     const { input, options } = event.data;
-    const result = run("Root", input, JSON.stringify(options));
+    const result = run('Root', input, JSON.stringify(options));
     respond({
       result,
     });

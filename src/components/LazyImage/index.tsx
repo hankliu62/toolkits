@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
+import { getRoutePrefix } from '@/utils/route';
 
 const useLazyLoad = (src: string) => {
   const imgRef = useRef<HTMLImageElement>(null);

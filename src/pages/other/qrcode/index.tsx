@@ -1,20 +1,14 @@
-import {
-  CopyOutlined,
-  DeleteOutlined,
-  FileAddOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-import { Alert, Breadcrumb, Button, Image, Input, message, Upload } from "antd";
-import Link from "next/link";
-import QRCode from "qrcode";
-import QrCodeParser from "qrcode-parser";
-import { useCallback, useState } from "react";
-import SplitPane from "react-split-pane";
-import { v4 as uuidv4 } from "uuid";
+import { CopyOutlined, DeleteOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import { Alert, Breadcrumb, Button, Image, Input, message, Upload } from 'antd';
+import Link from 'next/link';
+import QRCode from 'qrcode';
+import QrCodeParser from 'qrcode-parser';
+import { useCallback, useState } from 'react';
+import SplitPane from 'react-split-pane';
+import { v4 as uuidv4 } from 'uuid';
 
-import Clipboard from "@/components/Clipboard";
-import MonacoEditor from "@/components/CodeEditor";
-import { getRoutePrefix } from "@/utils/route";
+import Clipboard from '@/components/Clipboard';
+import MonacoEditor from '@/components/CodeEditor';
 
 const { Dragger } = Upload;
 
@@ -26,8 +20,7 @@ const { Dragger } = Upload;
 export default function QRCodePage() {
   const [content, setContent] = useState<string>();
 
-  const [qrCodes, setQrCodes] =
-    useState<{ uuid: string; content: string; image: string }[]>();
+  const [qrCodes, setQrCodes] = useState<{ uuid: string; content: string; image: string }[]>();
 
   // 解析的二维码内容
   const [parsedContent, setParsedContent] = useState<string>();
@@ -52,11 +45,11 @@ export default function QRCodePage() {
       const clipboardItems = await navigator.clipboard.read();
 
       for (const clipboardItem of clipboardItems) {
-        if (!clipboardItem.types.includes("image/png")) {
-          throw new Error("Clipboard contains non-image data.");
+        if (!clipboardItem.types.includes('image/png')) {
+          throw new Error('Clipboard contains non-image data.');
         }
 
-        const blob = await clipboardItem.getType("image/png");
+        const blob = await clipboardItem.getType('image/png');
         const url = URL.createObjectURL(blob);
         const qrCodeContent = await QrCodeParser(url);
 
@@ -76,10 +69,10 @@ export default function QRCodePage() {
     resetParsedState();
 
     const { status, originFileObj } = info.file;
-    if (status !== "uploading") {
+    if (status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
-    if (status === "done") {
+    if (status === 'done') {
       const file = originFileObj;
 
       try {
@@ -102,7 +95,7 @@ export default function QRCodePage() {
         setParsedError(error.message);
         console.error(error);
       }
-    } else if (status === "error") {
+    } else if (status === 'error') {
       message.error(`${info.file.name} 文件上传失败。`);
     }
   }, []);
@@ -116,10 +109,7 @@ export default function QRCodePage() {
         width: 300,
       });
 
-      setQrCodes((prev) => [
-        ...(prev || []),
-        { uuid: uuidv4(), content, image },
-      ]);
+      setQrCodes((prev) => [...(prev || []), { uuid: uuidv4(), content, image }]);
     } catch (error) {
       message.error(error.message);
     }
@@ -129,9 +119,7 @@ export default function QRCodePage() {
    * 删除QrCode
    */
   const onDeleteQrCode = useCallback((index: number) => {
-    setQrCodes((prev) =>
-      (prev || []).filter((item, innerIndex) => index !== innerIndex)
-    );
+    setQrCodes((prev) => (prev || []).filter((item, innerIndex) => index !== innerIndex));
   }, []);
 
   return (
@@ -143,7 +131,7 @@ export default function QRCodePage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "QRCode",
+            title: 'QRCode',
           },
         ]}
       />
@@ -168,31 +156,28 @@ export default function QRCodePage() {
           <MonacoEditor
             className="h-60 min-h-0"
             value={content}
-            language={"plaintext" as any}
+            language={'plaintext' as any}
             onChange={(val) => {
               setContent(val);
             }}
-            options={{ theme: "vs-dark" }}
+            options={{ theme: 'vs-dark' }}
           />
 
           <div className="m-5 space-y-5">
-            {qrCodes?.map(({ uuid, content, image }, index) => (
-              <div
-                key={uuid}
-                className="flex items-start justify-between gap-2"
-              >
+            {qrCodes?.map(({ uuid, content: qrCodeContent, image }, index) => (
+              <div key={uuid} className="flex items-start justify-between gap-2">
                 <div className="flex flex-1 items-stretch gap-2">
                   <Image
                     className="rounded border border-common-border"
                     width={156}
                     height={156}
                     src={image}
-                    alt={content}
+                    alt={qrCodeContent}
                   />
                   <div className="flex flex-1">
                     <Input.TextArea
                       className="h-full w-full flex-1 !bg-black/5"
-                      value={content}
+                      value={qrCodeContent}
                       autoSize={false}
                       readOnly
                     />
@@ -235,7 +220,7 @@ export default function QRCodePage() {
               multiple={false}
               onChange={onUploadChange}
               onDrop={(e) => {
-                console.log("Dropped files", e.dataTransfer.files);
+                console.log('Dropped files', e.dataTransfer.files);
               }}
               showUploadList={false}
             >
@@ -277,7 +262,7 @@ export default function QRCodePage() {
                 <Clipboard
                   text={parsedContent}
                   onSuccess={() => {
-                    message.success("复制成功");
+                    message.success('复制成功');
                   }}
                 >
                   <div className="group p-2 text-[0px]">

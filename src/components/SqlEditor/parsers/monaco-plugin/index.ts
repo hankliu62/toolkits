@@ -1,30 +1,23 @@
-import defaults from "lodash/defaults";
-import groupBy from "lodash/groupBy";
-import MyWorker from "worker-loader!./parser.worker.ts";
+import defaults from 'lodash/defaults';
+import groupBy from 'lodash/groupBy';
+import MyWorker from 'worker-loader!./parser.worker.ts';
 
-import {
-  ICompletionItem,
-  ICursorInfo,
-  ITableInfo,
-  reader,
-} from "../sql-parser";
-import { IParseResult } from "../syntax-parser";
-import { DefaultOpts, IMonacoVersion, IParserType } from "./default-opts";
+import type { ICompletionItem, ICursorInfo, ITableInfo } from '../sql-parser';
+import { reader } from '../sql-parser';
+import type { IParseResult } from '../syntax-parser';
+import type { IMonacoVersion, IParserType } from './default-opts';
+import { DefaultOpts } from './default-opts';
 
-const supportedMonacoEditorVersion = ["0.13.2", "0.15.6"];
+const supportedMonacoEditorVersion = ['0.13.2', '0.15.6'];
 
-export function monacoSqlAutocomplete(
-  monaco: any,
-  editor: any,
-  opts?: Partial<DefaultOpts>
-) {
+export function monacoSqlAutocomplete(monaco: any, editor: any, opts?: Partial<DefaultOpts>) {
   opts = defaults(opts || {}, new DefaultOpts(monaco));
 
   if (supportedMonacoEditorVersion.indexOf(opts.monacoEditorVersion) === -1) {
     throw new Error(
       `monaco-editor version ${
         opts.monacoEditorVersion
-      } is not allowed, only support ${supportedMonacoEditorVersion.join(" ")}`
+      } is not allowed, only support ${supportedMonacoEditorVersion.join(' ')}`,
     );
   }
 
@@ -40,11 +33,10 @@ export function monacoSqlAutocomplete(
       setTimeout(() => {
         const model = editor.getModel();
 
-        // eslint-disable-next-line promise/catch-or-return
         asyncParser(
           editor.getValue(),
           model.getOffsetAt(editor.getPosition()),
-          opts.parserType
+          opts.parserType,
         ).then((parseResult) => {
           resolve(parseResult);
 
@@ -56,32 +48,26 @@ export function monacoSqlAutocomplete(
 
           if (parseResult.error) {
             const newReason =
-              parseResult.error.reason === "incomplete"
+              parseResult.error.reason === 'incomplete'
                 ? `Incomplete, expect next input: \n${parseResult.error.suggestions
                     .map((each) => {
                       return each.value;
                     })
-                    .join("\n")}`
+                    .join('\n')}`
                 : `Wrong input, expect: \n${parseResult.error.suggestions
                     .map((each) => {
                       return each.value;
                     })
-                    .join("\n")}`;
+                    .join('\n')}`;
 
             const errorPosition = parseResult.error.token
               ? {
-                  startLineNumber: model.getPositionAt(
-                    parseResult.error.token.position[0]
-                  ).lineNumber,
-                  startColumn: model.getPositionAt(
-                    parseResult.error.token.position[0]
-                  ).column,
-                  endLineNumber: model.getPositionAt(
-                    parseResult.error.token.position[1]
-                  ).lineNumber,
-                  endColumn:
-                    model.getPositionAt(parseResult.error.token.position[1])
-                      .column + 1,
+                  startLineNumber: model.getPositionAt(parseResult.error.token.position[0])
+                    .lineNumber,
+                  startColumn: model.getPositionAt(parseResult.error.token.position[0]).column,
+                  endLineNumber: model.getPositionAt(parseResult.error.token.position[1])
+                    .lineNumber,
+                  endColumn: model.getPositionAt(parseResult.error.token.position[1]).column + 1,
                 }
               : {
                   startLineNumber: 0,
@@ -96,10 +82,7 @@ export function monacoSqlAutocomplete(
               {
                 ...errorPosition,
                 message: newReason,
-                severity: getSeverityByVersion(
-                  monaco,
-                  opts.monacoEditorVersion
-                ),
+                severity: getSeverityByVersion(monaco, opts.monacoEditorVersion),
               },
             ]);
           } else {
@@ -111,8 +94,7 @@ export function monacoSqlAutocomplete(
   });
 
   monaco.languages.registerCompletionItemProvider(opts.language, {
-    triggerCharacters:
-      " $.:{}=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+    triggerCharacters: ' $.:{}=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
     provideCompletionItems: async () => {
       const currentEditVersion = editVersion;
       const parseResult: IParseResult = await currentParserPromise;
@@ -121,26 +103,20 @@ export function monacoSqlAutocomplete(
         return returnCompletionItemsByVersion([], opts.monacoEditorVersion);
       }
 
-      const cursorInfo = await reader.getCursorInfo(
-        parseResult.ast,
-        parseResult.cursorKeyPath
-      );
+      const cursorInfo = await reader.getCursorInfo(parseResult.ast, parseResult.cursorKeyPath);
 
       const parserSuggestion = opts.pipeKeywords(parseResult.nextMatchings);
 
       if (!cursorInfo) {
-        return returnCompletionItemsByVersion(
-          parserSuggestion,
-          opts.monacoEditorVersion
-        );
+        return returnCompletionItemsByVersion(parserSuggestion, opts.monacoEditorVersion);
       }
 
       switch (cursorInfo.type) {
-        case "tableField": {
+        case 'tableField': {
           const cursorRootStatementFields = await reader.getFieldsFromStatement(
             parseResult.ast,
             parseResult.cursorKeyPath,
-            opts.onSuggestTableFields
+            opts.onSuggestTableFields,
           );
 
           // group.fieldName
@@ -148,12 +124,10 @@ export function monacoSqlAutocomplete(
             cursorRootStatementFields.filter((cursorRootStatementField) => {
               return cursorRootStatementField.groupPickerName !== null;
             }),
-            "groupPickerName"
+            'groupPickerName',
           );
 
-          const functionNames = await opts.onSuggestFunctionName(
-            cursorInfo.token.value
-          );
+          const functionNames = await opts.onSuggestFunctionName(cursorInfo.token.value);
 
           return returnCompletionItemsByVersion(
             [
@@ -166,51 +140,43 @@ export function monacoSqlAutocomplete(
                   })
                 : []),
             ],
-            opts.monacoEditorVersion
+            opts.monacoEditorVersion,
           );
         }
-        case "tableFieldAfterGroup": {
+        case 'tableFieldAfterGroup': {
           // 字段 . 后面的部分
-          const cursorRootStatementFieldsAfter =
-            await reader.getFieldsFromStatement(
-              parseResult.ast,
-              parseResult.cursorKeyPath as any,
-              opts.onSuggestTableFields
-            );
+          const cursorRootStatementFieldsAfter = await reader.getFieldsFromStatement(
+            parseResult.ast,
+            parseResult.cursorKeyPath as any,
+            opts.onSuggestTableFields,
+          );
 
           return returnCompletionItemsByVersion(
             [
-              ...cursorRootStatementFieldsAfter.filter(
-                (cursorRootStatementField: any) => {
-                  return (
-                    cursorRootStatementField.groupPickerName ===
-                    (cursorInfo as ICursorInfo<{ groupName: string }>).groupName
-                  );
-                }
-              ),
+              ...cursorRootStatementFieldsAfter.filter((cursorRootStatementField: any) => {
+                return (
+                  cursorRootStatementField.groupPickerName ===
+                  (cursorInfo as ICursorInfo<{ groupName: string }>).groupName
+                );
+              }),
               ...parserSuggestion,
             ],
-            opts.monacoEditorVersion
+            opts.monacoEditorVersion,
           );
         }
-        case "tableName": {
-          const tableNames = await opts.onSuggestTableNames(
-            cursorInfo as ICursorInfo<ITableInfo>
-          );
+        case 'tableName': {
+          const tableNames = await opts.onSuggestTableNames(cursorInfo as ICursorInfo<ITableInfo>);
 
           return returnCompletionItemsByVersion(
             [...tableNames, ...parserSuggestion],
-            opts.monacoEditorVersion
+            opts.monacoEditorVersion,
           );
         }
-        case "functionName": {
+        case 'functionName': {
           return opts.onSuggestFunctionName(cursorInfo.token.value);
         }
         default: {
-          return returnCompletionItemsByVersion(
-            parserSuggestion,
-            opts.monacoEditorVersion
-          );
+          return returnCompletionItemsByVersion(parserSuggestion, opts.monacoEditorVersion);
         }
       }
     },
@@ -221,13 +187,10 @@ export function monacoSqlAutocomplete(
       const parseResult: IParseResult = await asyncParser(
         editor.getValue(),
         model.getOffsetAt(position),
-        opts.parserType
+        opts.parserType,
       );
 
-      const cursorInfo = await reader.getCursorInfo(
-        parseResult.ast,
-        parseResult.cursorKeyPath
-      );
+      const cursorInfo = await reader.getCursorInfo(parseResult.ast, parseResult.cursorKeyPath);
 
       if (!cursorInfo) {
         return null as any;
@@ -236,37 +199,31 @@ export function monacoSqlAutocomplete(
       let contents: any = [];
 
       switch (cursorInfo.type) {
-        case "tableField": {
+        case 'tableField': {
           const extra = await reader.findFieldExtraInfo(
             parseResult.ast,
             cursorInfo,
             opts.onSuggestTableFields,
-            parseResult.cursorKeyPath
+            parseResult.cursorKeyPath,
           );
-          contents = await opts.onHoverTableField(
-            cursorInfo.token.value,
-            extra
-          );
+          contents = await opts.onHoverTableField(cursorInfo.token.value, extra);
           break;
         }
-        case "tableFieldAfterGroup": {
+        case 'tableFieldAfterGroup': {
           const extraAfter = await reader.findFieldExtraInfo(
             parseResult.ast,
             cursorInfo,
             opts.onSuggestTableFields,
-            parseResult.cursorKeyPath
+            parseResult.cursorKeyPath,
           );
-          contents = await opts.onHoverTableField(
-            cursorInfo.token.value,
-            extraAfter
-          );
+          contents = await opts.onHoverTableField(cursorInfo.token.value, extraAfter);
           break;
         }
-        case "tableName": {
+        case 'tableName': {
           contents = await opts.onHoverTableName(cursorInfo as ICursorInfo);
           break;
         }
-        case "functionName": {
+        case 'functionName': {
           contents = await opts.onHoverFunctionName(cursorInfo.token.value);
           break;
         }
@@ -276,7 +233,7 @@ export function monacoSqlAutocomplete(
       return {
         range: monaco.Range.fromPositions(
           model.getPositionAt(cursorInfo.token.position[0]),
-          model.getPositionAt(cursorInfo.token.position[1] + 1)
+          model.getPositionAt(cursorInfo.token.position[1] + 1),
         ),
         contents,
       };
@@ -289,11 +246,7 @@ const worker: Worker = new (MyWorker as any)();
 
 let parserIndex = 0;
 
-const asyncParser = async (
-  text: string,
-  index: number,
-  parserType: IParserType
-) => {
+const asyncParser = async (text: string, index: number, parserType: IParserType) => {
   parserIndex++;
   const currentParserIndex = parserIndex;
 
@@ -318,35 +271,32 @@ const asyncParser = async (
   return promise as Promise<IParseResult>;
 };
 
-function returnCompletionItemsByVersion(
-  value: ICompletionItem[],
-  monacoVersion: IMonacoVersion
-) {
+function returnCompletionItemsByVersion(value: ICompletionItem[], monacoVersion: IMonacoVersion) {
   switch (monacoVersion) {
-    case "0.13.2": {
+    case '0.13.2': {
       return value;
     }
-    case "0.15.6": {
+    case '0.15.6': {
       return {
         suggestions: value,
       };
     }
     default: {
-      throw new Error("Not supported version");
+      throw new Error('Not supported version');
     }
   }
 }
 
 function getSeverityByVersion(monaco: any, monacoVersion: IMonacoVersion) {
   switch (monacoVersion) {
-    case "0.13.2": {
+    case '0.13.2': {
       return monaco.Severity.Error;
     }
-    case "0.15.6": {
+    case '0.15.6': {
       return monaco.MarkerSeverity.Error;
     }
     default: {
-      throw new Error("Not supported version");
+      throw new Error('Not supported version');
     }
   }
 }

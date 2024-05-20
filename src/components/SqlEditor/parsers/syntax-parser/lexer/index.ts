@@ -1,6 +1,6 @@
-import { IToken } from "./token";
+import type { IToken } from './token';
 
-export * from "./token";
+export * from './token';
 
 interface ILexerConfig {
   type: string;
@@ -33,9 +33,7 @@ class Tokenizer {
       token = result.token;
 
       if (!token.value) {
-        throw new Error(
-          `Lexer: Regex parse error, please check your lexer config.`
-        );
+        throw new Error(`Lexer: Regex parse error, please check your lexer config.`);
       }
 
       token.position = [lastPosition, lastPosition + token.value.length - 1];

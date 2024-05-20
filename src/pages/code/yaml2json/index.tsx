@@ -1,14 +1,13 @@
-import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, message } from "antd";
-import YAML from "js-yaml";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import SplitPane from "react-split-pane";
+import { CopyOutlined, FileTextOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, message } from 'antd';
+import YAML from 'js-yaml';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import SplitPane from 'react-split-pane';
 
-import Clipboard from "@/components/Clipboard";
-import MonacoEditor from "@/components/CodeEditor";
-import { LanguageDemo } from "@/constants/editor";
-import { getRoutePrefix } from "@/utils/route";
+import Clipboard from '@/components/Clipboard';
+import MonacoEditor from '@/components/CodeEditor';
+import { LanguageDemo } from '@/constants/editor';
 
 /**
  * 将yaml转化成json的在线工具网站
@@ -16,7 +15,7 @@ import { getRoutePrefix } from "@/utils/route";
  * @returns
  */
 export default function Yaml2JsonPage() {
-  const [sourceLanguage, setSourceLanguage] = useState<"yaml" | "json">("yaml");
+  const [sourceLanguage, setSourceLanguage] = useState<'yaml' | 'json'>('yaml');
 
   // yaml数据
   const [yaml, setYaml] = useState<string>();
@@ -25,14 +24,14 @@ export default function Yaml2JsonPage() {
   const [json, setJson] = useState<string>();
 
   useEffect(() => {
-    if (sourceLanguage === "yaml") {
+    if (sourceLanguage === 'yaml') {
       const convertedJson = convertYamlToJson(yaml);
       convertedJson && setJson(convertedJson);
     }
   }, [yaml, sourceLanguage]);
 
   useEffect(() => {
-    if (sourceLanguage === "json") {
+    if (sourceLanguage === 'json') {
       const convertedYaml = convertJsonToYaml(json);
       convertedYaml && setYaml(convertedYaml);
     }
@@ -46,16 +45,16 @@ export default function Yaml2JsonPage() {
    */
   function convertYamlToJson(currentYaml: string): string {
     if (!currentYaml) {
-      return "";
+      return '';
     }
 
     try {
       const current = YAML.load(currentYaml);
       if (current) {
-        return JSON.stringify(current, null, "  ");
+        return JSON.stringify(current, null, '  ');
       }
 
-      message.error("转换失败");
+      message.error('转换失败');
     } catch (error) {
       console.error(error);
       message.error(error.message);
@@ -70,7 +69,7 @@ export default function Yaml2JsonPage() {
    */
   function convertJsonToYaml(currentJson: string): string {
     if (!currentJson) {
-      return "";
+      return '';
     }
 
     let currentData;
@@ -84,7 +83,7 @@ export default function Yaml2JsonPage() {
         if (current) {
           return current;
         }
-        message.error("转换失败");
+        message.error('转换失败');
       }
     } catch (error) {
       console.error(error);
@@ -98,10 +97,10 @@ export default function Yaml2JsonPage() {
   const onChangeSource = useCallback(() => {
     setJson(undefined);
     setYaml(undefined);
-    if (sourceLanguage === "yaml") {
-      setSourceLanguage("json");
+    if (sourceLanguage === 'yaml') {
+      setSourceLanguage('json');
     } else {
-      setSourceLanguage("yaml");
+      setSourceLanguage('yaml');
     }
   }, [sourceLanguage]);
 
@@ -109,7 +108,7 @@ export default function Yaml2JsonPage() {
    * 设置案例
    */
   const onSetExample = useCallback(() => {
-    if (sourceLanguage === "yaml") {
+    if (sourceLanguage === 'yaml') {
       setYaml(LanguageDemo.yaml);
     } else {
       setJson(LanguageDemo.json);
@@ -121,13 +120,13 @@ export default function Yaml2JsonPage() {
    */
   const onChangeSourceEditor = useCallback(
     (val) => {
-      if (sourceLanguage === "yaml") {
+      if (sourceLanguage === 'yaml') {
         setYaml(val);
       } else {
         setJson(val);
       }
     },
-    [sourceLanguage]
+    [sourceLanguage],
   );
 
   /**
@@ -135,12 +134,9 @@ export default function Yaml2JsonPage() {
    */
   const onChangeTargetEditor = useCallback(
     (val) => {
-      console.log(
-        `target ${{ json: "yaml", yaml: "json" }[sourceLanguage]} changed.`,
-        val
-      );
+      console.log(`target ${{ json: 'yaml', yaml: 'json' }[sourceLanguage]} changed.`, val);
     },
-    [sourceLanguage]
+    [sourceLanguage],
   );
 
   const renderYamlEditor = () => {
@@ -148,12 +144,8 @@ export default function Yaml2JsonPage() {
       <MonacoEditor
         value={yaml}
         language="yaml"
-        onChange={
-          sourceLanguage === "yaml"
-            ? onChangeSourceEditor
-            : onChangeTargetEditor
-        }
-        options={{ theme: "vs-dark", readOnly: sourceLanguage !== "yaml" }}
+        onChange={sourceLanguage === 'yaml' ? onChangeSourceEditor : onChangeTargetEditor}
+        options={{ theme: 'vs-dark', readOnly: sourceLanguage !== 'yaml' }}
       />
     );
   };
@@ -163,12 +155,8 @@ export default function Yaml2JsonPage() {
       <MonacoEditor
         value={json}
         language="json"
-        onChange={
-          sourceLanguage === "yaml"
-            ? onChangeTargetEditor
-            : onChangeSourceEditor
-        }
-        options={{ theme: "vs-dark", readOnly: sourceLanguage === "yaml" }}
+        onChange={sourceLanguage === 'yaml' ? onChangeTargetEditor : onChangeSourceEditor}
+        options={{ theme: 'vs-dark', readOnly: sourceLanguage === 'yaml' }}
       />
     );
   };
@@ -182,7 +170,7 @@ export default function Yaml2JsonPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "Yaml2Json",
+            title: 'Yaml2Json',
           },
         ]}
       />
@@ -192,9 +180,7 @@ export default function Yaml2JsonPage() {
       <SplitPane className="flex-1" split="vertical" minSize={50} maxSize={75}>
         <div className="overflow-y-auto">
           <div className="flex justify-between border-b border-black/20 px-6 py-4">
-            <h2 className="text-lg font-medium leading-[32px]">
-              {sourceLanguage.toUpperCase()}
-            </h2>
+            <h2 className="text-lg font-medium leading-[32px]">{sourceLanguage.toUpperCase()}</h2>
 
             <div className="flex items-center space-x-5">
               <Button
@@ -206,9 +192,9 @@ export default function Yaml2JsonPage() {
               </Button>
 
               <Clipboard
-                text={sourceLanguage === "yaml" ? yaml : json}
+                text={sourceLanguage === 'yaml' ? yaml : json}
                 onSuccess={() => {
-                  message.success("复制成功");
+                  message.success('复制成功');
                 }}
               >
                 <Button
@@ -220,12 +206,12 @@ export default function Yaml2JsonPage() {
               </Clipboard>
             </div>
           </div>
-          {sourceLanguage === "yaml" ? renderYamlEditor() : renderJsonEditor()}
+          {sourceLanguage === 'yaml' ? renderYamlEditor() : renderJsonEditor()}
         </div>
         <div className="overflow-y-auto">
           <div className="flex justify-between border-b border-black/20 px-6 py-4">
             <h2 className="text-lg font-medium leading-[32px]">
-              {{ json: "yaml", yaml: "json" }[sourceLanguage].toUpperCase()}
+              {{ json: 'yaml', yaml: 'json' }[sourceLanguage].toUpperCase()}
             </h2>
 
             <div className="flex items-center space-x-5">
@@ -255,9 +241,9 @@ export default function Yaml2JsonPage() {
               </Button>
 
               <Clipboard
-                text={sourceLanguage === "yaml" ? json : yaml}
+                text={sourceLanguage === 'yaml' ? json : yaml}
                 onSuccess={() => {
-                  message.success("复制成功");
+                  message.success('复制成功');
                 }}
               >
                 <Button
@@ -269,7 +255,7 @@ export default function Yaml2JsonPage() {
               </Clipboard>
             </div>
           </div>
-          {sourceLanguage === "yaml" ? renderJsonEditor() : renderYamlEditor()}
+          {sourceLanguage === 'yaml' ? renderJsonEditor() : renderYamlEditor()}
         </div>
       </SplitPane>
     </div>

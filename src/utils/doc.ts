@@ -6,7 +6,7 @@ const MOBILE_MAX_WIDTH = 1023;
  */
 export function isBrowser() {
   return (
-    typeof window !== "undefined" &&
+    typeof window !== 'undefined' &&
     window.document !== undefined &&
     window.document.createElement !== undefined
   );
@@ -34,7 +34,7 @@ declare global {
  */
 export function isFullScreen() {
   if (!isBrowser()) return false;
-  if (typeof document !== "object") return false;
+  if (typeof document !== 'object') return false;
   return !!(
     document.fullScreen ||
     document.webkitIsFullScreen ||
@@ -58,8 +58,8 @@ export function isSafari(): boolean {
  * 是否为IE浏览器
  */
 export function isIE(): boolean {
-  if (typeof window !== "object") return false;
-  return "ActiveXObject" in window;
+  if (typeof window !== 'object') return false;
+  return 'ActiveXObject' in window;
 }
 
 /**
@@ -88,11 +88,7 @@ export function isMobile(): boolean {
 export function getDocumentWidth(): number {
   if (!isBrowser()) return 0;
 
-  return (
-    document?.documentElement?.clientWidth ||
-    window.innerWidth ||
-    document.body.clientWidth
-  );
+  return document?.documentElement?.clientWidth || window.innerWidth || document.body.clientWidth;
 }
 
 /**

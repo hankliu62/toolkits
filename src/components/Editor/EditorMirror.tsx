@@ -1,10 +1,10 @@
-import { defaultKeymap } from "@codemirror/commands";
-import { javascript } from "@codemirror/lang-javascript";
-import { json } from "@codemirror/lang-json";
-import { EditorState } from "@codemirror/state";
-import { EditorView, keymap } from "@codemirror/view";
-import { basicSetup } from "codemirror";
-import * as React from "react";
+import { defaultKeymap } from '@codemirror/commands';
+import { javascript } from '@codemirror/lang-javascript';
+import { json } from '@codemirror/lang-json';
+import { EditorState } from '@codemirror/state';
+import { EditorView, keymap } from '@codemirror/view';
+import { basicSetup } from 'codemirror';
+import * as React from 'react';
 
 interface ICodeMirror {
   language?: any;
@@ -26,14 +26,11 @@ function CodeMirror(props: ICodeMirror) {
     }
     // 初始状态
     const startState = EditorState.create({
-      doc:
-        props.language === "json"
-          ? JSON.stringify(props.value, null, 2)
-          : props.value,
+      doc: props.language === 'json' ? JSON.stringify(props.value, null, 2) : props.value,
       extensions: [
         basicSetup,
         keymap.of(defaultKeymap),
-        props.language === "json" ? json() : javascript(),
+        props.language === 'json' ? json() : javascript(),
         EditorView.updateListener.of((v) => {
           if (v.docChanged) {
             props.onChange(v.state.toJSON().doc);

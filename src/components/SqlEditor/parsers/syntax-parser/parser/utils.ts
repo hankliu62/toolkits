@@ -1,7 +1,7 @@
-import { IAst } from "./define";
+import type { IAst } from './define';
 
 export const compareIgnoreLowerCaseWhenString = (source: any, target: any) => {
-  if (typeof source === "string" && typeof target === "string") {
+  if (typeof source === 'string' && typeof target === 'string') {
     return source.toLowerCase() === target.toLowerCase();
   }
   return source === target;
@@ -32,12 +32,8 @@ export function tailCallOptimize<T>(f: T): T {
   } as any;
 }
 
-export function getPathByCursorIndexFromAst(
-  obj: any,
-  cursorIndex: number,
-  path = ""
-) {
-  let fullpath = "";
+export function getPathByCursorIndexFromAst(obj: any, cursorIndex: number, path = '') {
+  let fullpath = '';
 
   for (const key in obj) {
     if (
@@ -46,18 +42,15 @@ export function getPathByCursorIndexFromAst(
       obj[key].position[0] <= cursorIndex &&
       obj[key].position[1] + 1 >= cursorIndex
     ) {
-      if (path === "") {
+      if (path === '') {
         return key;
       }
       return `${path}.${key}`;
     }
-    if (typeof obj[key] === "object") {
+    if (typeof obj[key] === 'object') {
       fullpath =
-        getPathByCursorIndexFromAst(
-          obj[key],
-          cursorIndex,
-          path === "" ? key : `${path}.${key}`
-        ) || fullpath;
+        getPathByCursorIndexFromAst(obj[key], cursorIndex, path === '' ? key : `${path}.${key}`) ||
+        fullpath;
     }
   }
   return fullpath;

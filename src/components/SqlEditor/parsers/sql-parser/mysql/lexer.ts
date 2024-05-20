@@ -1,13 +1,13 @@
-import { createLexer } from "../../syntax-parser";
+import { createLexer } from '../../syntax-parser';
 
 export const sqlTokenizer = createLexer([
   {
-    type: "whitespace",
+    type: 'whitespace',
     regexes: [/^(\s+)/],
     ignore: true,
   },
   {
-    type: "comment",
+    type: 'comment',
     regexes: [
       /^((?:#|--).*?(?:\n|$))/, // # --
       /^(\/\*[^]*?(?:\*\/|$))/, // /* */
@@ -15,18 +15,18 @@ export const sqlTokenizer = createLexer([
     ignore: true,
   },
   {
-    type: "number",
+    type: 'number',
     regexes: [/^(\d+(\.\d+)?|0x[\dA-Fa-f]+|0b[01]+)\b/],
   },
   {
-    type: "word",
+    type: 'word',
     regexes: [
       /^(\w+)/, // word
       /^(\${\w+})/, // ${word}
     ],
   },
   {
-    type: "string",
+    type: 'string',
     regexes: [
       /^((?=")"[^"\\]*(?:\\[\S\s][^"\\]*)*")/, // ""
       /^((?=')'[^'\\]*(?:\\[\S\s][^'\\]*)*')/, // ''
@@ -34,7 +34,7 @@ export const sqlTokenizer = createLexer([
     ],
   },
   {
-    type: "special",
+    type: 'special',
     regexes: [
       /^(\(|\))/, // '(' ')'.
       /^(!=|<>|==|<=|>=|!<|!>|\|\||::|->>|->|~~\*|~~|!~~\*|!~~|~\*|!~\*|!~|.)/, // operators.

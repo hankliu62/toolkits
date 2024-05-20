@@ -1,25 +1,25 @@
-import { CopyOutlined, FileTextOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, message, Select } from "antd";
-import h2m from "h2m";
-import htmlToMd from "html-to-md";
-import html2markdown from "html2markdown";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import SplitPane from "react-split-pane";
-import Turndown from "turndown";
-import * as turndownGFM from "turndown-plugin-gfm";
+import { CopyOutlined, FileTextOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, message, Select } from 'antd';
+import h2m from 'h2m';
+import htmlToMd from 'html-to-md';
+import html2markdown from 'html2markdown';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import SplitPane from 'react-split-pane';
+import Turndown from 'turndown';
+import * as turndownGFM from 'turndown-plugin-gfm';
 
-import Clipboard from "@/components/Clipboard";
-import MonacoEditor from "@/components/CodeEditor";
-import { LanguageDemo } from "@/constants/editor";
-import { getRoutePrefix } from "@/utils/route";
+import Clipboard from '@/components/Clipboard';
+import MonacoEditor from '@/components/CodeEditor';
+import { LanguageDemo } from '@/constants/editor';
 
 // 转化方式
 enum EConvertWay {
-  H2M = "H2M",
-  Turndown = "Turndown",
-  HTML2markdown = "HTML2markdown",
-  HTMLToMd = "html-to-md",
+  H2M = 'H2M',
+  // eslint-disable-next-line
+  Turndown = 'Turndown',
+  HTML2markdown = 'HTML2markdown',
+  HTMLToMd = 'html-to-md',
 }
 
 /**
@@ -43,20 +43,20 @@ export default function HTML2Markdown() {
 
   function getMarkdownByWay(way: EConvertWay, currentHtml: string): string {
     if (!currentHtml) {
-      return "";
+      return '';
     }
 
     try {
       switch (way) {
         case EConvertWay.H2M: {
           // https://www.npmjs.com/package/h2m
-          return h2m(currentHtml, { converter: "MarkdownExtra" });
+          return h2m(currentHtml, { converter: 'MarkdownExtra' });
         }
         case EConvertWay.Turndown: {
           const turndown = new Turndown({
-            bulletListMarker: "-",
-            codeBlockStyle: "fenced",
-            headingStyle: "atx",
+            bulletListMarker: '-',
+            codeBlockStyle: 'fenced',
+            headingStyle: 'atx',
           });
           turndown.use(turndownGFM.gfm);
           // https://www.npmjs.com/package/turndown
@@ -71,7 +71,7 @@ export default function HTML2Markdown() {
           return htmlToMd(currentHtml, {}, false);
         }
         default: {
-          return "";
+          return '';
         }
       }
     } catch (error) {
@@ -96,7 +96,7 @@ export default function HTML2Markdown() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "HTML2Markdown",
+            title: 'HTML2Markdown',
           },
         ]}
       />
@@ -120,7 +120,7 @@ export default function HTML2Markdown() {
               <Clipboard
                 text={html}
                 onSuccess={() => {
-                  message.success("复制成功");
+                  message.success('复制成功');
                 }}
               >
                 <Button
@@ -138,7 +138,7 @@ export default function HTML2Markdown() {
             onChange={(val) => {
               setHtml(val);
             }}
-            options={{ theme: "vs-light" }}
+            options={{ theme: 'vs-light' }}
           />
         </div>
         <div className="overflow-y-auto">
@@ -164,7 +164,7 @@ export default function HTML2Markdown() {
               <Clipboard
                 text={markdown}
                 onSuccess={() => {
-                  message.success("复制成功");
+                  message.success('复制成功');
                 }}
               >
                 <Button
@@ -182,7 +182,7 @@ export default function HTML2Markdown() {
             onChange={(val) => {
               setMarkdown(val);
             }}
-            options={{ theme: "vs-light", readOnly: true }}
+            options={{ theme: 'vs-light', readOnly: true }}
           />
         </div>
       </SplitPane>

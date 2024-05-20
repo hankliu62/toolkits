@@ -1,12 +1,10 @@
-import { HourglassOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button } from "antd";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useCallback, useState } from "react";
+import { HourglassOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button } from 'antd';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useCallback, useState } from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
-
-const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 const Demo = `# toolkit
 
@@ -76,7 +74,7 @@ export default function MarkdownPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "Markdown 编辑阅读器",
+            title: 'Markdown 编辑阅读器',
           },
         ]}
       />

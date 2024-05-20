@@ -1,7 +1,7 @@
-import classNames from "classnames";
-import React, { useLayoutEffect } from "react";
+import classNames from 'classnames';
+import React, { useLayoutEffect } from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
+import { getRoutePrefix } from '@/utils/route';
 
 export interface IHeaderProps {
   className?: string;
@@ -14,7 +14,7 @@ export default function Header({ className }: IHeaderProps) {
   // CSS + SVG Text Smoke Hover Effect
   useLayoutEffect(() => {
     let requestAnimationFrameTimer: number;
-    const filter = document.querySelector("#turbulence");
+    const filter = document.querySelector('#turbulence');
     let frames = 1;
     const rad = Math.PI / 180;
     let bfx, bfy;
@@ -28,9 +28,9 @@ export default function Header({ className }: IHeaderProps) {
       bfx += 0.005 * Math.cos(frames * rad);
       bfy += 0.005 * Math.sin(frames * rad);
 
-      const bf = bfx.toString() + " " + bfy.toString();
+      const bf = bfx.toString() + ' ' + bfy.toString();
       // displacement.setAttributeNS(null, 'scale', frames);
-      filter && filter.setAttributeNS(null, "baseFrequency", bf);
+      filter && filter.setAttributeNS(null, 'baseFrequency', bf);
 
       requestAnimationFrameTimer = window.requestAnimationFrame(freqAnimation);
     }
@@ -38,17 +38,15 @@ export default function Header({ className }: IHeaderProps) {
     requestAnimationFrameTimer = window.requestAnimationFrame(freqAnimation);
 
     return () => {
-      requestAnimationFrameTimer &&
-        window.cancelAnimationFrame(requestAnimationFrameTimer);
+      requestAnimationFrameTimer && window.cancelAnimationFrame(requestAnimationFrameTimer);
     };
   }, []);
 
   return (
     <header
-      className={classNames(
-        "group relative flex h-[520px] items-center justify-center",
-        { [className]: className }
-      )}
+      className={classNames('group relative flex h-[520px] items-center justify-center', {
+        [className]: className,
+      })}
     >
       {/* 背景 */}
       <div className="absolute inset-0 z-0 blur-[0]">
@@ -97,21 +95,21 @@ export default function Header({ className }: IHeaderProps) {
           className="fireworks absolute left-[30%] top-[13%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
-            animationDelay: "-0.4s",
+            animationDelay: '-0.4s',
           }}
         />
         <div
           className="fireworks absolute left-[5%] top-[23%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
-            animationDelay: "-1.7s",
+            animationDelay: '-1.7s',
           }}
         />
         <div
           className="fireworks absolute left-[45%] top-[8%] h-[150px] w-[150px]"
           style={{
             mask: `url(${getRoutePrefix()}/images/index/fireworks.png) right top / auto 150px no-repeat`,
-            animationDelay: "-3.1s",
+            animationDelay: '-3.1s',
           }}
         />
       </div>

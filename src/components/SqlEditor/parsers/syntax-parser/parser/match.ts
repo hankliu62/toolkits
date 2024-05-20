@@ -1,7 +1,7 @@
-import { IToken } from "../lexer/token";
-import { chain } from "./chain";
-import { IElements } from "./define";
-import { Scanner } from "./scanner";
+import type { IToken } from '../lexer/token';
+import { chain } from './chain';
+import type { IElements } from './define';
+import type { Scanner } from './scanner';
 
 export interface IMatch {
   token?: IToken;
@@ -9,7 +9,7 @@ export interface IMatch {
 }
 
 function equalWordOrIncludeWords(str: string, word: string | string[] | null) {
-  if (typeof word === "string") {
+  if (typeof word === 'string') {
     return judgeMatch(str, word);
   }
   return word.some((eachWord) => {
@@ -27,7 +27,7 @@ function judgeMatch(source: string, target: string) {
 function matchToken(
   scanner: Scanner,
   compare: (token: IToken) => boolean,
-  isCostToken?: boolean
+  isCostToken?: boolean,
 ): IMatch {
   const token = scanner.read();
   if (!token) {
@@ -54,7 +54,7 @@ function matchToken(
 
 function createMatch<T>(
   fn: (scanner: Scanner, arg?: T, isCostToken?: boolean) => IMatch,
-  specialName?: string
+  specialName?: string,
 ) {
   return (arg?: T) => {
     function foo() {
@@ -63,34 +63,29 @@ function createMatch<T>(
       };
     }
 
-    foo.parserName = "match";
+    foo.parserName = 'match';
 
     foo.displayName = specialName;
     return foo;
   };
 }
 
-export const match = createMatch(
-  (scanner, word: string | string[], isCostToken) => {
-    return matchToken(
-      scanner,
-      (token) => {
-        return equalWordOrIncludeWords(token.value, word);
-      },
-      isCostToken
-    );
-  }
-);
+export const match = createMatch((scanner, word: string | string[], isCostToken) => {
+  return matchToken(
+    scanner,
+    (token) => {
+      return equalWordOrIncludeWords(token.value, word);
+    },
+    isCostToken,
+  );
+});
 
 interface IMatchTokenTypeOption {
   includes?: string[];
   excludes?: string[];
 }
 
-export const matchTokenType = (
-  tokenType: string,
-  opts: IMatchTokenTypeOption = {}
-) => {
+export const matchTokenType = (tokenType: string, opts: IMatchTokenTypeOption = {}) => {
   const options: IMatchTokenTypeOption = {
     includes: [],
     excludes: [],
@@ -123,7 +118,7 @@ export const matchTokenType = (
 
         return true;
       },
-      isCostToken
+      isCostToken,
     );
   }, tokenType)();
 };
@@ -144,7 +139,7 @@ export const matchFalse = (): IMatch => {
 
 export const optional = (...elements: IElements) => {
   if (elements.length === 0) {
-    throw new Error("Must have arguments!");
+    throw new Error('Must have arguments!');
   }
 
   return chain([
@@ -159,7 +154,7 @@ export const optional = (...elements: IElements) => {
 
 export const plus = (...elements: IElements) => {
   if (elements.length === 0) {
-    throw new Error("Must have arguments!");
+    throw new Error('Must have arguments!');
   }
 
   const plusFunction = () => {
@@ -167,7 +162,7 @@ export const plus = (...elements: IElements) => {
       chain(...elements)((ast) => {
         return elements.length === 1 ? ast[0] : ast;
       }),
-      optional(plusFunction)
+      optional(plusFunction),
     )((ast) => {
       if (ast[1]) {
         return [ast[0], ...ast[1]];
@@ -180,7 +175,7 @@ export const plus = (...elements: IElements) => {
 
 export const many = (...elements: IElements) => {
   if (elements.length === 0) {
-    throw new Error("Must have arguments!");
+    throw new Error('Must have arguments!');
   }
   return optional(plus(...elements));
 };

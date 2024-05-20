@@ -1,14 +1,13 @@
-import { CopyOutlined, ThunderboltOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, message } from "antd";
-import type { editor as MonacoEditor } from "monaco-editor";
-import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { format as formatSQL } from "sql-formatter";
+import { CopyOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, message } from 'antd';
+import type { editor as MonacoEditor } from 'monaco-editor';
+import Link from 'next/link';
+import { useCallback, useRef, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { format as formatSQL } from 'sql-formatter';
 
-import Clipboard from "@/components/Clipboard";
-import { SqlEditor } from "@/components/SqlEditor";
-import { getRoutePrefix } from "@/utils/route";
+import Clipboard from '@/components/Clipboard';
+import { SqlEditor } from '@/components/SqlEditor';
 
 /**
  * SQL在线编辑器页面
@@ -26,16 +25,16 @@ export default function SqlEditorPage() {
     (val?: string) => {
       val ? setValue(formatSQL(val)) : value && setValue(formatSQL(value));
     },
-    [value]
+    [value],
   );
 
   // 快捷键格式化SQL
   useHotkeys(
-    "cmd+shift+o",
+    'cmd+shift+o',
     () => {
       onFormatSQL();
     },
-    [onFormatSQL]
+    [onFormatSQL],
   );
 
   return (
@@ -47,7 +46,7 @@ export default function SqlEditorPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "SQL 编辑器",
+            title: 'SQL 编辑器',
           },
         ]}
       />
@@ -70,7 +69,7 @@ export default function SqlEditorPage() {
               <Clipboard
                 text={value}
                 onSuccess={() => {
-                  message.success("复制成功");
+                  message.success('复制成功');
                 }}
               >
                 <Button
@@ -91,13 +90,11 @@ export default function SqlEditorPage() {
               onMount={(sqlEditor, monaco) => {
                 editor.current = sqlEditor;
                 editor.current.addCommand(
-                  monaco.KeyMod.CtrlCmd |
-                    monaco.KeyMod.Shift |
-                    monaco.KeyCode.KeyF,
+                  monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyF,
                   function () {
-                    console.log("cmd+shift+F", sqlEditor.getValue());
+                    console.log('cmd+shift+F', sqlEditor.getValue());
                     onFormatSQL(sqlEditor.getValue());
-                  }
+                  },
                 );
               }}
             />

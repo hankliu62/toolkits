@@ -1,12 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-export default function useAnchor(
-  menus: { id: string | number; title: string }[]
-) {
-  const [currentSection, setCurrentSection] = useState(
-    menus[0]?.id || menus[0]?.title
-  );
+export default function useAnchor(menus: { id: string | number; title: string }[]) {
+  const [currentSection, setCurrentSection] = useState(menus[0]?.id || menus[0]?.title);
 
+  // eslint-disable-next-line
   const getHeadings = useCallback((menus) => {
     // .flatMap((node) => [
     //   node.id,
@@ -45,10 +42,10 @@ export default function useAnchor(
       }
       setCurrentSection(current);
     }
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => {
-      window.removeEventListener("scroll", onScroll, { passive: true } as any);
+      window.removeEventListener('scroll', onScroll, { passive: true } as any);
     };
   }, [getHeadings, menus]);
 

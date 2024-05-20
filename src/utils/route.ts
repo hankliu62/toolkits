@@ -3,5 +3,5 @@
  * @returns
  */
 export function getRoutePrefix(): string {
-  return process.env.ROUTE_PREFIX || "";
+  return process.env.ROUTE_PREFIX || '';
 }

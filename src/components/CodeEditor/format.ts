@@ -1,8 +1,8 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 // import PrettierWorker from "worker-loader!@hankliu/rc-monaco-editor/lib/workers/prettier.worker";
-import PrettierWorker from "worker-loader!../../workers/editor-prettier.worker";
+import PrettierWorker from 'worker-loader!../../workers/editor-prettier.worker';
 
-import { createWorkerQueue } from "@/utils/workers";
+import { createWorkerQueue } from '@/utils/workers';
 
 /**
  * 注册代码格式化工具
@@ -44,26 +44,23 @@ export function registerDocumentFormattingEditProviders() {
   //   "html",
   // ];
   const supportLanguages = [
-    "json",
-    "javascript",
-    "typescript",
-    "css",
-    "less",
-    "scss",
-    "markdown",
-    "graphql",
-    "handlebars",
-    "html",
-    "yaml",
-    "sql",
+    'json',
+    'javascript',
+    'typescript',
+    'css',
+    'less',
+    'scss',
+    'markdown',
+    'graphql',
+    'handlebars',
+    'html',
+    'yaml',
+    'sql',
   ];
 
   for (const lang of supportLanguages) {
     disposables.push(
-      monaco.languages.registerDocumentFormattingEditProvider(
-        lang,
-        formattingEditProvider
-      )
+      monaco.languages.registerDocumentFormattingEditProvider(lang, formattingEditProvider),
     );
   }
 

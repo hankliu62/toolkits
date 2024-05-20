@@ -1,5 +1,5 @@
-import { chain, many, optional, plus } from "../../syntax-parser";
-import { createFourOperations } from "../base/four-operations";
+import { chain, many, optional, plus } from '../../syntax-parser';
+import { createFourOperations } from '../base/four-operations';
 import {
   comparisonOperator,
   dataType,
@@ -13,13 +13,13 @@ import {
   stringOrWordOrNumber,
   stringSym,
   wordSym,
-} from "../base/parser";
-import { createTableName, flattenAll } from "../base/utils";
+} from '../base/parser';
+import { createTableName, flattenAll } from '../base/utils';
 
 export const root = () => {
   return chain(
     statements,
-    optional(";")
+    optional(';'),
   )((ast) => {
     return ast[0];
   });
@@ -30,12 +30,12 @@ const statements = () => {
     statement,
     many(
       chain(
-        ";",
-        statement
+        ';',
+        statement,
       )((ast) => {
         return ast[1];
-      })
-    )
+      }),
+    ),
   )(flattenAll);
 };
 
@@ -58,16 +58,16 @@ const statement = () => {
 
 const selectStatement = () => {
   return chain(
-    "select",
+    'select',
     selectList,
     optional(fromClause),
     optional(orderByClause),
     optional(limitClause),
-    optional(union, selectStatement)
+    optional(union, selectStatement),
   )((ast) => {
     const result: any = {
-      type: "statement",
-      variant: "select",
+      type: 'statement',
+      variant: 'select',
       result: ast[1],
       from: ast[2],
     };
@@ -81,16 +81,16 @@ const selectStatement = () => {
 };
 
 const union = () => {
-  return chain("union", ["all", "distinct"])();
+  return chain('union', ['all', 'distinct'])();
 };
 
 const fromClause = () => {
   return chain(
-    "from",
+    'from',
     tableSources,
     optional(whereStatement),
     optional(groupByStatement),
-    optional(havingStatement)
+    optional(havingStatement),
   )((ast) =>
     // TODO: Ignore where group having
     {
@@ -100,7 +100,7 @@ const fromClause = () => {
         group: ast[3],
         having: ast[4],
       };
-    }
+    },
   );
 };
 
@@ -110,8 +110,8 @@ const selectList = () => {
 
 const selectListTail = () => {
   return chain(
-    ",",
-    selectField
+    ',',
+    selectField,
   )((ast) => {
     return ast[1];
   });
@@ -124,29 +124,29 @@ const selectListTail = () => {
 const selectField = () => {
   return chain([
     chain(
-      many("not"),
+      many('not'),
       [
         chain(
           field,
-          optional(overClause)
+          optional(overClause),
         )((ast) =>
           // TODO: Ignore overClause
           {
             return ast[0];
-          }
+          },
         ),
-        chain("(", field, ")")(),
+        chain('(', field, ')')(),
       ],
-      optional(alias)
+      optional(alias),
     )((ast) => {
       return {
-        type: "identifier",
-        variant: "column",
+        type: 'identifier',
+        variant: 'column',
         name: ast[1],
         alias: ast[2],
       };
     }),
-    "*",
+    '*',
   ])((ast) => {
     return ast[0];
   });
@@ -154,8 +154,8 @@ const selectField = () => {
 
 const whereStatement = () => {
   return chain(
-    "where",
-    expression
+    'where',
+    expression,
   )((ast) => {
     return ast[1];
   });
@@ -164,7 +164,7 @@ const whereStatement = () => {
 // fieldList
 //       ::= field (, fieldList)?
 const fieldList = () => {
-  return chain(columnField, many(",", columnField))();
+  return chain(columnField, many(',', columnField))();
 };
 
 const tableSources = () => {
@@ -172,25 +172,25 @@ const tableSources = () => {
     tableSource,
     many(
       chain(
-        ",",
-        tableSource
+        ',',
+        tableSource,
       )((ast) => {
         return ast[1];
-      })
-    )
+      }),
+    ),
   )(flattenAll);
 };
 
 const tableSource = () => {
   return chain(
     tableSourceItem,
-    many(joinPart)
+    many(joinPart),
   )((ast) => {
     return {
       source: ast[0],
       joins: ast[1],
-      type: "statement",
-      variant: "tableSource",
+      type: 'statement',
+      variant: 'tableSource',
     };
   });
 };
@@ -199,11 +199,11 @@ const tableSourceItem = () => {
   return chain([
     chain(
       tableName,
-      optional(alias)
+      optional(alias),
     )((ast) => {
       return {
-        type: "identifier",
-        variant: "table",
+        type: 'identifier',
+        variant: 'table',
         name: ast[0],
         alias: ast[1],
       };
@@ -212,14 +212,14 @@ const tableSourceItem = () => {
       [
         selectStatement,
         chain(
-          "(",
+          '(',
           selectStatement,
-          ")"
+          ')',
         )((ast) => {
           return ast[1];
         }),
       ],
-      alias
+      alias,
     )((ast) => {
       return {
         ...ast[0],
@@ -234,22 +234,18 @@ const tableSourceItem = () => {
 const joinPart = () => {
   return chain(
     [
-      "join",
-      "straight_join",
-      chain(["inner", "cross", "full"], "join")(),
-      chain(["left", "right"], optional("outer"), "join")(),
-      chain(
-        "natural",
-        optional(["left", "right"], optional("outer")),
-        "join"
-      )(),
+      'join',
+      'straight_join',
+      chain(['inner', 'cross', 'full'], 'join')(),
+      chain(['left', 'right'], optional('outer'), 'join')(),
+      chain('natural', optional(['left', 'right'], optional('outer')), 'join')(),
     ],
     tableSourceItem,
-    optional("on", expression)
+    optional('on', expression),
   )((ast) => {
     return {
-      type: "statement",
-      variant: "join",
+      type: 'statement',
+      variant: 'join',
       join: ast[1],
       conditions: ast[2],
     };
@@ -261,8 +257,8 @@ const joinPart = () => {
 const alias = () => {
   return chain([
     chain(
-      "as",
-      stringOrWord
+      'as',
+      stringOrWord,
     )((ast) => {
       return ast[1];
     }),
@@ -274,31 +270,23 @@ const alias = () => {
 
 // ----------------------------------- Create table statement -----------------------------------
 const createTableStatement = () => {
-  return chain(
-    "create",
-    "table",
-    stringOrWord,
-    "(",
-    tableOptions,
-    ")",
-    optional(withStatement)
-  )();
+  return chain('create', 'table', stringOrWord, '(', tableOptions, ')', optional(withStatement))();
 };
 
 const withStatement = () => {
-  return chain("with", "(", withStatements, ")")();
+  return chain('with', '(', withStatements, ')')();
 };
 
 const withStatements = () => {
-  return chain(withStatementsTail, many(",", withStatementsTail))();
+  return chain(withStatementsTail, many(',', withStatementsTail))();
 };
 
 const withStatementsTail = () => {
-  return chain(wordSym, "=", stringSym)();
+  return chain(wordSym, '=', stringSym)();
 };
 
 const tableOptions = () => {
-  return chain(tableOption, many(",", tableOption))();
+  return chain(tableOption, many(',', tableOption))();
 };
 
 const tableOption = () => {
@@ -306,7 +294,7 @@ const tableOption = () => {
 };
 
 const primaryKeyList = () => {
-  return chain(wordSym, optional(",", primaryKeyList))();
+  return chain(wordSym, optional(',', primaryKeyList))();
 };
 
 const tableName = () => {
@@ -314,8 +302,8 @@ const tableName = () => {
     chain(stringOrWord)(),
     chain(
       stringOrWord,
-      ".",
-      stringOrWord
+      '.',
+      stringOrWord,
     )((ast) => {
       return [ast[0], ast[2]];
     }),
@@ -337,30 +325,25 @@ const tableName = () => {
 
 // ----------------------------------- Having --------------------------------------------------
 const havingStatement = () => {
-  return chain("having", expression)();
+  return chain('having', expression)();
 };
 
 // ----------------------------------- Create view statement -----------------------------------
 const createViewStatement = () => {
-  return chain("create", "view", wordSym, "as", selectStatement)();
+  return chain('create', 'view', wordSym, 'as', selectStatement)();
 };
 
 // ----------------------------------- Insert statement -----------------------------------
 const insertStatement = () => {
-  return chain(
-    "insert",
-    optional("ignore"),
-    "into",
-    tableName,
-    optional(selectFieldsInfo),
-    [selectStatement]
-  )((ast) => {
+  return chain('insert', optional('ignore'), 'into', tableName, optional(selectFieldsInfo), [
+    selectStatement,
+  ])((ast) => {
     return {
-      type: "statement",
-      variant: "insert",
+      type: 'statement',
+      variant: 'insert',
       into: {
-        type: "indentifier",
-        variant: "table",
+        type: 'indentifier',
+        variant: 'table',
         name: ast[3],
       },
       result: ast[5],
@@ -369,29 +352,29 @@ const insertStatement = () => {
 };
 
 const selectFieldsInfo = () => {
-  return chain("(", selectFields, ")")();
+  return chain('(', selectFields, ')')();
 };
 
 const selectFields = () => {
-  return chain(wordSym, many(",", wordSym))();
+  return chain(wordSym, many(',', wordSym))();
 };
 
 // ----------------------------------- groupBy -----------------------------------
 const groupByStatement = () => {
-  return chain("group", "by", fieldList)();
+  return chain('group', 'by', fieldList)();
 };
 
 // ----------------------------------- orderBy -----------------------------------
 const orderByClause = () => {
-  return chain("order", "by", orderByExpressionList)();
+  return chain('order', 'by', orderByExpressionList)();
 };
 
 const orderByExpressionList = () => {
-  return chain(orderByExpression, many(",", orderByExpression))();
+  return chain(orderByExpression, many(',', orderByExpression))();
 };
 
 const orderByExpression = () => {
-  return chain(expression, optional(["asc", "desc"]))();
+  return chain(expression, optional(['asc', 'desc']))();
 };
 
 /*
@@ -400,7 +383,7 @@ PARTITION BY value_expression , ... [ n ]
 */
 
 const partitionByClause = () => {
-  return chain([wordSym, chain("partition", "by", expression)()])((ast) => {
+  return chain([wordSym, chain('partition', 'by', expression)()])((ast) => {
     return ast;
   });
 };
@@ -413,22 +396,19 @@ OVER (
       )
 */
 const overClause = () => {
-  return chain("over", "(", overTailExpression, ")")();
+  return chain('over', '(', overTailExpression, ')')();
 };
 
 const overTailExpression = () => {
-  return chain(
-    [partitionByClause, chain(field, orderByClause)()],
-    many(",", overTailExpression)
-  )();
+  return chain([partitionByClause, chain(field, orderByClause)()], many(',', overTailExpression))();
 };
 
 // ----------------------------------- limit -----------------------------------
 const limitClause = () => {
-  return chain("limit", [
+  return chain('limit', [
     numberSym,
-    chain(numberSym, ",", numberSym)(),
-    chain(numberSym, "offset", numberSym)(),
+    chain(numberSym, ',', numberSym)(),
+    chain(numberSym, 'offset', numberSym)(),
   ])();
 };
 
@@ -441,18 +421,18 @@ const functionChain = () => {
 
 const ifFunction = () => {
   return chain(
-    "if",
-    "(",
+    'if',
+    '(',
     predicate,
-    ",",
+    ',',
     field,
-    ",",
+    ',',
     field,
-    ")"
+    ')',
   )((ast) => {
     return {
-      type: "function",
-      name: "if",
+      type: 'function',
+      name: 'if',
       args: [ast[2], ast[4], ast[6]],
     };
   });
@@ -460,16 +440,16 @@ const ifFunction = () => {
 
 const castFunction = () => {
   return chain(
-    "cast",
-    "(",
+    'cast',
+    '(',
     field,
-    "as",
+    'as',
     dataType,
-    ")"
+    ')',
   )((ast) => {
     return {
-      type: "function",
-      name: "cast",
+      type: 'function',
+      name: 'cast',
       args: [ast[2], ast[4]],
     };
   });
@@ -478,13 +458,13 @@ const castFunction = () => {
 const normalFunction = () => {
   return chain(
     wordSym,
-    "(",
+    '(',
     optional(functionFields),
-    ")",
-    optional("filter", "(", whereStatement, ")")
+    ')',
+    optional('filter', '(', whereStatement, ')'),
   )((ast) => {
     return {
-      type: "function",
+      type: 'function',
       name: ast[0],
       args: ast[2],
     };
@@ -492,7 +472,7 @@ const normalFunction = () => {
 };
 
 const functionFields = () => {
-  return chain(functionFieldItem, many(",", functionFieldItem))();
+  return chain(functionFieldItem, many(',', functionFieldItem))();
 };
 
 const functionFieldItem = () => {
@@ -503,39 +483,32 @@ const functionFieldItem = () => {
 
 // ----------------------------------- Case -----------------------------------
 const caseStatement = () => {
-  return chain(
-    "case",
-    plus(caseAlternative),
-    optional("else", [columnField, "null"]),
-    ["end", chain("end", "as", wordSym)()]
-  )();
+  return chain('case', plus(caseAlternative), optional('else', [columnField, 'null']), [
+    'end',
+    chain('end', 'as', wordSym)(),
+  ])();
 };
 
 const caseAlternative = () => {
-  return chain("when", expression, "then", fieldItem)();
+  return chain('when', expression, 'then', fieldItem)();
 };
 
 // ----------------------------------- set statement -----------------------------------
 
 const setStatement = () => {
-  return chain("set", variableAssignments)();
+  return chain('set', variableAssignments)();
 };
 
 const variableAssignments = () => {
-  return chain(variableAssignment, many(",", variableAssignment))();
+  return chain(variableAssignment, many(',', variableAssignment))();
 };
 
 const variableAssignment = () => {
-  return chain(variableLeftValue, "=", [
-    "true",
-    "false",
-    stringSym,
-    numberSym,
-  ])();
+  return chain(variableLeftValue, '=', ['true', 'false', stringSym, numberSym])();
 };
 
 const variableLeftValue = () => {
-  return chain(wordSym, many(".", wordSym))();
+  return chain(wordSym, many('.', wordSym))();
 };
 
 // ----------------------------------- Expression -----------------------------------
@@ -559,12 +532,8 @@ const expression = () => {
 
 const expressionHead = () => {
   return chain(
-    [
-      chain("(", expression, ")")(),
-      chain(notOperator, expression)(),
-      chain(booleanPrimary),
-    ],
-    optional(chain("is", optional("not"), ["true", "false", "unknown"])())
+    [chain('(', expression, ')')(), chain(notOperator, expression)(), chain(booleanPrimary)],
+    optional(chain('is', optional('not'), ['true', 'false', 'unknown'])()),
   )((ast) => {
     return ast[0];
   });
@@ -581,10 +550,7 @@ const expressionHead = () => {
 const booleanPrimary = () => {
   return chain(
     predicate,
-    many([
-      "isnull",
-      chain([chain("is", "not")(), "is", "not"], ["null", columnField])(),
-    ])
+    many(['isnull', chain([chain('is', 'not')(), 'is', 'not'], ['null', columnField])()]),
   )(flattenAll);
 };
 
@@ -601,7 +567,7 @@ const booleanPrimary = () => {
 const predicate = () => {
   return chain([
     chain(columnField, predicateAddonComparison)(),
-    chain("(", predicate, ")", predicateAddonComparison)(),
+    chain('(', predicate, ')', predicateAddonComparison)(),
   ])();
 };
 
@@ -609,37 +575,37 @@ const predicateAddonComparison = () => {
   return chain(
     optional([
       chain(comparisonOperator, columnField)(),
-      chain("sounds", "like", columnField)(),
+      chain('sounds', 'like', columnField)(),
       isOrNotExpression,
     ]),
-    optional(["or", predicate])
+    optional(['or', predicate]),
   )();
 };
 
 const columnField = () => {
   return chain(field)((ast) => {
     return {
-      type: "identifier",
-      variant: "column",
+      type: 'identifier',
+      variant: 'column',
       name: ast[0],
     };
   });
 };
 
 const isOrNotExpression = () => {
-  return chain(optional("is"), optional("not"), [
-    chain("in", "(", [selectStatement, fieldList], ")")(),
-    chain("between", field, "and", predicate)(),
-    chain("like", field, optional("escape", field))(),
-    chain("regexp", field)(),
-    "null",
+  return chain(optional('is'), optional('not'), [
+    chain('in', '(', [selectStatement, fieldList], ')')(),
+    chain('between', field, 'and', predicate)(),
+    chain('like', field, optional('escape', field))(),
+    chain('regexp', field)(),
+    'null',
   ])();
 };
 
 const fieldItem = () => {
   return chain(
     fieldItemDetail,
-    many(normalOperator, fieldItemDetail)
+    many(normalOperator, fieldItemDetail),
   )((ast) => {
     if (!ast[1]) {
       return ast[0];
@@ -656,17 +622,17 @@ const fieldItemDetail = () => {
       stringOrWordOrNumber,
       optional([
         chain(
-          ".",
-          "*"
+          '.',
+          '*',
         )((ast) => {
           return {
-            type: "identifier",
-            variant: "groupAll",
+            type: 'identifier',
+            variant: 'groupAll',
           };
         }),
-        chain(":", normalFunction)(),
+        chain(':', normalFunction)(),
         dotStringOrWordOrNumber,
-      ])
+      ]),
     )((ast) => {
       if (!ast[1]) {
         return ast[0];
@@ -677,20 +643,20 @@ const fieldItemDetail = () => {
         groupName: ast[0],
       };
     }),
-    "*",
+    '*',
   ])((ast) => {
     return ast[0];
   });
 };
 
 const dotStringOrWordOrNumber = () => {
-  return chain(".", [
+  return chain('.', [
     stringSym,
     numberSym,
     chain(wordSym)((ast) => {
       return {
-        type: "identifier",
-        variant: "columnAfterGroup",
+        type: 'identifier',
+        variant: 'columnAfterGroup',
         name: ast[0],
       };
     }),
@@ -705,37 +671,31 @@ const field = () => {
 
 // ----------------------------------- create index expression -----------------------------------
 const createIndexStatement = () => {
-  return chain("create", "index", indexItem, onStatement, whereStatement)();
+  return chain('create', 'index', indexItem, onStatement, whereStatement)();
 };
 
 const indexItem = () => {
-  return chain(stringSym, many(".", stringSym))();
+  return chain(stringSym, many('.', stringSym))();
 };
 
 const onStatement = () => {
-  return chain("ON", stringSym, "(", fieldForIndexList, ")")();
+  return chain('ON', stringSym, '(', fieldForIndexList, ')')();
 };
 
 const fieldForIndex = () => {
-  return chain(stringSym, optional(["ASC", "DESC"]))();
+  return chain(stringSym, optional(['ASC', 'DESC']))();
 };
 
 const fieldForIndexList = () => {
-  return chain(fieldForIndex, many(",", fieldForIndex))();
+  return chain(fieldForIndex, many(',', fieldForIndex))();
 };
 
 // ----------------------------------- create function expression -----------------------------------
 const createFunctionStatement = () => {
-  return chain("create", "function", wordSym, "as", stringSym)();
+  return chain('create', 'function', wordSym, 'as', stringSym)();
 };
 
 // ----------------------------------- update statement -----------------------------------
 const updateStatement = () => {
-  return chain(
-    "UPDATE",
-    tableSourceItem,
-    "SET",
-    setValueList,
-    optional(whereStatement)
-  )();
+  return chain('UPDATE', tableSourceItem, 'SET', setValueList, optional(whereStatement))();
 };

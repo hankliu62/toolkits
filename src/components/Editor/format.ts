@@ -1,7 +1,7 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import PrettierWorker from "worker-loader!../../workers/editor-prettier.worker";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import PrettierWorker from 'worker-loader!../../workers/editor-prettier.worker';
 
-import { createWorkerQueue } from "@/utils/workers";
+import { createWorkerQueue } from '@/utils/workers';
 
 export function registerDocumentFormattingEditProviders() {
   const disposables = [];
@@ -41,19 +41,9 @@ export function registerDocumentFormattingEditProviders() {
   //   }
 
   // };
-  for (const id of [
-    "css",
-    "less",
-    "scss",
-    "javascript",
-    "typescript",
-    "html",
-  ]) {
+  for (const id of ['css', 'less', 'scss', 'javascript', 'typescript', 'html']) {
     disposables.push(
-      monaco.languages.registerDocumentFormattingEditProvider(
-        id,
-        formattingEditProvider
-      )
+      monaco.languages.registerDocumentFormattingEditProvider(id, formattingEditProvider),
     );
   }
 

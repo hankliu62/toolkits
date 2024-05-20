@@ -1,7 +1,8 @@
-import { Cascader, CascaderProps } from "antd";
-import { useMemo } from "react";
+import type { CascaderProps } from 'antd';
+import { Cascader } from 'antd';
+import { useMemo } from 'react';
 
-import { locations } from "./location";
+import { locations } from './location';
 
 interface TreeData {
   label: string;
@@ -12,7 +13,7 @@ interface TreeData {
 export type ILocationCascaderProps = CascaderProps<TreeData>;
 
 export default function LocationCascader({
-  placeholder = "省市 / 城市 / 县区",
+  placeholder = '省市 / 城市 / 县区',
   ...rest
 }: ILocationCascaderProps) {
   const options = useMemo(() => {
@@ -29,9 +30,7 @@ export default function LocationCascader({
   );
 }
 
-function convertLocationListToTree(
-  list: { id: string; name: string; superId: string }[]
-) {
+function convertLocationListToTree(list: { id: string; name: string; superId: string }[]) {
   const result: TreeData[] = [];
   const temp: Record<string, TreeData> = {};
   for (const item of list) {
@@ -44,7 +43,7 @@ function convertLocationListToTree(
   }
 
   for (const item of list) {
-    if (item.superId === "0") {
+    if (item.superId === '0') {
       result.push(temp[item.id]);
     } else if (item.superId) {
       const parent = temp[item.superId];

@@ -1,9 +1,9 @@
-import get from "lodash/get";
-import has from "lodash/has";
-import isArray from "lodash/isArray";
+import get from 'lodash/get';
+import has from 'lodash/has';
+import isArray from 'lodash/isArray';
 
-import { IToken } from "../../syntax-parser";
-import {
+import type { IToken } from '../../syntax-parser';
+import type {
   ICompletionItem,
   ICursorInfo,
   IGetFieldsByTableName,
@@ -11,12 +11,9 @@ import {
   ISource,
   IStatement,
   IStatements,
-} from "./define";
+} from './define';
 
-export async function getCursorInfo(
-  rootStatement: IStatements,
-  keyPath: string[]
-) {
+export async function getCursorInfo(rootStatement: IStatements, keyPath: string[]) {
   if (!rootStatement) {
     return null;
   }
@@ -31,34 +28,34 @@ export async function getCursorInfo(
 
   return (await judgeStatement(parentStatement, async (typePlusVariant) => {
     switch (typePlusVariant) {
-      case "identifier.tableName": {
+      case 'identifier.tableName': {
         return {
-          type: "tableName",
+          type: 'tableName',
           variant: cursorKey,
           token: cursorValue,
           tableInfo: parentStatement,
         };
       }
-      case "identifier.column": {
-        if (cursorKey === "name") {
+      case 'identifier.column': {
+        if (cursorKey === 'name') {
           return {
-            type: "tableField",
+            type: 'tableField',
             token: cursorValue,
           };
         }
         return null;
       }
 
-      case "identifier.columnAfterGroup": {
+      case 'identifier.columnAfterGroup': {
         return {
-          type: "tableFieldAfterGroup",
+          type: 'tableFieldAfterGroup',
           token: cursorValue,
           groupName: parentStatement.groupName.value,
         };
       }
-      case "function": {
+      case 'function': {
         return {
-          type: "functionName",
+          type: 'functionName',
           token: cursorValue,
         };
       }
@@ -70,7 +67,7 @@ export async function getCursorInfo(
 export function findNearestStatement(
   rootStatement: IStatements,
   keyPath: string[],
-  callback?: (value?: any) => boolean
+  callback?: (value?: any) => boolean,
 ): ISelectStatement {
   if (!rootStatement) {
     return null;
@@ -83,10 +80,10 @@ export function findNearestStatement(
   const value = get(rootStatement, keyPath);
 
   if (!value) {
-    throw new Error("Path not found from ast!");
+    throw new Error('Path not found from ast!');
   }
 
-  if (!value.token && value.type === "statement") {
+  if (!value.token && value.type === 'statement') {
     if (callback) {
       if (callback(value) === true) {
         return value;
@@ -105,13 +102,10 @@ export function findNearestStatement(
 export async function getFieldsFromStatement(
   rootStatement: IStatements,
   cursorKeyPath: string[],
-  getFieldsByTableName: IGetFieldsByTableName
+  getFieldsByTableName: IGetFieldsByTableName,
 ) {
   const cursorInfo = await getCursorInfo(rootStatement, cursorKeyPath);
-  const cursorRootStatement = findNearestStatement(
-    rootStatement,
-    cursorKeyPath
-  );
+  const cursorRootStatement = findNearestStatement(rootStatement, cursorKeyPath);
 
   if (!cursorRootStatement) {
     return [];
@@ -119,17 +113,17 @@ export async function getFieldsFromStatement(
 
   switch (cursorRootStatement.variant) {
     // Select statement
-    case "select": {
+    case 'select': {
       return getFieldsByFromClauses(
         cursorRootStatement,
-        get(cursorRootStatement, "from.sources", []),
+        get(cursorRootStatement, 'from.sources', []),
         cursorInfo,
-        getFieldsByTableName
+        getFieldsByTableName,
       );
     }
     // Join statement
     // 字段是 source 表的（自带 + join 的表）
-    case "join": {
+    case 'join': {
       const parentCursorKeyPath = [...cursorKeyPath];
       parentCursorKeyPath.pop();
 
@@ -137,15 +131,15 @@ export async function getFieldsFromStatement(
         rootStatement,
         parentCursorKeyPath,
         (eachStatement) => {
-          return eachStatement.variant === "select";
-        }
+          return eachStatement.variant === 'select';
+        },
       );
 
       return getFieldsByFromClauses(
         parentSelectStatement,
-        get(parentSelectStatement, "from.sources", []),
+        get(parentSelectStatement, 'from.sources', []),
         cursorInfo,
-        getFieldsByTableName
+        getFieldsByTableName,
       );
     }
     default:
@@ -158,17 +152,12 @@ async function getFieldsByFromClauses(
   rootStatement: IStatement,
   fromStatements: IStatement[],
   cursorInfo: ICursorInfo,
-  getFieldsByTableName: IGetFieldsByTableName
+  getFieldsByTableName: IGetFieldsByTableName,
 ): Promise<ICompletionItem[]> {
   const fields = await Promise.all(
     fromStatements.map((fromStatement) => {
-      return getFieldsByFromClause(
-        rootStatement,
-        fromStatement,
-        cursorInfo,
-        getFieldsByTableName
-      );
-    })
+      return getFieldsByFromClause(rootStatement, fromStatement, cursorInfo, getFieldsByTableName);
+    }),
   );
 
   return fields.flat().filter((item) => {
@@ -180,52 +169,48 @@ async function getFieldsByFromClause(
   rootStatement: IStatement,
   fromStatement: IStatement,
   cursorInfo: ICursorInfo,
-  getFieldsByTableName: IGetFieldsByTableName
+  getFieldsByTableName: IGetFieldsByTableName,
 ): Promise<ICompletionItem[]> {
   return judgeStatement(fromStatement, async (typePlusVariant) => {
     switch (typePlusVariant) {
-      case "statement.tableSource": {
+      case 'statement.tableSource': {
         // ignore joins
         const tableSourceFields = await getFieldsByFromClause(
           rootStatement,
           (fromStatement as any).source,
           cursorInfo,
-          getFieldsByTableName
+          getFieldsByTableName,
         );
         const joinsFields = isArray((fromStatement as any).joins)
           ? await getFieldsByFromClauses(
               rootStatement,
-              get(fromStatement, "joins", []),
+              get(fromStatement, 'joins', []),
               cursorInfo,
-              getFieldsByTableName
+              getFieldsByTableName,
             )
           : [];
         return [...tableSourceFields, ...joinsFields];
       }
-      case "statement.join": {
+      case 'statement.join': {
         return getFieldsByFromClause(
           rootStatement,
           (fromStatement as any).join,
           cursorInfo,
-          getFieldsByTableName
+          getFieldsByTableName,
         );
       }
-      case "identifier.table": {
+      case 'identifier.table': {
         const itFromStatement = fromStatement as ISource;
 
         let originFields = await getFieldsByTableName(
           itFromStatement.name,
           cursorInfo.token.value,
-          rootStatement
+          rootStatement,
         );
-        const tableNames: string[] = get(
-          itFromStatement,
-          "name.tableNames",
-          []
-        );
+        const tableNames: string[] = get(itFromStatement, 'name.tableNames', []);
 
         let groupPickerName: string = null;
-        const tableNameAlias: string = get(itFromStatement, "alias.value");
+        const tableNameAlias: string = get(itFromStatement, 'alias.value');
 
         // 如果有 alias,直接作为 groupPickerName
         if (tableNameAlias) {
@@ -234,10 +219,7 @@ async function getFieldsByFromClause(
           // 实现的 tableNames 数量
           let existKeyCount = 0;
           for (const tableName of tableNames) {
-            const eachTableName = get(
-              itFromStatement,
-              `name.${tableName}.value`
-            );
+            const eachTableName = get(itFromStatement, `name.${tableName}.value`);
             if (eachTableName) {
               existKeyCount++;
               groupPickerName = eachTableName;
@@ -264,7 +246,7 @@ async function getFieldsByFromClause(
         });
         return originFields;
       }
-      case "statement.select": {
+      case 'statement.select': {
         const ssFromStatement = fromStatement as ISelectStatement;
 
         let statementSelectFields: ICompletionItem[] = [];
@@ -273,41 +255,35 @@ async function getFieldsByFromClause(
           ssFromStatement,
           ssFromStatement.from.sources,
           cursorInfo,
-          getFieldsByTableName
+          getFieldsByTableName,
         );
 
         // If select *, return all fields
 
-        if (
-          ssFromStatement.result.length === 1 &&
-          ssFromStatement.result[0].name.value === "*"
-        ) {
+        if (ssFromStatement.result.length === 1 && ssFromStatement.result[0].name.value === '*') {
           statementSelectFields = [...fields];
         } else {
           statementSelectFields = fields
             .map((field) => {
               const selectedField = ssFromStatement.result.find((result) => {
-                if (get(result.name, "token") === true) {
+                if (get(result.name, 'token') === true) {
                   return result.name.value === field.label;
                 }
 
                 // Consider ${group}.${field}
                 if (
-                  get(result.name, "type") === "identifier" &&
-                  get(result.name, "variant") === "columnAfterGroup"
+                  get(result.name, 'type') === 'identifier' &&
+                  get(result.name, 'variant') === 'columnAfterGroup'
                 ) {
-                  return get(result.name, "name.value") === field.label;
+                  return get(result.name, 'name.value') === field.label;
                 }
 
                 // Consider ${group}.*
                 if (
-                  get(result.name, "type") === "identifier" &&
-                  get(result.name, "variant") === "groupAll"
+                  get(result.name, 'type') === 'identifier' &&
+                  get(result.name, 'variant') === 'groupAll'
                 ) {
-                  return (
-                    get(result.name, "groupName.value") ===
-                    field.groupPickerName
-                  );
+                  return get(result.name, 'groupName.value') === field.groupPickerName;
                 }
 
                 return false;
@@ -330,15 +306,13 @@ async function getFieldsByFromClause(
         }
 
         // If has alias, change
-        if (has(ssFromStatement, "alias.value")) {
-          statementSelectFields = statementSelectFields.map(
-            (statementSelectField) => {
-              return {
-                ...statementSelectField,
-                groupPickerName: get(ssFromStatement, "alias.value"),
-              };
-            }
-          );
+        if (has(ssFromStatement, 'alias.value')) {
+          statementSelectFields = statementSelectFields.map((statementSelectField) => {
+            return {
+              ...statementSelectField,
+              groupPickerName: get(ssFromStatement, 'alias.value'),
+            };
+          });
         }
 
         return statementSelectFields;
@@ -352,7 +326,7 @@ async function getFieldsByFromClause(
 
 async function judgeStatement<T>(
   statement: IStatement,
-  callback: (typePlusVariant?: string) => Promise<T>
+  callback: (typePlusVariant?: string) => Promise<T>,
 ): Promise<T> {
   if (!statement) {
     return null;
@@ -368,13 +342,9 @@ export async function findFieldExtraInfo(
   rootStatement: IStatements,
   cursorInfo: ICursorInfo,
   getFieldsByTableName: IGetFieldsByTableName,
-  fieldKeyPath: string[]
+  fieldKeyPath: string[],
 ): Promise<ICompletionItem> {
-  const fields = await getFieldsFromStatement(
-    rootStatement,
-    fieldKeyPath,
-    getFieldsByTableName
-  );
+  const fields = await getFieldsFromStatement(rootStatement, fieldKeyPath, getFieldsByTableName);
   const field = fields.find((eachField) => {
     return eachField.label === cursorInfo.token.value;
   });

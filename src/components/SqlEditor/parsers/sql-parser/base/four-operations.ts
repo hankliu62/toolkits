@@ -1,11 +1,12 @@
-import { chain, ChainFunction, optional } from "../../syntax-parser";
+import type { ChainFunction } from '../../syntax-parser';
+import { chain, optional } from '../../syntax-parser';
 
 // Four operations ---------------------------------
 export function createFourOperations(field: ChainFunction) {
   const addExpr = () => {
     return chain(
       term,
-      exprTail
+      exprTail,
     )((ast) => {
       return ast[0];
     });
@@ -18,7 +19,7 @@ export function createFourOperations(field: ChainFunction) {
   const term = () => {
     return chain(
       factor,
-      termTail
+      termTail,
     )((ast) => {
       return ast[0];
     });
@@ -29,13 +30,13 @@ export function createFourOperations(field: ChainFunction) {
   };
 
   const mulOp = () => {
-    return chain(["*", "/", "%"])((ast) => {
+    return chain(['*', '/', '%'])((ast) => {
       return ast[0];
     });
   };
 
   const addOp = () => {
-    return chain(["+", "-"])((ast) => {
+    return chain(['+', '-'])((ast) => {
       return ast[0];
     });
   };
@@ -43,9 +44,9 @@ export function createFourOperations(field: ChainFunction) {
   const factor = () => {
     return chain([
       chain(
-        "(",
+        '(',
         addExpr,
-        ")"
+        ')',
       )((ast) => {
         return ast[1];
       }),

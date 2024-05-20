@@ -1,10 +1,10 @@
-import { Popover } from "antd";
-import classNames from "classnames";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { Popover } from 'antd';
+import classNames from 'classnames';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
-import { getRoutePrefix } from "@/utils/route";
+import { getRoutePrefix } from '@/utils/route';
 
 /**
  * 网页底部
@@ -13,10 +13,10 @@ export default function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={classNames(
-        "md:pb z-[98] mx-auto w-full bg-black px-5 pb-6 pt-6 sm:pt-24 md:px-10 md:pb-[24px] md:pt-[70px]",
+        'md:pb z-[98] mx-auto w-full bg-black px-5 pb-6 pt-6 sm:pt-24 md:px-10 md:pb-[24px] md:pt-[70px]',
         {
           [className]: className,
-        }
+        },
       )}
     >
       <div className="md:px-24">

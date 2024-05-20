@@ -1,17 +1,17 @@
-import { HourglassOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import { HourglassOutlined, ThunderboltOutlined } from '@ant-design/icons';
 // import type {
 //   monaco as Monaco,
 //   TMonacoEditorLanguage,
 // } from "@hankliu/rc-monaco-editor";
 // import { Languages } from "@hankliu/rc-monaco-editor/lib/constants/index";
-import { Breadcrumb, Button, message, Select } from "antd";
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import PrettierWorker from "worker-loader!../../../workers/editor-prettier.worker";
+import { Breadcrumb, Button, message, Select } from 'antd';
+import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import PrettierWorker from 'worker-loader!../../../workers/editor-prettier.worker';
 
-import MonacoEditor from "@/components/CodeEditor";
-import { LanguageDemo, Languages } from "@/constants/editor";
-import { createWorkerQueue } from "@/utils/workers";
+import MonacoEditor from '@/components/CodeEditor';
+import { LanguageDemo, Languages } from '@/constants/editor';
+import { createWorkerQueue } from '@/utils/workers';
 
 // const MonacoEditor = dynamic(import("@hankliu/rc-monaco-editor"), {
 //   ssr: false,
@@ -29,7 +29,7 @@ const LanguagesOptions = Languages.map((item) => ({
  */
 export default function MonacoEditorPage() {
   const [value, setValue] = useState<string>();
-  const [language, setLanguage] = useState<keyof typeof LanguageDemo>("html");
+  const [language, setLanguage] = useState<keyof typeof LanguageDemo>('html');
   const editor = useRef<any>();
   const prettierWorker = useRef<any>();
 
@@ -61,14 +61,14 @@ export default function MonacoEditorPage() {
         setValue(pretty);
       }
     },
-    [value, language]
+    [value, language],
   );
 
   /**
    * 设置案例
    */
   const onSetExample = useCallback(() => {
-    setValue(LanguageDemo[language] || "");
+    setValue(LanguageDemo[language] || '');
   }, [language]);
 
   return (
@@ -80,7 +80,7 @@ export default function MonacoEditorPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "代码编辑器",
+            title: '代码编辑器',
           },
         ]}
       />
@@ -137,13 +137,11 @@ export default function MonacoEditorPage() {
               onMount={(codeEditor, monaco) => {
                 editor.current = codeEditor;
                 editor.current.addCommand(
-                  monaco.KeyMod.CtrlCmd |
-                    monaco.KeyMod.Shift |
-                    monaco.KeyCode.KeyF,
+                  monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.KeyF,
                   function () {
-                    console.log("cmd+shift+F", codeEditor.getValue());
+                    console.log('cmd+shift+F', codeEditor.getValue());
                     onFormatCode(codeEditor.getValue());
-                  }
+                  },
                 );
               }}
             />

@@ -1,13 +1,13 @@
-import { BranchesOutlined } from "@ant-design/icons";
-import { Divider, Skeleton, Space, Tag } from "antd";
-import classNames from "classnames";
-import Dayjs from "dayjs";
-import React from "react";
-import LazyLoad from "react-lazyload";
+import { BranchesOutlined } from '@ant-design/icons';
+import { Divider, Skeleton, Space, Tag } from 'antd';
+import classNames from 'classnames';
+import Dayjs from 'dayjs';
+import React from 'react';
+import LazyLoad from 'react-lazyload';
 
-import MarkdownPreview from "@/components/MarkdownPreview";
-import { GithubBlogRepo, GithubOrigin, GithubOwner } from "@/constants/backend";
-import { IIssue } from "@/interfaces/questions";
+import MarkdownPreview from '@/components/MarkdownPreview';
+import { GithubBlogRepo, GithubOrigin, GithubOwner } from '@/constants/backend';
+import type { IIssue } from '@/interfaces/questions';
 
 export interface IArticleProps {
   className?: string;
@@ -39,15 +39,12 @@ export default function Article({ className, article }: IArticleProps) {
             e?.preventDefault && e.preventDefault();
             window.open(
               `${GithubOrigin}/${GithubOwner}/${GithubBlogRepo}/issues/${article?.number}`,
-              "_blank"
+              '_blank',
             );
           }}
           className="group cursor-pointer"
         >
-          <BranchesOutlined
-            className="group-hover:text-[#1171ee]"
-            rev={undefined}
-          />
+          <BranchesOutlined className="group-hover:text-[#1171ee]" rev={undefined} />
           <span className="group-hover:text-[#1171ee]">{`#${article?.number}`}</span>
         </Space>
 
@@ -56,26 +53,23 @@ export default function Article({ className, article }: IArticleProps) {
           onClick={(e) => {
             e?.stopPropagation && e.stopPropagation();
             e?.preventDefault && e.preventDefault();
-            window.open(`${GithubOrigin}/${article?.user?.login}`, "_blank");
+            window.open(`${GithubOrigin}/${article?.user?.login}`, '_blank');
           }}
           className="group cursor-pointer"
         >
-          <span className="group-hover:text-sky-500">
-            {article?.user?.login}
-          </span>
+          <span className="group-hover:text-sky-500">{article?.user?.login}</span>
         </Space>
 
         <Space>
           <span className="text-[#8a919f]">
-            {article?.created_at &&
-              Dayjs(article?.created_at).format("YYYY-MM-DD HH:mm:ss")}
+            {article?.created_at && Dayjs(article?.created_at).format('YYYY-MM-DD HH:mm:ss')}
           </span>
         </Space>
 
         <Space>
           <div className="flex items-center justify-start">
             {(article?.labels || [])
-              .filter((label) => label.name !== "blog")
+              .filter((label) => label.name !== 'blog')
               .map((label) => (
                 <Tag color={`#${label.color}`} key={label.id}>
                   {label.name}
@@ -96,7 +90,7 @@ export default function Article({ className, article }: IArticleProps) {
           placeholder={<Skeleton active />}
         >
           <MarkdownPreview
-            source={(article.body || "").replace(/^---([\S\s]*?)---/, "")}
+            source={(article.body || '').replace(/^---([\S\s]*?)---/, '')}
             showLoading
           />
         </LazyLoad>

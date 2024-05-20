@@ -1,19 +1,16 @@
-export function copyTextToClipboard(
-  input: string,
-  { target = document.body } = {}
-) {
-  const element = document.createElement("textarea");
+export function copyTextToClipboard(input: string, { target = document.body } = {}) {
+  const element = document.createElement('textarea');
   const previouslyFocusedElement = document.activeElement;
 
   element.value = input;
 
   // Prevent keyboard from showing on mobile
-  element.setAttribute("readonly", "");
+  element.setAttribute('readonly', '');
 
-  element.style.contain = "strict";
-  element.style.position = "absolute";
-  element.style.left = "-9999px";
-  element.style.fontSize = "12pt"; // Prevent zooming on iOS
+  element.style.contain = 'strict';
+  element.style.position = 'absolute';
+  element.style.left = '-9999px';
+  element.style.fontSize = '12pt'; // Prevent zooming on iOS
 
   const selection = document.getSelection();
   let originalRange: false | Range = false;
@@ -30,7 +27,7 @@ export function copyTextToClipboard(
 
   let isSuccess = false;
   try {
-    isSuccess = document.execCommand("copy");
+    isSuccess = document.execCommand('copy');
   } catch {}
 
   element.remove();

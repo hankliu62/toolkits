@@ -1,7 +1,7 @@
-import { SyncOutlined } from "@ant-design/icons";
-import classNames from "classnames";
-import * as React from "react";
-import { Waypoint } from "react-waypoint";
+import { SyncOutlined } from '@ant-design/icons';
+import classNames from 'classnames';
+import * as React from 'react';
+import { Waypoint } from 'react-waypoint';
 
 export interface LoadMoreProps extends Waypoint.WaypointProps {
   visible?: boolean;
@@ -37,7 +37,7 @@ function LoadMore({
   };
   if (!visible) return null;
   return (
-    <div className={classNames("py-3 text-center", className)} style={style}>
+    <div className={classNames('py-3 text-center', className)} style={style}>
       {disabled ? null : <Waypoint {...rest} onEnter={handleEnter} />}
       {indicator}
     </div>

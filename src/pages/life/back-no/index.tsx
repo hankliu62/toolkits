@@ -1,23 +1,16 @@
-import { HourglassOutlined } from "@ant-design/icons";
-import {
-  Alert,
-  Breadcrumb,
-  Button,
-  Divider,
-  Input,
-  InputNumber,
-  message,
-  Select,
-} from "antd";
-import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
-import SplitPane from "react-split-pane";
+import { HourglassOutlined } from '@ant-design/icons';
+import { Alert, Breadcrumb, Button, Divider, Input, InputNumber, message, Select } from 'antd';
+import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
+import SplitPane from 'react-split-pane';
 
-import { BankCardTypeName, EBankCardType } from "@/constants/bank";
-import { getRoutePrefix } from "@/utils/route";
-import { IBankNoInfo, parseBankNoInfo, randomBankNo } from "@/utils/tools";
+import type { EBankCardType } from '@/constants/bank';
+import { BankCardTypeName } from '@/constants/bank';
+import type { IBankNoInfo } from '@/utils/tools';
+import { parseBankNoInfo, randomBankNo } from '@/utils/tools';
 
-import SelectBank, { TBackInfo } from "./Components/SelectBank";
+import type { TBackInfo } from './Components/SelectBank';
+import SelectBank from './Components/SelectBank';
 
 /**
  * 在线银行卡号生成和解析工具
@@ -54,12 +47,12 @@ export default function BackNoPage() {
    */
   const onCreateBankNo = useCallback(() => {
     if (!bankCode) {
-      message.error("请先选择银行简称");
+      message.error('请先选择银行简称');
       return;
     }
 
     if (!bankCardType) {
-      message.error("请先选择银行卡类型");
+      message.error('请先选择银行卡类型');
       return;
     }
 
@@ -75,8 +68,7 @@ export default function BackNoPage() {
   const [parseBankNo, setParseBankNo] = useState<string>();
 
   // 解析银行卡信息
-  const [parseBankNoInfoResult, setParseBankNoInfoResult] =
-    useState<IBankNoInfo>();
+  const [parseBankNoInfoResult, setParseBankNoInfoResult] = useState<IBankNoInfo>();
   const [parseBankNoInfoError, setParseBankNoInfoError] = useState<string>();
 
   /**
@@ -90,7 +82,7 @@ export default function BackNoPage() {
     if (bankNoInfo) {
       setParseBankNoInfoResult(bankNoInfo);
     } else {
-      setParseBankNoInfoError("输入的银行卡号不正确");
+      setParseBankNoInfoError('输入的银行卡号不正确');
     }
   }, [parseBankNo]);
 
@@ -98,7 +90,7 @@ export default function BackNoPage() {
    * 设置案例
    */
   const onSetExample = useCallback(() => {
-    setParseBankNo("110101200006128958");
+    setParseBankNo('110101200006128958');
   }, []);
 
   return (
@@ -110,7 +102,7 @@ export default function BackNoPage() {
             title: <Link href="/">小工具集合</Link>,
           },
           {
-            title: "银行卡生成器",
+            title: '银行卡生成器',
           },
         ]}
       />
@@ -172,11 +164,7 @@ export default function BackNoPage() {
                 <div className="flex items-center gap-4">
                   <label className="w-32 text-right" />
                   <div className="flex-1">
-                    <Button
-                      size="large"
-                      type="primary"
-                      onClick={onCreateBankNo}
-                    >
+                    <Button size="large" type="primary" onClick={onCreateBankNo}>
                       开始生成
                     </Button>
                   </div>
@@ -227,9 +215,7 @@ export default function BackNoPage() {
           </div>
 
           <div className="m-4 rounded border border-common-border">
-            <div className="bg-[#d3ccd6] px-4 py-3 text-sm text-[#6f4b3e]">
-              银行卡号大全
-            </div>
+            <div className="bg-[#d3ccd6] px-4 py-3 text-sm text-[#6f4b3e]">银行卡号大全</div>
             <div className="space-y-3 p-4">
               <div>
                 <h2 className="text-lg text-[#cd5e3c]">银行卡号码查询</h2>
@@ -251,11 +237,7 @@ export default function BackNoPage() {
                 <div className="flex items-center gap-4">
                   <label className="w-32 text-right" />
                   <div className="flex-1">
-                    <Button
-                      size="large"
-                      type="primary"
-                      onClick={onSearchBankNo}
-                    >
+                    <Button size="large" type="primary" onClick={onSearchBankNo}>
                       查询
                     </Button>
                   </div>
@@ -281,18 +263,10 @@ export default function BackNoPage() {
                       <Divider className="!my-2" />
                       <div className="flex items-center gap-4">
                         <div className="w-52">{parseBankNo}</div>
-                        <div className="w-10">
-                          {parseBankNoInfoResult.bankCode}
-                        </div>
-                        <div className="w-32">
-                          {parseBankNoInfoResult.bankName}
-                        </div>
-                        <div className="w-10">
-                          {parseBankNoInfoResult.cardType}
-                        </div>
-                        <div className="w-32">
-                          {parseBankNoInfoResult.cardTypeName}
-                        </div>
+                        <div className="w-10">{parseBankNoInfoResult.bankCode}</div>
+                        <div className="w-32">{parseBankNoInfoResult.bankName}</div>
+                        <div className="w-10">{parseBankNoInfoResult.cardType}</div>
+                        <div className="w-32">{parseBankNoInfoResult.cardTypeName}</div>
                       </div>
                     </div>
                   )}
@@ -336,9 +310,7 @@ export default function BackNoPage() {
                       对每一位的计算规则：如果这一位是奇数位，则返回t本身，如果是偶数位，则先将t乘以2得到一个数n，如果n是一位数（小于10），直接返回n，否则将n的个位数和十位数相加返回。
                     </p>
                     <p>4. 如果s能够整除10，则此号码有效，否则号码无效。</p>
-                    <p>
-                      因为最终的结果会对10取余来判断是否能够整除10，所以又叫做模10算法。
-                    </p>
+                    <p>因为最终的结果会对10取余来判断是否能够整除10，所以又叫做模10算法。</p>
                   </div>
                 </div>
               </div>

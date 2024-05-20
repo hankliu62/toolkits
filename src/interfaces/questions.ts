@@ -86,8 +86,8 @@ export interface IAssignee {
 export interface TReactions {
   url: string;
   total_count: number;
-  "+1": number;
-  "-1": number;
+  '+1': number;
+  '-1': number;
   laugh: number;
   hooray: number;
   confused: number;
