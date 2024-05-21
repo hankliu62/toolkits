@@ -1,7 +1,7 @@
 // pages/lifecount.js
-import type { ReactElement } from "react";
+import type { ReactElement } from 'react';
 
-import NoHeaderLayout from "@/layouts/no-header";
+import NoHeaderLayout from '@/layouts/no-header';
 
 const LifeCountPage = () => {
   return (
